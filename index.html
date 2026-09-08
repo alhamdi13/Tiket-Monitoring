@@ -5,21 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flight Price Monitor Pro - Pemantau Tiket Pesawat Murah Real-Time</title>
   <meta name="description" content="Dashboard pemantauan otomatis harga tiket pesawat dengan integrasi Telegram Bot dan analitik tren harga.">
-  
-  <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✈️</text></svg>">
-  
-  <!-- CSS Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
-  
-  <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
   <div class="app-container">
-    
-    <!-- Top Header Bar -->
     <header class="header-bar">
       <div class="brand-area">
         <div class="brand-logo">✈️</div>
@@ -35,11 +27,11 @@
       </div>
 
       <div class="header-status">
-        <div class="status-pill" title="Status Background Worker">
+        <div class="status-pill">
           <div id="schedulerPulse" class="pulse-dot"></div>
           <span id="schedulerStatusText">GitHub Actions (Cloud)</span>
         </div>
-        <div class="status-pill" title="Status Integrasi Telegram Bot">
+        <div class="status-pill">
           <div id="telegramPulse" class="pulse-dot"></div>
           <span id="telegramStatusText">Telegram Siap</span>
         </div>
@@ -52,19 +44,12 @@
         <button class="btn btn-secondary" onclick="openAddRouteModal()">
           <span>➕</span> Tambah Rute
         </button>
-        <button class="btn btn-icon" onclick="openNotificationsModal()" title="Riwayat Notifikasi">
-          🔔
-        </button>
-        <button class="btn btn-icon" onclick="openModal('settingsModal')" title="Pengaturan Sistem & Bot">
-          ⚙️
-        </button>
-        <button id="btnThemeToggle" class="btn btn-icon" title="Ubah Tema Gelap/Terang">
-          ☀️
-        </button>
+        <button class="btn btn-icon" onclick="openNotificationsModal()" title="Riwayat Notifikasi">🔔</button>
+        <button class="btn btn-icon" onclick="openModal('settingsModal')" title="Pengaturan Sistem & Bot">⚙️</button>
+        <button id="btnThemeToggle" class="btn btn-icon" title="Ubah Tema">☀️</button>
       </div>
     </header>
 
-    <!-- Top KPI Stats -->
     <section class="stats-grid">
       <div class="stat-card">
         <div class="stat-header">
@@ -103,17 +88,11 @@
       </div>
     </section>
 
-    <!-- Section 1: Active Routes Grid -->
     <section style="margin-bottom: 2.5rem;">
       <div class="section-header">
-        <div class="section-title">
-          <span>🎯</span> Rute Pemantauan Aktif
-        </div>
-        <button class="btn btn-secondary btn-sm" onclick="openAddRouteModal()">
-          ➕ Tambah Rute Baru
-        </button>
+        <div class="section-title"><span>🎯</span> Rute Pemantauan Aktif</div>
+        <button class="btn btn-secondary btn-sm" onclick="openAddRouteModal()">➕ Tambah Rute Baru</button>
       </div>
-
       <div class="routes-grid" id="routesGrid">
         <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">
           Memuat daftar rute pantauan...
@@ -121,16 +100,10 @@
       </div>
     </section>
 
-    <!-- Section 2: Analytics & Lowest Fare Matrix -->
     <section id="analyticsSection" class="analytics-container">
       <div class="analytics-tabs">
-        <button id="tabTrend" class="tab-btn active">
-          📈 Grafik Tren Fluktuasi Harga
-        </button>
-        <button id="tabCalendar" class="tab-btn">
-          📅 Kalender Tarif Termurah 30 Hari
-        </button>
-
+        <button id="tabTrend" class="tab-btn active">📈 Grafik Tren Fluktuasi Harga</button>
+        <button id="tabCalendar" class="tab-btn">📅 Kalender Tarif Termurah 30 Hari</button>
         <div class="route-selector-box">
           <label style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600;">Rute:</label>
           <select id="analyticsRouteSelect" class="select-control">
@@ -138,28 +111,20 @@
           </select>
         </div>
       </div>
-
-      <!-- Tab 1: Line Chart -->
       <div id="trendViewWrapper">
         <div style="height: 340px; position: relative; width: 100%;">
           <canvas id="priceTrendCanvas"></canvas>
         </div>
       </div>
-
-      <!-- Tab 2: Calendar Matrix -->
       <div id="calendarViewWrapper" style="display: none;">
         <div class="calendar-grid" id="fareCalendarGrid"></div>
       </div>
     </section>
 
-    <!-- Section 3: Live Flight Results Explorer Table -->
     <section class="table-card">
       <div class="section-header">
-        <div class="section-title">
-          <span>📋</span> Hasil Pemindaian Tiket Terbaru
-        </div>
+        <div class="section-title"><span>📋</span> Hasil Pemindaian Tiket Terbaru</div>
       </div>
-
       <table class="custom-table">
         <thead>
           <tr>
@@ -181,15 +146,11 @@
         </tbody>
       </table>
     </section>
-
   </div>
 
-  <!-- Datalist Bandara Indonesia -->
   <datalist id="airportsDatalist"></datalist>
 
-  <!-- ==========================================================================
-       MODAL: Tambah / Edit Rute (Mendukung Pemilihan Tanggal Kalender)
-       ========================================================================== -->
+  <!-- MODAL: Tambah / Edit Rute (Mendukung Penerbangan Transit & Tanggal Spesifik) -->
   <div class="modal-backdrop" id="routeModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -203,12 +164,36 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
           <div class="form-group">
             <label class="form-label" for="routeOriginInput">Bandara Asal (IATA):</label>
-            <input type="text" id="routeOriginInput" class="form-control" placeholder="Contoh: CGK / SUB" list="airportsDatalist" required maxlength="3" style="text-transform: uppercase;">
+            <input type="text" id="routeOriginInput" class="form-control" placeholder="Contoh: BDJ / SUB" list="airportsDatalist" required maxlength="3" style="text-transform: uppercase;">
           </div>
           <div class="form-group">
             <label class="form-label" for="routeDestInput">Bandara Tujuan (IATA):</label>
-            <input type="text" id="routeDestInput" class="form-control" placeholder="Contoh: DPS / BDJ" list="airportsDatalist" required maxlength="3" style="text-transform: uppercase;">
+            <input type="text" id="routeDestInput" class="form-control" placeholder="Contoh: PDG / DPS" list="airportsDatalist" required maxlength="3" style="text-transform: uppercase;">
           </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="routeTransitSelect">Rute Penerbangan (Langsung / Transit):</label>
+          <select id="routeTransitSelect" class="form-control" onchange="handleToggleTransitHub()">
+            <option value="direct">✈️ Penerbangan Langsung (Direct Flight)</option>
+            <option value="transit">🔄 Penerbangan Transit / Connecting (Multi-City)</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="groupTransitHub" style="display: none;">
+          <label class="form-label" for="routeHubInput">Bandara Transit / Hub:</label>
+          <select id="routeHubInput" class="form-control">
+            <option value="AUTO">✨ Otomatis Cari Hub Terbaik (CGK / SUB / UPG)</option>
+            <option value="CGK">CGK - Jakarta (Soekarno-Hatta)</option>
+            <option value="SUB">SUB - Surabaya (Juanda)</option>
+            <option value="UPG">UPG - Makassar (Sultan Hasanuddin)</option>
+            <option value="KNO">KNO - Medan (Kualanamu)</option>
+            <option value="DPS">DPS - Bali (Ngurah Rai)</option>
+            <option value="YIA">YIA - Yogyakarta (Kulon Progo)</option>
+          </select>
+          <small style="font-size: 0.75rem; color: var(--accent-cyan); margin-top: 0.25rem; display: block;">
+            🛡️ Proteksi otomatis: Sistem memfilter waktu transit minimal 75-90 menit agar aman & tidak salah beli tiket!
+          </small>
         </div>
 
         <div class="form-group">
@@ -219,16 +204,14 @@
           </select>
         </div>
 
-        <!-- Opsi 1: Pemilih Tanggal Spesifik (Date Picker) -->
         <div class="form-group" id="groupTargetDate">
           <label class="form-label" for="routeTargetDateInput">Pilih Tanggal Penerbangan Target:</label>
           <input type="date" id="routeTargetDateInput" class="form-control">
           <small style="font-size: 0.75rem; color: var(--text-sub); margin-top: 0.25rem; display: block;">
-            Bot akan memantau tanggal ini dan mengirim alert setiap ada penurunan harga.
+            Bot akan memantau tanggal ini dan mengirim alert setiap ada perubahan harga.
           </small>
         </div>
 
-        <!-- Opsi 2: Rentang Hari -->
         <div class="form-group" id="groupDaysAhead" style="display: none;">
           <label class="form-label" for="routeDaysAheadInput">Rentang Hari ke Depan (1 - 60):</label>
           <input type="number" id="routeDaysAheadInput" class="form-control" value="14" min="1" max="60">
@@ -236,15 +219,12 @@
 
         <div class="form-group">
           <label class="form-label" for="routeMaxPriceInput">Target Budget Maksimal (IDR):</label>
-          <input type="number" id="routeMaxPriceInput" class="form-control" placeholder="600000" step="10000" required>
-          <small style="font-size: 0.75rem; color: var(--text-sub); margin-top: 0.25rem; display: block;">
-            Bot akan memberi tahu jika harga tiket di bawah budget ini.
-          </small>
+          <input type="number" id="routeMaxPriceInput" class="form-control" placeholder="1200000" step="10000" required>
         </div>
 
         <div class="form-group">
           <label class="form-label" for="routeLabelInput">Label Tampilan (Opsional):</label>
-          <input type="text" id="routeLabelInput" class="form-control" placeholder="Contoh: Liburan Bali">
+          <input type="text" id="routeLabelInput" class="form-control" placeholder="Contoh: Pulang Kampung">
         </div>
 
         <div class="modal-footer">
@@ -255,36 +235,29 @@
     </div>
   </div>
 
-  <!-- MODAL: Settings -->
   <div class="modal-backdrop" id="settingsModal">
     <div class="modal-content">
       <div class="modal-header">
         <h3 class="modal-title">Pengaturan Sistem & Bot Telegram</h3>
         <button class="btn btn-icon btn-sm" onclick="closeModal('settingsModal')">✕</button>
       </div>
-
       <form id="settingsForm">
         <div class="form-group">
           <label class="form-label" for="settingTelegramToken">Telegram Bot Token:</label>
           <input type="text" id="settingTelegramToken" class="form-control" placeholder="8784730971:AAH1UXfl_0gTxbplXhTCizhJJpZY9WDHeWw">
         </div>
-
         <div class="form-group">
-          <label class="form-label" for="settingTelegramChatId">Telegram Chat ID / User ID:</label>
+          <label class="form-label" for="settingTelegramChatId">Telegram Chat ID:</label>
           <input type="text" id="settingTelegramChatId" class="form-control" placeholder="5217528489">
         </div>
-
-        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-          <button type="button" id="btnTestTelegram" class="btn btn-secondary btn-sm">
-            🧪 Tes Kirim Pesan
-          </button>
+        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between;">
+          <button type="button" id="btnTestTelegram" class="btn btn-secondary btn-sm">🧪 Tes Kirim Pesan</button>
           <button type="submit" class="btn btn-primary">Tutup</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL: Notifikasi -->
   <div class="modal-backdrop" id="notificationsModal">
     <div class="modal-content" style="max-width: 650px;">
       <div class="modal-header">
@@ -301,8 +274,6 @@
   </div>
 
   <div class="toast-container" id="toastContainer"></div>
-
-  <!-- Application Scripts -->
   <script src="js/charts.js"></script>
   <script src="js/app.js"></script>
 </body>
