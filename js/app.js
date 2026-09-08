@@ -4,6 +4,8 @@
  */
 
 const API_BASE = "";
+const DEFAULT_TG_TOKEN = "8784730971:AAH1UXfl_0gTxbplXhTCizhJJpZY9WDHeWw";
+const DEFAULT_TG_CHAT_ID = "5217528489";
 
 const state = {
   routes: [],
@@ -15,6 +17,30 @@ const state = {
   isStaticMode: false,
   staticData: null
 };
+
+async function sendTelegramAlert(text) {
+  const token = localStorage.getItem("telegram_bot_token") || DEFAULT_TG_TOKEN;
+  const chatId = localStorage.getItem("telegram_chat_id") || DEFAULT_TG_CHAT_ID;
+  if (!token || !chatId) return false;
+
+  try {
+    const url = `https://api.telegram.org/bot${token}/sendMessage`;
+    const resp = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: text,
+        parse_mode: "HTML",
+        disable_web_page_preview: false
+      })
+    });
+    return resp.ok;
+  } catch (err) {
+    console.warn("Telegram dispatch from web:", err);
+    return false;
+  }
+}
 
 function getTravelokaSearchUrl(origin, destination, dateStr) {
   if (!dateStr) return "https://www.traveloka.com/id-id/flight";
@@ -331,6 +357,11 @@ function renderRoutesGrid(routes) {
       ? `<span style="color: var(--accent-cyan); font-weight: 700;">📅 Tanggal: ${r.target_date}</span>`
       : `${r.days_ahead || 14} hari ke depan`;
 
+    const isTransit = r.is_transit || r.hub;
+    const hubBadge = isTransit 
+      ? `<span style="font-size: 0.75rem; background: rgba(6, 182, 212, 0.15); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 999px; padding: 0.1rem 0.5rem; margin-left: 0.4rem;">🔄 Transit: ${r.hub && r.hub !== 'AUTO' ? r.hub : 'Hub Aman'}</span>` 
+      : '';
+
     return `
       <div class="route-card ${isInactive ? 'inactive' : ''}" id="routeCard-${r.id}">
         <div class="route-card-top">
@@ -338,7 +369,9 @@ function renderRoutesGrid(routes) {
             <div class="route-flight-badges">
               <span class="iata-code">${r.origin}</span>
               <span class="route-arrow">➔</span>
+              ${isTransit && r.hub && r.hub !== 'AUTO' ? `<span class="iata-code" style="color: var(--accent-cyan);">${r.hub}</span><span class="route-arrow">➔</span>` : ''}
               <span class="iata-code">${r.destination}</span>
+              ${hubBadge}
             </div>
             <div class="route-label-sub">${r.label || `${r.origin} ke ${r.destination}`}</div>
           </div>
@@ -416,8 +449,16 @@ function setupEventListeners() {
 
   const scanAllBtn = document.getElementById("btnScanAll");
   if (scanAllBtn) scanAllBtn.addEventListener("click", () => {
-    showToast("Data diperbarui", "success");
+    showToast("🔄 Memperbarui data tiket terbaru...", "info");
     loadStaticData();
+    showToast("✅ Data tiket berhasil disegarkan!", "success");
+
+    const currentRoute = state.routes.find(r => r.id === state.selectedRouteId) || state.routes[0];
+    if (currentRoute) {
+      const travelokaUrl = getTravelokaSearchUrl(currentRoute.origin, currentRoute.destination, currentRoute.target_date);
+      const refreshMsg = `✈️ <b>UPDATE SCAN HARGA TIKET TERBARU!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> ${currentRoute.label}\n📅 <b>Jadwal:</b> ${currentRoute.target_date || '14 Hari ke Depan'}\n🎯 <b>Target Budget:</b> ${formatRupiah(currentRoute.max_price_idr)}\n🔗 <a href="${travelokaUrl}">Cek Tiket di Traveloka</a>`;
+      sendTelegramAlert(refreshMsg);
+    }
   });
 
   const routeSelect = document.getElementById("analyticsRouteSelect");
@@ -649,9 +690,16 @@ function handleSaveRouteForm(e) {
 
   closeModal("routeModal");
   showToast(`✅ Rute ${payload.label} berhasil disimpan!`, "success");
+
+  // Kirim notifikasi instan ke Telegram saat rute dibuat/diedit di Web
+  const isTransitMsg = payload.is_transit 
+    ? `🎯 <b>RUTE TRANSIT BARU DIPANTAU!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> ${payload.origin} ➔ ${payload.hub || 'Hub'} ➔ ${payload.destination}\n📅 <b>Tanggal:</b> ${payload.target_date || 'Rentang 14 Hari'}\n🎯 <b>Target Budget:</b> ${formatRupiah(payload.max_price_idr)}\n\n🔔 <i>Web Dashboard & Bot aktif memantau rute ini!</i>`
+    : `🎯 <b>RUTE BARU DIPANTAU!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> ${payload.origin} ➔ ${payload.destination}\n📅 <b>Tanggal:</b> ${payload.target_date || 'Rentang 14 Hari'}\n🎯 <b>Target Budget:</b> ${formatRupiah(payload.max_price_idr)}\n\n🔔 <i>Web Dashboard & Bot aktif memantau rute ini!</i>`;
+
+  sendTelegramAlert(isTransitMsg);
 }
 
-function handleTestTelegram() {
+async function handleTestTelegram() {
   const token = document.getElementById("settingTelegramToken").value.trim();
   const chatId = document.getElementById("settingTelegramChatId").value.trim();
   if (!token || !chatId) {
