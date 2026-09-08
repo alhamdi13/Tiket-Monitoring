@@ -1,6 +1,6 @@
 """
 notifier.py - Telegram Push Notifier untuk Flight Price Monitor Pro.
-Mengirimkan notifikasi tiket murah dengan format pesan HTML yang rapi, tombol direct booking, dan logging ke database.
+Mengirimkan notifikasi tiket murah dan rute transit multi-leg dengan tautan resmi Traveloka & Tiket.com.
 """
 
 import logging
@@ -96,7 +96,6 @@ class TelegramNotifier:
         formatted_max = f"Rp {max_price:,.0f}".replace(",", ".")
         now_str = datetime.now().strftime("%d %b %Y, %H:%M WIB")
 
-        # Hitung perkiraan diskon
         header = (
             f"🎉 <b>TIKET MURAH DITEMUKAN!</b>\n"
             f"━━━━━━━━━━━━━━━━━━━━━━━\n"
@@ -107,15 +106,28 @@ class TelegramNotifier:
 
         body = ""
         for i, f in enumerate(flights[:5], 1):
-            emoji = get_airline_emoji(f.airline)
-            dur_str = f" ({format_duration(f.duration_minutes)})" if f.duration_minutes else ""
-            seats_str = f" | 💺 {f.seats_left} kursi" if f.seats_left else ""
-            body += (
-                f"\n<b>{i}. {emoji} {f.airline}</b> ({f.flight_number})\n"
-                f"   🕒 {f.departure_time} ➔ {f.arrival_time}{dur_str}\n"
-                f"   💰 <b>{f.price_formatted}</b>{seats_str}\n"
-                f"   🔗 <a href='{f.booking_url}'>Cek & Pesan di Traveloka</a>\n"
-            )
+            if hasattr(f, "leg1_airline"):
+                # Format Tiket Transit / Connecting Pintar
+                emoji1 = get_airline_emoji(f.leg1_airline)
+                emoji2 = get_airline_emoji(f.leg2_airline)
+                body += (
+                    f"\n<b>{i}. 🔀 Connecting via {f.hub}</b>\n"
+                    f"   🛫 Leg 1: {emoji1} {f.leg1_airline} ({f.leg1_flight_number}) [{f.leg1_departure_time} ➔ {f.leg1_arrival_time}]\n"
+                    f"   ⏳ Transit {f.hub}: {f.layover_formatted} ({f.safety_rating})\n"
+                    f"   🛫 Leg 2: {emoji2} {f.leg2_airline} ({f.leg2_flight_number}) [{f.leg2_departure_time} ➔ {f.leg2_arrival_time}]\n"
+                    f"   💰 <b>{f.total_price_formatted}</b> (Total: {f.total_duration_formatted})\n"
+                    f"   🔗 <a href='{f.booking_url}'>Buka di Traveloka</a> | <a href='{f.tiket_url}'>Buka di Tiket.com</a>\n"
+                )
+            else:
+                emoji = get_airline_emoji(f.airline)
+                dur_str = f" ({format_duration(f.duration_minutes)})" if f.duration_minutes else ""
+                seats_str = f" | 💺 {f.seats_left} kursi" if f.seats_left else ""
+                body += (
+                    f"\n<b>{i}. {emoji} {f.airline}</b> ({f.flight_number})\n"
+                    f"   🕒 {f.departure_time} ➔ {f.arrival_time}{dur_str}\n"
+                    f"   💰 <b>{f.price_formatted}</b>{seats_str}\n"
+                    f"   🔗 <a href='{f.booking_url}'>Buka di Traveloka</a> | <a href='{f.tiket_url}'>Buka di Tiket.com</a>\n"
+                )
 
         if count > 5:
             body += f"\n<i>...dan {count - 5} opsi penerbangan murah lainnya</i>\n"
@@ -126,7 +138,8 @@ class TelegramNotifier:
         )
 
         full_message = header + body + footer
-        return self.send_message(full_message, route_id=route_id, price_idr=cheapest.price_idr)
+        final_price = getattr(cheapest, 'price_idr', getattr(cheapest, 'total_price_idr', 0))
+        return self.send_message(full_message, route_id=route_id, price_idr=final_price)
 
     def test_connection(self, token: Optional[str] = None, chat_id: Optional[str] = None) -> dict:
         use_token = token or self.token
@@ -143,7 +156,6 @@ class TelegramNotifier:
 
             bot_user = data["result"]["username"]
 
-            # Coba kirim pesan jika chat_id diberikan
             if use_chat:
                 send_url = f"https://api.telegram.org/bot{use_token}/sendMessage"
                 s_resp = requests.post(send_url, json={
