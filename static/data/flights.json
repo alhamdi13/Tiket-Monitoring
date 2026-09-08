@@ -2,11 +2,11 @@
   "status": {
     "status": "online",
     "mode": "github_pages",
-    "last_updated": "2026-09-08T16:11:58.908920",
+    "last_updated": "2026-09-08T16:22:12.391279",
     "scheduler": {
       "running": true,
       "is_scanning": false,
-      "last_scan": "2026-09-08T16:11:58.908927",
+      "last_scan": "2026-09-08T16:22:12.391281",
       "auto_scan_enabled": true
     },
     "telegram": {
@@ -15,52 +15,28 @@
       "bot_listener_active": false
     },
     "stats": {
-      "total_routes": 3,
-      "active_routes": 3,
-      "total_tracked_flights": 4598,
+      "total_routes": 1,
+      "active_routes": 1,
+      "total_tracked_flights": 4604,
       "cheapest_price_idr": 389000,
-      "total_notifications": 780
+      "total_notifications": 781
     }
   },
   "routes": [
     {
-      "id": 3,
-      "origin": "SUB",
-      "destination": "BDJ",
-      "label": "Surabaya ➔ Banjarmasin",
-      "max_price_idr": 1200000,
-      "days_ahead": 7,
+      "id": 4,
+      "origin": "BDJ",
+      "destination": "PDG",
+      "label": "Banjarmasin ➔ Padang (Transit CGK)",
+      "max_price_idr": 2500000,
+      "days_ahead": 1,
       "is_active": 1,
       "check_interval_hours": 4,
-      "last_checked_at": "2026-09-08T16:11:37.498741",
-      "created_at": "2026-09-08T22:07:26.176453",
-      "updated_at": "2026-09-08T22:07:26.176453"
-    },
-    {
-      "id": 2,
-      "origin": "CGK",
-      "destination": "DPS",
-      "label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000,
-      "days_ahead": 21,
-      "is_active": 1,
-      "check_interval_hours": 4,
-      "last_checked_at": "2026-09-08T16:11:52.202125",
-      "created_at": "2026-09-08T22:07:26.176453",
-      "updated_at": "2026-09-08T22:07:26.176453"
-    },
-    {
-      "id": 1,
-      "origin": "SUB",
-      "destination": "DPS",
-      "label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000,
-      "days_ahead": 14,
-      "is_active": 1,
-      "check_interval_hours": 4,
-      "last_checked_at": "2026-09-08T16:11:58.893014",
-      "created_at": "2026-09-08T22:07:26.176453",
-      "updated_at": "2026-09-08T22:07:26.176453"
+      "last_checked_at": "2026-09-08T16:22:12.384772",
+      "created_at": "2026-09-08T16:22:11.378818",
+      "updated_at": "2026-09-08T16:22:11.378818",
+      "target_date": "2026-10-25",
+      "last_price_idr": 0
     }
   ],
   "flights": [
@@ -79,8 +55,8 @@
       "seats_left": 5,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:32.771319",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 301,
@@ -97,8 +73,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:32.771319",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 302,
@@ -115,8 +91,8 @@
       "seats_left": 9,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:32.771319",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 303,
@@ -133,8 +109,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:32.771319",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 304,
@@ -151,8 +127,8 @@
       "seats_left": 6,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:32.771319",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 293,
@@ -169,8 +145,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:30.433031",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 294,
@@ -187,8 +163,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:30.433031",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 295,
@@ -205,8 +181,8 @@
       "seats_left": 8,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:30.433031",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 296,
@@ -223,8 +199,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:30.433031",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 297,
@@ -241,8 +217,8 @@
       "seats_left": 5,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:30.433031",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 298,
@@ -259,8 +235,8 @@
       "seats_left": 8,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:30.433031",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 299,
@@ -277,8 +253,8 @@
       "seats_left": 4,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:30.433031",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 287,
@@ -295,8 +271,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:27.793908",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 288,
@@ -313,8 +289,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:27.793908",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 289,
@@ -331,8 +307,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:27.793908",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 290,
@@ -349,8 +325,8 @@
       "seats_left": 4,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:27.793908",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 291,
@@ -367,8 +343,8 @@
       "seats_left": 3,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:27.793908",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 292,
@@ -385,8 +361,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:27.793908",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 280,
@@ -403,8 +379,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:27.047901",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 281,
@@ -421,8 +397,8 @@
       "seats_left": 4,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:27.047901",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 282,
@@ -439,8 +415,8 @@
       "seats_left": 2,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:27.047901",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 283,
@@ -457,8 +433,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:27.047901",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 284,
@@ -475,8 +451,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:27.047901",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 285,
@@ -493,8 +469,8 @@
       "seats_left": 3,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:27.047901",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 286,
@@ -511,8 +487,8 @@
       "seats_left": 2,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:27.047901",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 275,
@@ -529,8 +505,8 @@
       "seats_left": 7,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:26.171756",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 276,
@@ -547,8 +523,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:26.171756",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 277,
@@ -565,8 +541,8 @@
       "seats_left": 3,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:26.171756",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 278,
@@ -583,8 +559,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:26.171756",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 279,
@@ -601,8 +577,8 @@
       "seats_left": 9,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:26.171756",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 270,
@@ -619,8 +595,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:23.991920",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 271,
@@ -637,8 +613,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:23.991920",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 272,
@@ -655,8 +631,8 @@
       "seats_left": 3,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:23.991920",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 273,
@@ -673,8 +649,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:23.991920",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 274,
@@ -691,8 +667,8 @@
       "seats_left": 2,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:23.991920",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 266,
@@ -709,8 +685,8 @@
       "seats_left": 6,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:21.315393",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 267,
@@ -727,8 +703,8 @@
       "seats_left": 4,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:21.315393",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 268,
@@ -745,8 +721,8 @@
       "seats_left": 2,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:21.315393",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 269,
@@ -763,8 +739,8 @@
       "seats_left": 9,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:21.315393",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 261,
@@ -781,8 +757,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:19.073605",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 262,
@@ -799,8 +775,8 @@
       "seats_left": 7,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:19.073605",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 263,
@@ -817,8 +793,8 @@
       "seats_left": 6,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:19.073605",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 264,
@@ -835,8 +811,8 @@
       "seats_left": 7,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:19.073605",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 265,
@@ -853,8 +829,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:19.073605",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 255,
@@ -871,8 +847,8 @@
       "seats_left": 3,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:16.631988",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 256,
@@ -889,8 +865,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:16.631988",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 257,
@@ -907,8 +883,8 @@
       "seats_left": 9,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:16.631988",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 258,
@@ -925,8 +901,8 @@
       "seats_left": 6,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:16.631988",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 259,
@@ -943,8 +919,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:16.631988",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 260,
@@ -961,8 +937,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:16.631988",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 248,
@@ -979,8 +955,8 @@
       "seats_left": 6,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:14.193282",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 249,
@@ -997,8 +973,8 @@
       "seats_left": 6,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:14.193282",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 250,
@@ -1015,8 +991,8 @@
       "seats_left": 5,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:14.193282",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 251,
@@ -1033,8 +1009,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:14.193282",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 252,
@@ -1051,8 +1027,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:14.193282",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 253,
@@ -1069,8 +1045,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:14.193282",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 254,
@@ -1087,8 +1063,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:14.193282",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 244,
@@ -1105,8 +1081,8 @@
       "seats_left": 3,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:13.292462",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 245,
@@ -1123,8 +1099,8 @@
       "seats_left": 8,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:13.292462",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 246,
@@ -1141,8 +1117,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:13.292462",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 247,
@@ -1159,8 +1135,8 @@
       "seats_left": 5,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:13.292462",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 239,
@@ -1177,8 +1153,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:11.071433",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 240,
@@ -1195,8 +1171,8 @@
       "seats_left": 4,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:11.071433",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 241,
@@ -1213,8 +1189,8 @@
       "seats_left": 9,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:11.071433",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 242,
@@ -1231,8 +1207,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:11.071433",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 243,
@@ -1249,8 +1225,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:11.071433",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 234,
@@ -1267,8 +1243,8 @@
       "seats_left": 3,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:08.854167",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 235,
@@ -1285,8 +1261,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:08.854167",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 236,
@@ -1303,8 +1279,8 @@
       "seats_left": 3,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:08.854167",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 237,
@@ -1321,8 +1297,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:08.854167",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 238,
@@ -1339,8 +1315,8 @@
       "seats_left": 8,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:08.854167",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 227,
@@ -1357,8 +1333,8 @@
       "seats_left": 2,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:06.412912",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 228,
@@ -1375,8 +1351,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:06.412912",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 229,
@@ -1393,8 +1369,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:06.412912",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 230,
@@ -1411,8 +1387,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:06.412912",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 231,
@@ -1429,8 +1405,8 @@
       "seats_left": 7,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:06.412912",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 232,
@@ -1447,8 +1423,8 @@
       "seats_left": 6,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:06.412912",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 233,
@@ -1465,8 +1441,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:06.412912",
-      "route_label": "Surabaya ➔ Bali",
-      "max_price_idr": 650000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 222,
@@ -1483,8 +1459,8 @@
       "seats_left": 8,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:04.199536",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 223,
@@ -1501,8 +1477,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:04.199536",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 224,
@@ -1519,8 +1495,8 @@
       "seats_left": 6,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:04.199536",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 225,
@@ -1537,8 +1513,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:04.199536",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 226,
@@ -1555,8 +1531,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:04.199536",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 216,
@@ -1573,8 +1549,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:01.460802",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 217,
@@ -1591,8 +1567,8 @@
       "seats_left": 2,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:01.460802",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 218,
@@ -1609,8 +1585,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:01.460802",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 219,
@@ -1627,8 +1603,8 @@
       "seats_left": 4,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:01.460802",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 220,
@@ -1645,8 +1621,8 @@
       "seats_left": 3,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:01.460802",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 221,
@@ -1663,8 +1639,8 @@
       "seats_left": 7,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:11:01.460802",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 210,
@@ -1681,8 +1657,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:10:59.054865",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 211,
@@ -1699,8 +1675,8 @@
       "seats_left": 7,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:10:59.054865",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 212,
@@ -1717,8 +1693,8 @@
       "seats_left": 9,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:10:59.054865",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 213,
@@ -1735,8 +1711,8 @@
       "seats_left": 8,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:10:59.054865",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 214,
@@ -1753,8 +1729,8 @@
       "seats_left": 2,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:10:59.054865",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 215,
@@ -1771,8 +1747,8 @@
       "seats_left": 7,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:10:59.054865",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 204,
@@ -1789,8 +1765,8 @@
       "seats_left": 2,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:10:56.731566",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 205,
@@ -1807,8 +1783,8 @@
       "seats_left": 5,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:10:56.731566",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 206,
@@ -1825,8 +1801,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:10:56.731566",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 207,
@@ -1843,8 +1819,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:10:56.731566",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 208,
@@ -1861,8 +1837,8 @@
       "seats_left": null,
       "source": "traveloka (cached)",
       "recorded_at": "2026-09-08T22:10:56.731566",
-      "route_label": "Jakarta ➔ Bali",
-      "max_price_idr": 750000
+      "route_label": null,
+      "max_price_idr": null
     }
   ],
   "notifications": [
@@ -1873,7 +1849,7 @@
       "price_idr": 439000,
       "sent_at": "2026-09-08T22:11:34.221116",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 38,
@@ -1882,7 +1858,7 @@
       "price_idr": 537000,
       "sent_at": "2026-09-08T22:11:32.015086",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 37,
@@ -1891,7 +1867,7 @@
       "price_idr": 542000,
       "sent_at": "2026-09-08T22:11:29.622293",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 36,
@@ -1900,7 +1876,7 @@
       "price_idr": 389000,
       "sent_at": "2026-09-08T22:11:25.412305",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 35,
@@ -1909,7 +1885,7 @@
       "price_idr": 453000,
       "sent_at": "2026-09-08T22:11:23.250769",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 34,
@@ -1918,7 +1894,7 @@
       "price_idr": 461000,
       "sent_at": "2026-09-08T22:11:20.539426",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 33,
@@ -1927,7 +1903,7 @@
       "price_idr": 512000,
       "sent_at": "2026-09-08T22:11:18.200046",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 32,
@@ -1936,7 +1912,7 @@
       "price_idr": 558000,
       "sent_at": "2026-09-08T22:11:15.902911",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 31,
@@ -1945,7 +1921,7 @@
       "price_idr": 618000,
       "sent_at": "2026-09-08T22:11:12.512245",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 30,
@@ -1954,7 +1930,7 @@
       "price_idr": 512000,
       "sent_at": "2026-09-08T22:11:10.244829",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 29,
@@ -1963,7 +1939,7 @@
       "price_idr": 476000,
       "sent_at": "2026-09-08T22:11:07.860349",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 28,
@@ -1972,7 +1948,7 @@
       "price_idr": 561000,
       "sent_at": "2026-09-08T22:11:05.613446",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 27,
@@ -1981,7 +1957,7 @@
       "price_idr": 413000,
       "sent_at": "2026-09-08T22:11:02.930822",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 26,
@@ -1990,7 +1966,7 @@
       "price_idr": 547000,
       "sent_at": "2026-09-08T22:11:00.501223",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 25,
@@ -1999,7 +1975,7 @@
       "price_idr": 723000,
       "sent_at": "2026-09-08T22:10:58.144539",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 24,
@@ -2008,7 +1984,7 @@
       "price_idr": 547000,
       "sent_at": "2026-09-08T22:10:55.931725",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 23,
@@ -2017,7 +1993,7 @@
       "price_idr": 536000,
       "sent_at": "2026-09-08T22:10:53.490070",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 22,
@@ -2026,7 +2002,7 @@
       "price_idr": 458000,
       "sent_at": "2026-09-08T22:10:51.172214",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 21,
@@ -2035,7 +2011,7 @@
       "price_idr": 467000,
       "sent_at": "2026-09-08T22:10:48.938540",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 20,
@@ -2044,7 +2020,7 @@
       "price_idr": 441000,
       "sent_at": "2026-09-08T22:10:46.713093",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 19,
@@ -2053,7 +2029,7 @@
       "price_idr": 726000,
       "sent_at": "2026-09-08T22:10:44.454236",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 18,
@@ -2062,7 +2038,7 @@
       "price_idr": 701000,
       "sent_at": "2026-09-08T22:10:42.201870",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 17,
@@ -2071,7 +2047,7 @@
       "price_idr": 653000,
       "sent_at": "2026-09-08T22:10:39.991104",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 16,
@@ -2080,7 +2056,7 @@
       "price_idr": 457000,
       "sent_at": "2026-09-08T22:10:37.097555",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 15,
@@ -2089,7 +2065,7 @@
       "price_idr": 470000,
       "sent_at": "2026-09-08T22:10:34.881135",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 14,
@@ -2098,7 +2074,7 @@
       "price_idr": 414000,
       "sent_at": "2026-09-08T22:10:32.615153",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 13,
@@ -2107,7 +2083,7 @@
       "price_idr": 437000,
       "sent_at": "2026-09-08T22:10:29.498494",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 12,
@@ -2116,7 +2092,7 @@
       "price_idr": 633000,
       "sent_at": "2026-09-08T22:10:27.033502",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 11,
@@ -2125,7 +2101,7 @@
       "price_idr": 653000,
       "sent_at": "2026-09-08T22:10:24.634789",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 10,
@@ -2134,7 +2110,7 @@
       "price_idr": 571000,
       "sent_at": "2026-09-08T22:10:21.824925",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 9,
@@ -2143,7 +2119,7 @@
       "price_idr": 555000,
       "sent_at": "2026-09-08T22:10:19.472819",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 8,
@@ -2152,7 +2128,7 @@
       "price_idr": 528000,
       "sent_at": "2026-09-08T22:10:16.272367",
       "status": "SUCCESS",
-      "route_label": "Jakarta ➔ Bali"
+      "route_label": null
     },
     {
       "id": 7,
@@ -2161,7 +2137,7 @@
       "price_idr": 487000,
       "sent_at": "2026-09-08T22:10:13.962292",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Banjarmasin"
+      "route_label": null
     },
     {
       "id": 6,
@@ -2170,7 +2146,7 @@
       "price_idr": 542000,
       "sent_at": "2026-09-08T22:10:11.593255",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Banjarmasin"
+      "route_label": null
     },
     {
       "id": 5,
@@ -2179,7 +2155,7 @@
       "price_idr": 742000,
       "sent_at": "2026-09-08T22:10:09.282031",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Banjarmasin"
+      "route_label": null
     },
     {
       "id": 4,
@@ -2188,7 +2164,7 @@
       "price_idr": 765000,
       "sent_at": "2026-09-08T22:10:06.704870",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Banjarmasin"
+      "route_label": null
     },
     {
       "id": 3,
@@ -2197,7 +2173,7 @@
       "price_idr": 695000,
       "sent_at": "2026-09-08T22:10:04.453118",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Banjarmasin"
+      "route_label": null
     },
     {
       "id": 2,
@@ -2206,7 +2182,7 @@
       "price_idr": 519000,
       "sent_at": "2026-09-08T22:10:02.155893",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Banjarmasin"
+      "route_label": null
     },
     {
       "id": 1,
@@ -2215,7 +2191,16 @@
       "price_idr": 493000,
       "sent_at": "2026-09-08T22:09:59.804418",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Banjarmasin"
+      "route_label": null
+    },
+    {
+      "id": 781,
+      "route_id": 4,
+      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Banjarmasin ➔ Padang (Transit CGK) (2026-09-09)\n📅 <b>Tanggal:</b> 2026-09-09\n🎯 <b>Target Budget:</b> Rp 2.500.000\n\n<b>1. ⚡ Super Air Jet</b> (IU-628)\n   🕒 13:45 ➔ 15:35 (1j 50m)\n   💰 <b>Rp 527.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/bdj-to-pdg/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. 🟢 Citilink</b> (QG-377)\n   🕒 13:45 ➔ 15:35 (1j 50m)\n   💰 <b>Rp 606.000</b> | 💺 7 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/bdj-to-pdg/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>3. ✈️ TransNusa</b> (8B-975)\n   🕒 07:00 ➔ 08:45 (1j 45m)\n   💰 <b>Rp 660.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/bdj-to-pdg/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>4. 🔴 AirAsia Indonesia</b> (QZ-196)\n   🕒 07:00 ➔ 08:45 (1j 45m)\n   💰 <b>Rp 661.000</b> | 💺 7 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/bdj-to-pdg/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>5. 🔵 Pelita Air</b> (IP-352)\n   🕒 15:20 ➔ 17:10 (1j 50m)\n   💰 <b>Rp 788.000</b> | 💺 5 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/bdj-to-pdg/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<i>...dan 1 opsi penerbangan murah lainnya</i>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 16:22 WIB</i>",
+      "price_idr": 527000,
+      "sent_at": "2026-09-08T16:22:12.383167",
+      "status": "SUCCESS",
+      "route_label": "Banjarmasin ➔ Padang (Transit CGK)"
     },
     {
       "id": 780,
@@ -2224,7 +2209,7 @@
       "price_idr": 439000,
       "sent_at": "2026-09-08T16:11:58.891409",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 779,
@@ -2233,7 +2218,7 @@
       "price_idr": 537000,
       "sent_at": "2026-09-08T16:11:58.278832",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 778,
@@ -2242,7 +2227,7 @@
       "price_idr": 542000,
       "sent_at": "2026-09-08T16:11:57.681424",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 777,
@@ -2251,7 +2236,7 @@
       "price_idr": 389000,
       "sent_at": "2026-09-08T16:11:56.971856",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 776,
@@ -2260,7 +2245,7 @@
       "price_idr": 453000,
       "sent_at": "2026-09-08T16:11:56.394873",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 775,
@@ -2269,7 +2254,7 @@
       "price_idr": 461000,
       "sent_at": "2026-09-08T16:11:55.808044",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 774,
@@ -2278,7 +2263,7 @@
       "price_idr": 512000,
       "sent_at": "2026-09-08T16:11:55.243416",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 773,
@@ -2287,7 +2272,7 @@
       "price_idr": 558000,
       "sent_at": "2026-09-08T16:11:54.656360",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 772,
@@ -2296,7 +2281,7 @@
       "price_idr": 618000,
       "sent_at": "2026-09-08T16:11:54.015860",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     },
     {
       "id": 771,
@@ -2305,660 +2290,127 @@
       "price_idr": 512000,
       "sent_at": "2026-09-08T16:11:53.384728",
       "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
-    },
-    {
-      "id": 770,
-      "route_id": 1,
-      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-09)\n📅 <b>Tanggal:</b> 2026-09-09\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🦁 Lion Air</b> (JT-710)\n   🕒 20:10 ➔ 22:00 (1j 50m)\n   💰 <b>Rp 476.000</b> | 💺 2 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. ⚡ Super Air Jet</b> (IU-540)\n   🕒 15:20 ➔ 17:10 (1j 50m)\n   💰 <b>Rp 596.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>3. 🔴 AirAsia Indonesia</b> (QZ-296)\n   🕒 07:00 ➔ 08:45 (1j 45m)\n   💰 <b>Rp 616.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 16:11 WIB</i>",
-      "price_idr": 476000,
-      "sent_at": "2026-09-08T16:11:52.827229",
-      "status": "SUCCESS",
-      "route_label": "Surabaya ➔ Bali"
+      "route_label": null
     }
   ],
   "analytics": {
-    "3": {
+    "4": {
       "dates": [
-        "2026-09-09",
-        "2026-09-10",
-        "2026-09-11",
-        "2026-09-12",
-        "2026-09-13",
-        "2026-09-14",
-        "2026-09-15"
+        "2026-09-09"
       ],
       "min_prices": [
-        493000,
-        519000,
-        695000,
-        765000,
-        742000,
-        542000,
-        487000
+        527000
       ],
       "avg_prices": [
-        586000,
-        659500,
-        871000,
-        1045750,
-        911750,
-        766428,
-        673833
+        721666
       ],
       "airline_breakdown": [
         {
-          "airline": "Citilink",
-          "min_price": 487000,
-          "flight_count": 100
-        },
-        {
           "airline": "Super Air Jet",
-          "min_price": 503000,
-          "flight_count": 60
+          "min_price": 527000,
+          "flight_count": 1
         },
         {
-          "airline": "Pelita Air",
-          "min_price": 542000,
-          "flight_count": 100
+          "airline": "Citilink",
+          "min_price": 606000,
+          "flight_count": 1
         },
         {
-          "airline": "Lion Air",
-          "min_price": 570000,
-          "flight_count": 120
+          "airline": "TransNusa",
+          "min_price": 660000,
+          "flight_count": 1
         },
         {
           "airline": "AirAsia Indonesia",
-          "min_price": 621000,
-          "flight_count": 40
-        },
-        {
-          "airline": "Batik Air",
           "min_price": 661000,
-          "flight_count": 80
-        },
-        {
-          "airline": "TransNusa",
-          "min_price": 671000,
-          "flight_count": 120
-        },
-        {
-          "airline": "Garuda Indonesia",
-          "min_price": 946000,
-          "flight_count": 80
-        }
-      ],
-      "summary": [
-        {
-          "flight_date": "2026-09-09",
-          "min_price": 493000,
-          "avg_price": 586000.0,
-          "max_price": 674000,
-          "total_flights": 80
-        },
-        {
-          "flight_date": "2026-09-10",
-          "min_price": 519000,
-          "avg_price": 659500.0,
-          "max_price": 1011000,
-          "total_flights": 120
-        },
-        {
-          "flight_date": "2026-09-11",
-          "min_price": 695000,
-          "avg_price": 871000.0,
-          "max_price": 1010000,
-          "total_flights": 80
-        },
-        {
-          "flight_date": "2026-09-12",
-          "min_price": 765000,
-          "avg_price": 1045750.0,
-          "max_price": 1736000,
-          "total_flights": 80
-        },
-        {
-          "flight_date": "2026-09-13",
-          "min_price": 742000,
-          "avg_price": 911750.0,
-          "max_price": 1075000,
-          "total_flights": 80
-        },
-        {
-          "flight_date": "2026-09-14",
-          "min_price": 542000,
-          "avg_price": 766428.5714285715,
-          "max_price": 1524000,
-          "total_flights": 140
-        },
-        {
-          "flight_date": "2026-09-15",
-          "min_price": 487000,
-          "avg_price": 673833.3333333334,
-          "max_price": 946000,
-          "total_flights": 120
-        }
-      ]
-    },
-    "2": {
-      "dates": [
-        "2026-09-09",
-        "2026-09-10",
-        "2026-09-11",
-        "2026-09-12",
-        "2026-09-13",
-        "2026-09-14",
-        "2026-09-15",
-        "2026-09-16",
-        "2026-09-17",
-        "2026-09-18",
-        "2026-09-19",
-        "2026-09-20",
-        "2026-09-21",
-        "2026-09-22",
-        "2026-09-23",
-        "2026-09-24",
-        "2026-09-25",
-        "2026-09-26",
-        "2026-09-27",
-        "2026-09-28",
-        "2026-09-29"
-      ],
-      "min_prices": [
-        528000,
-        555000,
-        571000,
-        653000,
-        633000,
-        437000,
-        414000,
-        470000,
-        457000,
-        653000,
-        701000,
-        726000,
-        441000,
-        467000,
-        458000,
-        536000,
-        547000,
-        723000,
-        547000,
-        413000,
-        561000
-      ],
-      "avg_prices": [
-        647600,
-        624500,
-        973428,
-        957714,
-        916666,
-        774857,
-        514400,
-        563200,
-        717000,
-        802000,
-        759000,
-        994600,
-        597200,
-        723400,
-        567000,
-        742250,
-        742000,
-        813500,
-        977666,
-        818666,
-        619000
-      ],
-      "airline_breakdown": [
-        {
-          "airline": "Citilink",
-          "min_price": 413000,
-          "flight_count": 300
-        },
-        {
-          "airline": "Super Air Jet",
-          "min_price": 437000,
-          "flight_count": 260
-        },
-        {
-          "airline": "AirAsia Indonesia",
-          "min_price": 467000,
-          "flight_count": 320
-        },
-        {
-          "airline": "Lion Air",
-          "min_price": 502000,
-          "flight_count": 340
-        },
-        {
-          "airline": "TransNusa",
-          "min_price": 514000,
-          "flight_count": 260
+          "flight_count": 1
         },
         {
           "airline": "Pelita Air",
-          "min_price": 517000,
-          "flight_count": 260
-        },
-        {
-          "airline": "Batik Air",
-          "min_price": 599000,
-          "flight_count": 320
+          "min_price": 788000,
+          "flight_count": 1
         },
         {
           "airline": "Garuda Indonesia",
-          "min_price": 976000,
-          "flight_count": 200
+          "min_price": 1088000,
+          "flight_count": 1
         }
       ],
       "summary": [
         {
           "flight_date": "2026-09-09",
-          "min_price": 528000,
-          "avg_price": 647600.0,
-          "max_price": 750000,
-          "total_flights": 100
-        },
-        {
-          "flight_date": "2026-09-10",
-          "min_price": 555000,
-          "avg_price": 624500.0,
-          "max_price": 763000,
-          "total_flights": 80
-        },
-        {
-          "flight_date": "2026-09-11",
-          "min_price": 571000,
-          "avg_price": 973428.5714285715,
-          "max_price": 1743000,
-          "total_flights": 140
-        },
-        {
-          "flight_date": "2026-09-12",
-          "min_price": 653000,
-          "avg_price": 957714.2857142857,
-          "max_price": 1824000,
-          "total_flights": 140
-        },
-        {
-          "flight_date": "2026-09-13",
-          "min_price": 633000,
-          "avg_price": 916666.6666666666,
-          "max_price": 1842000,
-          "total_flights": 120
-        },
-        {
-          "flight_date": "2026-09-14",
-          "min_price": 437000,
-          "avg_price": 774857.1428571428,
-          "max_price": 1542000,
-          "total_flights": 140
-        },
-        {
-          "flight_date": "2026-09-15",
-          "min_price": 414000,
-          "avg_price": 514400.0,
-          "max_price": 599000,
-          "total_flights": 100
-        },
-        {
-          "flight_date": "2026-09-16",
-          "min_price": 470000,
-          "avg_price": 563200.0,
-          "max_price": 687000,
-          "total_flights": 100
-        },
-        {
-          "flight_date": "2026-09-17",
-          "min_price": 457000,
-          "avg_price": 717000.0,
-          "max_price": 1315000,
-          "total_flights": 140
-        },
-        {
-          "flight_date": "2026-09-18",
-          "min_price": 653000,
-          "avg_price": 802000.0,
-          "max_price": 924000,
-          "total_flights": 80
-        },
-        {
-          "flight_date": "2026-09-19",
-          "min_price": 701000,
-          "avg_price": 759000.0,
-          "max_price": 924000,
-          "total_flights": 80
-        },
-        {
-          "flight_date": "2026-09-20",
-          "min_price": 726000,
-          "avg_price": 994600.0,
-          "max_price": 1810000,
-          "total_flights": 100
-        },
-        {
-          "flight_date": "2026-09-21",
-          "min_price": 441000,
-          "avg_price": 597200.0,
-          "max_price": 789000,
-          "total_flights": 100
-        },
-        {
-          "flight_date": "2026-09-22",
-          "min_price": 467000,
-          "avg_price": 723400.0,
-          "max_price": 1298000,
-          "total_flights": 100
-        },
-        {
-          "flight_date": "2026-09-23",
-          "min_price": 458000,
-          "avg_price": 567000.0,
-          "max_price": 699000,
-          "total_flights": 80
-        },
-        {
-          "flight_date": "2026-09-24",
-          "min_price": 536000,
-          "avg_price": 742250.0,
-          "max_price": 976000,
-          "total_flights": 80
-        },
-        {
-          "flight_date": "2026-09-25",
-          "min_price": 547000,
-          "avg_price": 742000.0,
-          "max_price": 1025000,
-          "total_flights": 120
-        },
-        {
-          "flight_date": "2026-09-26",
-          "min_price": 723000,
-          "avg_price": 813500.0,
-          "max_price": 868000,
-          "total_flights": 120
-        },
-        {
-          "flight_date": "2026-09-27",
-          "min_price": 547000,
-          "avg_price": 977666.6666666666,
-          "max_price": 1716000,
-          "total_flights": 120
-        },
-        {
-          "flight_date": "2026-09-28",
-          "min_price": 413000,
-          "avg_price": 818666.6666666666,
-          "max_price": 1506000,
-          "total_flights": 120
-        },
-        {
-          "flight_date": "2026-09-29",
-          "min_price": 561000,
-          "avg_price": 619000.0,
-          "max_price": 682000,
-          "total_flights": 100
-        }
-      ]
-    },
-    "1": {
-      "dates": [
-        "2026-09-09",
-        "2026-09-10",
-        "2026-09-11",
-        "2026-09-12",
-        "2026-09-13",
-        "2026-09-14",
-        "2026-09-15",
-        "2026-09-16",
-        "2026-09-17",
-        "2026-09-18",
-        "2026-09-19",
-        "2026-09-20",
-        "2026-09-21",
-        "2026-09-22"
-      ],
-      "min_prices": [
-        476000,
-        512000,
-        618000,
-        670000,
-        558000,
-        512000,
-        461000,
-        453000,
-        389000,
-        678000,
-        674000,
-        542000,
-        537000,
-        439000
-      ],
-      "avg_prices": [
-        760571,
-        697800,
-        825400,
-        1034750,
-        890000,
-        686166,
-        701000,
-        541250,
-        662200,
-        839800,
-        978428,
-        878833,
-        648142,
-        696000
-      ],
-      "airline_breakdown": [
-        {
-          "airline": "Lion Air",
-          "min_price": 389000,
-          "flight_count": 210
-        },
-        {
-          "airline": "Citilink",
-          "min_price": 439000,
-          "flight_count": 189
-        },
-        {
-          "airline": "AirAsia Indonesia",
-          "min_price": 453000,
-          "flight_count": 168
-        },
-        {
-          "airline": "TransNusa",
-          "min_price": 471000,
-          "flight_count": 252
-        },
-        {
-          "airline": "Super Air Jet",
-          "min_price": 512000,
-          "flight_count": 252
-        },
-        {
-          "airline": "Pelita Air",
-          "min_price": 599000,
-          "flight_count": 168
-        },
-        {
-          "airline": "Batik Air",
-          "min_price": 690000,
-          "flight_count": 210
-        },
-        {
-          "airline": "Garuda Indonesia",
-          "min_price": 962000,
-          "flight_count": 189
-        }
-      ],
-      "summary": [
-        {
-          "flight_date": "2026-09-09",
-          "min_price": 476000,
-          "avg_price": 760571.4285714285,
-          "max_price": 1531000,
-          "total_flights": 147
-        },
-        {
-          "flight_date": "2026-09-10",
-          "min_price": 512000,
-          "avg_price": 697800.0,
-          "max_price": 958000,
-          "total_flights": 105
-        },
-        {
-          "flight_date": "2026-09-11",
-          "min_price": 618000,
-          "avg_price": 825400.0,
-          "max_price": 1220000,
-          "total_flights": 105
-        },
-        {
-          "flight_date": "2026-09-12",
-          "min_price": 670000,
-          "avg_price": 1034750.0,
-          "max_price": 1855000,
-          "total_flights": 84
-        },
-        {
-          "flight_date": "2026-09-13",
-          "min_price": 558000,
-          "avg_price": 890000.0,
-          "max_price": 1442000,
-          "total_flights": 147
-        },
-        {
-          "flight_date": "2026-09-14",
-          "min_price": 512000,
-          "avg_price": 686166.6666666666,
-          "max_price": 1231000,
-          "total_flights": 126
-        },
-        {
-          "flight_date": "2026-09-15",
-          "min_price": 461000,
-          "avg_price": 701000.0,
-          "max_price": 1047000,
-          "total_flights": 105
-        },
-        {
-          "flight_date": "2026-09-16",
-          "min_price": 453000,
-          "avg_price": 541250.0,
-          "max_price": 681000,
-          "total_flights": 84
-        },
-        {
-          "flight_date": "2026-09-17",
-          "min_price": 389000,
-          "avg_price": 662200.0,
-          "max_price": 962000,
-          "total_flights": 105
-        },
-        {
-          "flight_date": "2026-09-18",
-          "min_price": 678000,
-          "avg_price": 839800.0,
-          "max_price": 1101000,
-          "total_flights": 105
-        },
-        {
-          "flight_date": "2026-09-19",
-          "min_price": 674000,
-          "avg_price": 978428.5714285715,
-          "max_price": 1752000,
-          "total_flights": 147
-        },
-        {
-          "flight_date": "2026-09-20",
-          "min_price": 542000,
-          "avg_price": 878833.3333333334,
-          "max_price": 1599000,
-          "total_flights": 126
-        },
-        {
-          "flight_date": "2026-09-21",
-          "min_price": 537000,
-          "avg_price": 648142.8571428572,
-          "max_price": 764000,
-          "total_flights": 147
-        },
-        {
-          "flight_date": "2026-09-22",
-          "min_price": 439000,
-          "avg_price": 696000.0,
-          "max_price": 1184000,
-          "total_flights": 105
+          "min_price": 527000,
+          "avg_price": 721666.6666666666,
+          "max_price": 1088000,
+          "total_flights": 6
         }
       ]
     }
   },
   "calendar": {
-    "3": [
+    "4": [
       {
         "flight_date": "2026-09-09",
-        "cheapest_price": 493000,
-        "airline": "Citilink",
-        "flight_number": "QG-536",
-        "departure_time": "17:40",
+        "cheapest_price": 527000,
+        "airline": "Super Air Jet",
+        "flight_number": "IU-628",
+        "departure_time": "13:45",
         "duration_minutes": 110,
         "source": "traveloka (cached)"
       },
       {
         "flight_date": "2026-09-10",
-        "cheapest_price": 519000,
-        "airline": "Citilink",
-        "flight_number": "QG-375",
-        "departure_time": "05:30",
-        "duration_minutes": 105,
-        "source": "traveloka (cached)"
+        "cheapest_price": null,
+        "airline": "-",
+        "flight_number": "-",
+        "departure_time": "-",
+        "duration_minutes": 0,
+        "source": null
       },
       {
         "flight_date": "2026-09-11",
-        "cheapest_price": 695000,
-        "airline": "Lion Air",
-        "flight_number": "JT-930",
-        "departure_time": "13:45",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
+        "cheapest_price": null,
+        "airline": "-",
+        "flight_number": "-",
+        "departure_time": "-",
+        "duration_minutes": 0,
+        "source": null
       },
       {
         "flight_date": "2026-09-12",
-        "cheapest_price": 765000,
-        "airline": "Citilink",
-        "flight_number": "QG-237",
-        "departure_time": "13:45",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
+        "cheapest_price": null,
+        "airline": "-",
+        "flight_number": "-",
+        "departure_time": "-",
+        "duration_minutes": 0,
+        "source": null
       },
       {
         "flight_date": "2026-09-13",
-        "cheapest_price": 742000,
-        "airline": "Lion Air",
-        "flight_number": "JT-909",
-        "departure_time": "15:20",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
+        "cheapest_price": null,
+        "airline": "-",
+        "flight_number": "-",
+        "departure_time": "-",
+        "duration_minutes": 0,
+        "source": null
       },
       {
         "flight_date": "2026-09-14",
-        "cheapest_price": 542000,
-        "airline": "Super Air Jet",
-        "flight_number": "IU-205",
-        "departure_time": "13:45",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
+        "cheapest_price": null,
+        "airline": "-",
+        "flight_number": "-",
+        "departure_time": "-",
+        "duration_minutes": 0,
+        "source": null
       },
       {
         "flight_date": "2026-09-15",
-        "cheapest_price": 487000,
-        "airline": "Citilink",
-        "flight_number": "QG-321",
-        "departure_time": "15:20",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
+        "cheapest_price": null,
+        "airline": "-",
+        "flight_number": "-",
+        "departure_time": "-",
+        "duration_minutes": 0,
+        "source": null
       },
       {
         "flight_date": "2026-09-16",
@@ -3022,550 +2474,6 @@
         "departure_time": "-",
         "duration_minutes": 0,
         "source": null
-      },
-      {
-        "flight_date": "2026-09-23",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-09-24",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-09-25",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-09-26",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-09-27",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-09-28",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-09-29",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-09-30",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-10-01",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-10-02",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-10-03",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-10-04",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-10-05",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-10-06",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-10-07",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-10-08",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      }
-    ],
-    "2": [
-      {
-        "flight_date": "2026-09-09",
-        "cheapest_price": 528000,
-        "airline": "Lion Air",
-        "flight_number": "JT-478",
-        "departure_time": "09:15",
-        "duration_minutes": 105,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-10",
-        "cheapest_price": 555000,
-        "airline": "Lion Air",
-        "flight_number": "JT-130",
-        "departure_time": "07:00",
-        "duration_minutes": 105,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-11",
-        "cheapest_price": 571000,
-        "airline": "Lion Air",
-        "flight_number": "JT-670",
-        "departure_time": "07:00",
-        "duration_minutes": 105,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-12",
-        "cheapest_price": 653000,
-        "airline": "Lion Air",
-        "flight_number": "JT-737",
-        "departure_time": "15:20",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-13",
-        "cheapest_price": 633000,
-        "airline": "Citilink",
-        "flight_number": "QG-163",
-        "departure_time": "09:15",
-        "duration_minutes": 105,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-14",
-        "cheapest_price": 437000,
-        "airline": "Super Air Jet",
-        "flight_number": "IU-814",
-        "departure_time": "05:30",
-        "duration_minutes": 105,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-15",
-        "cheapest_price": 414000,
-        "airline": "Citilink",
-        "flight_number": "QG-742",
-        "departure_time": "05:30",
-        "duration_minutes": 105,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-16",
-        "cheapest_price": 470000,
-        "airline": "AirAsia Indonesia",
-        "flight_number": "QZ-455",
-        "departure_time": "09:15",
-        "duration_minutes": 105,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-17",
-        "cheapest_price": 457000,
-        "airline": "Citilink",
-        "flight_number": "QG-175",
-        "departure_time": "20:10",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-18",
-        "cheapest_price": 653000,
-        "airline": "Lion Air",
-        "flight_number": "JT-157",
-        "departure_time": "07:00",
-        "duration_minutes": 105,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-19",
-        "cheapest_price": 701000,
-        "airline": "TransNusa",
-        "flight_number": "8B-488",
-        "departure_time": "05:30",
-        "duration_minutes": 105,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-20",
-        "cheapest_price": 726000,
-        "airline": "Lion Air",
-        "flight_number": "JT-172",
-        "departure_time": "13:45",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-21",
-        "cheapest_price": 441000,
-        "airline": "Citilink",
-        "flight_number": "QG-908",
-        "departure_time": "15:20",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-22",
-        "cheapest_price": 467000,
-        "airline": "AirAsia Indonesia",
-        "flight_number": "QZ-894",
-        "departure_time": "07:00",
-        "duration_minutes": 105,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-23",
-        "cheapest_price": 458000,
-        "airline": "Citilink",
-        "flight_number": "QG-538",
-        "departure_time": "11:30",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-24",
-        "cheapest_price": 536000,
-        "airline": "Pelita Air",
-        "flight_number": "IP-255",
-        "departure_time": "15:20",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-25",
-        "cheapest_price": 547000,
-        "airline": "Super Air Jet",
-        "flight_number": "IU-702",
-        "departure_time": "15:20",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-26",
-        "cheapest_price": 723000,
-        "airline": "Lion Air",
-        "flight_number": "JT-770",
-        "departure_time": "11:30",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-27",
-        "cheapest_price": 547000,
-        "airline": "Lion Air",
-        "flight_number": "JT-125",
-        "departure_time": "09:15",
-        "duration_minutes": 105,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-28",
-        "cheapest_price": 413000,
-        "airline": "Citilink",
-        "flight_number": "QG-955",
-        "departure_time": "13:45",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-29",
-        "cheapest_price": 561000,
-        "airline": "Pelita Air",
-        "flight_number": "IP-924",
-        "departure_time": "15:20",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-30",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-10-01",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-10-02",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-10-03",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-10-04",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-10-05",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-10-06",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-10-07",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
-      {
-        "flight_date": "2026-10-08",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      }
-    ],
-    "1": [
-      {
-        "flight_date": "2026-09-09",
-        "cheapest_price": 476000,
-        "airline": "Lion Air",
-        "flight_number": "JT-710",
-        "departure_time": "20:10",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-10",
-        "cheapest_price": 512000,
-        "airline": "Super Air Jet",
-        "flight_number": "IU-908",
-        "departure_time": "09:15",
-        "duration_minutes": 105,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-11",
-        "cheapest_price": 618000,
-        "airline": "Citilink",
-        "flight_number": "QG-653",
-        "departure_time": "20:10",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-12",
-        "cheapest_price": 670000,
-        "airline": "Lion Air",
-        "flight_number": "JT-755",
-        "departure_time": "17:40",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-13",
-        "cheapest_price": 558000,
-        "airline": "Lion Air",
-        "flight_number": "JT-462",
-        "departure_time": "09:15",
-        "duration_minutes": 105,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-14",
-        "cheapest_price": 512000,
-        "airline": "Lion Air",
-        "flight_number": "JT-286",
-        "departure_time": "05:30",
-        "duration_minutes": 105,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-15",
-        "cheapest_price": 461000,
-        "airline": "Citilink",
-        "flight_number": "QG-362",
-        "departure_time": "17:40",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-16",
-        "cheapest_price": 453000,
-        "airline": "AirAsia Indonesia",
-        "flight_number": "QZ-273",
-        "departure_time": "09:15",
-        "duration_minutes": 105,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-17",
-        "cheapest_price": 389000,
-        "airline": "Lion Air",
-        "flight_number": "JT-216",
-        "departure_time": "09:15",
-        "duration_minutes": 105,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-18",
-        "cheapest_price": 678000,
-        "airline": "Super Air Jet",
-        "flight_number": "IU-256",
-        "departure_time": "15:20",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-19",
-        "cheapest_price": 674000,
-        "airline": "Citilink",
-        "flight_number": "QG-272",
-        "departure_time": "05:30",
-        "duration_minutes": 105,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-20",
-        "cheapest_price": 542000,
-        "airline": "Lion Air",
-        "flight_number": "JT-160",
-        "departure_time": "09:15",
-        "duration_minutes": 105,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-21",
-        "cheapest_price": 537000,
-        "airline": "Citilink",
-        "flight_number": "QG-664",
-        "departure_time": "15:20",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
-      },
-      {
-        "flight_date": "2026-09-22",
-        "cheapest_price": 439000,
-        "airline": "Citilink",
-        "flight_number": "QG-633",
-        "departure_time": "13:45",
-        "duration_minutes": 110,
-        "source": "traveloka (cached)"
       },
       {
         "flight_date": "2026-09-23",
