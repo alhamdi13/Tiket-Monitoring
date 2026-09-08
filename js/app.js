@@ -1,6 +1,6 @@
 /**
  * app.js - Frontend Application Logic & Dual-Mode Client (FastAPI Backend + GitHub Pages Static Hosting).
- * Menjamin tabel hasil pemindaian dan grafik selalu sinkron 100% dengan rute yang dipilih.
+ * Menggunakan format URL pencarian resmi Traveloka agar tidak terjadi error 404 saat klik tombol "Beli Tiket".
  */
 
 const API_BASE = "";
@@ -15,6 +15,16 @@ const state = {
   isStaticMode: false,
   staticData: null
 };
+
+function getTravelokaSearchUrl(origin, destination, dateStr) {
+  if (!dateStr) return "https://www.traveloka.com/id-id/flight";
+  const parts = dateStr.split("-");
+  if (parts.length === 3) {
+    const dt = `${parts[2]}-${parts[1]}-${parts[0]}.NA`;
+    return `https://www.traveloka.com/id-id/flight/fullsearch?ap=${origin.toUpperCase()}.${destination.toUpperCase()}&dt=${dt}&ps=1.0.0&sc=ECONOMY`;
+  }
+  return `https://www.traveloka.com/id-id/flight`;
+}
 
 document.addEventListener("DOMContentLoaded", async () => {
   initTheme();
@@ -229,14 +239,14 @@ async function loadFlights(routeId = null) {
       duration_minutes: a.dur,
       price_idr: a.price,
       seats_left: a.seats,
-      booking_url: `https://www.traveloka.com/en-id/flight/fullprice/${currentRoute.origin.toLowerCase()}-to-${currentRoute.destination.toLowerCase()}/${dateStr}/1/0/0/Economy`
+      booking_url: getTravelokaSearchUrl(currentRoute.origin, currentRoute.destination, dateStr)
     }));
   }
 
   tbody.innerHTML = flights.slice(0, 30).map(f => {
     const seatsBadge = f.seats_left ? `<span style="font-size: 0.75rem; color: var(--accent-amber);">💺 ${f.seats_left} sisa</span>` : "-";
     const durText = f.duration_minutes ? `${Math.floor(f.duration_minutes/60)}j ${f.duration_minutes%60}m` : "-";
-    const travelokaUrl = f.booking_url || `https://www.traveloka.com/en-id/flight/fullprice/${f.origin.toLowerCase()}-to-${f.destination.toLowerCase()}/${f.flight_date}/1/0/0/Economy`;
+    const travelokaUrl = getTravelokaSearchUrl(f.origin, f.destination, f.flight_date);
 
     return `
       <tr>
@@ -339,7 +349,7 @@ function handleOpenTravelokaDirect(origin, dest) {
   const d = new Date();
   d.setDate(d.getDate() + 7);
   const dStr = d.toISOString().split("T")[0];
-  const url = `https://www.traveloka.com/en-id/flight/fullprice/${origin.toLowerCase()}-to-${dest.toLowerCase()}/${dStr}/1/0/0/Economy`;
+  const url = getTravelokaSearchUrl(origin, dest, dStr);
   window.open(url, "_blank");
 }
 
