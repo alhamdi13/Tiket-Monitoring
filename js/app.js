@@ -356,11 +356,11 @@ function handleToggleRouteType() {
   const groupDaysAhead = document.getElementById("groupDaysAhead");
 
   if (type === "specific") {
-    groupTargetDate.style.display = "block";
-    groupDaysAhead.style.display = "none";
+    if (groupTargetDate) groupTargetDate.style.display = "block";
+    if (groupDaysAhead) groupDaysAhead.style.display = "none";
   } else {
-    groupTargetDate.style.display = "none";
-    groupDaysAhead.style.display = "block";
+    if (groupTargetDate) groupTargetDate.style.display = "none";
+    if (groupDaysAhead) groupDaysAhead.style.display = "block";
   }
 }
 
@@ -408,18 +408,27 @@ function handleDeleteRoute(routeId) {
 }
 
 function openAddRouteModal() {
-  document.getElementById("routeModalTitle").textContent = "Tambah Rute Pantauan";
-  document.getElementById("routeIdInput").value = "";
-  document.getElementById("routeOriginInput").value = "";
-  document.getElementById("routeDestInput").value = "";
-  document.getElementById("routeLabelInput").value = "";
-  document.getElementById("routeMaxPriceInput").value = "600000";
-  document.getElementById("routeDaysAheadInput").value = "14";
+  const title = document.getElementById("routeModalTitle");
+  if (title) title.textContent = "Tambah Rute Pantauan";
+  const idIn = document.getElementById("routeIdInput");
+  if (idIn) idIn.value = "";
+  const origIn = document.getElementById("routeOriginInput");
+  if (origIn) origIn.value = "";
+  const destIn = document.getElementById("routeDestInput");
+  if (destIn) destIn.value = "";
+  const lblIn = document.getElementById("routeLabelInput");
+  if (lblIn) lblIn.value = "";
+  const maxIn = document.getElementById("routeMaxPriceInput");
+  if (maxIn) maxIn.value = "600000";
+  const daysIn = document.getElementById("routeDaysAheadInput");
+  if (daysIn) daysIn.value = "14";
 
   const defaultDate = new Date();
   defaultDate.setDate(defaultDate.getDate() + 14);
-  document.getElementById("routeTargetDateInput").value = defaultDate.toISOString().split("T")[0];
-  document.getElementById("routeTypeSelect").value = "specific";
+  const targetDateIn = document.getElementById("routeTargetDateInput");
+  if (targetDateIn) targetDateIn.value = defaultDate.toISOString().split("T")[0];
+  const typeSel = document.getElementById("routeTypeSelect");
+  if (typeSel) typeSel.value = "specific";
   handleToggleRouteType();
 
   openModal("routeModal");
@@ -544,42 +553,53 @@ function setupEventListeners() {
 
 function openModal(id) {
   const modal = document.getElementById(id);
-  if (modal) modal.classList.add("active");
+  if (modal) {
+    modal.classList.add("open");
+    modal.classList.add("active");
+  }
 }
 
 function closeModal(id) {
   const modal = document.getElementById(id);
-  if (modal) modal.classList.remove("active");
+  if (modal) {
+    modal.classList.remove("open");
+    modal.classList.remove("active");
+  }
 }
 
 function openNotificationsModal() {
   const container = document.getElementById("notificationsLogContainer");
-  const logs = state.staticData ? state.staticData.notifications || [] : [];
-
-  if (logs.length === 0) {
-    container.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 2rem;">Belum ada riwayat notifikasi terkirim.</p>`;
-  } else {
-    container.innerHTML = logs.map(n => `
-      <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.85rem; margin-bottom: 0.75rem;">
-        <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-sub); margin-bottom: 0.4rem;">
-          <span>🕒 ${n.sent_at}</span>
-          <span style="color: var(--accent-emerald); font-weight: 600;">TERKIRIM</span>
+  if (container) {
+    const logs = state.staticData ? state.staticData.notifications || [] : [];
+    if (logs.length === 0) {
+      container.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 2rem;">Belum ada riwayat notifikasi terkirim.</p>`;
+    } else {
+      container.innerHTML = logs.map(l => `
+        <div style="padding: 0.85rem; border-bottom: 1px solid var(--border-color); font-size: 0.85rem;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+            <b>${l.route_label || 'Notifikasi'}</b>
+            <span style="color: var(--text-sub); font-size: 0.75rem;">${new Date(l.sent_at).toLocaleString("id-ID")}</span>
+          </div>
+          <div style="color: var(--text-muted); white-space: pre-line;">${(l.message || '').replace(/<[^>]*>?/gm, '')}</div>
         </div>
-        <div style="font-size: 0.85rem; line-height: 1.4;">${n.message.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>")}</div>
-      </div>
-    `).join("");
+      `).join("");
+    }
   }
   openModal("notificationsModal");
 }
 
-function showToast(msg, type = "info") {
-  const c = document.getElementById("toastContainer");
-  if (!c) return;
-  const t = document.createElement("div");
-  t.className = `toast ${type}`;
-  t.textContent = msg;
-  c.appendChild(t);
-  setTimeout(() => t.remove(), 4000);
+function showToast(message, type = "info") {
+  const container = document.getElementById("toastContainer");
+  if (!container) return;
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<span>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span> <div>${message}</div>`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateX(100%)";
+    setTimeout(() => toast.remove(), 300);
+  }, 3500);
 }
 
 function formatRupiah(val) {
@@ -587,20 +607,41 @@ function formatRupiah(val) {
 }
 
 function initTheme() {
-  const saved = localStorage.getItem("theme") || "dark";
+  const saved = localStorage.getItem("flight_theme") || "dark";
   document.documentElement.setAttribute("data-theme", saved);
   updateThemeIcon(saved);
 }
 
 function toggleTheme() {
-  const cur = document.documentElement.getAttribute("data-theme") || "dark";
-  const nxt = cur === "dark" ? "light" : "dark";
-  document.documentElement.setAttribute("data-theme", nxt);
-  localStorage.setItem("theme", nxt);
-  updateThemeIcon(nxt);
+  const current = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+  document.documentElement.setAttribute("data-theme", current);
+  localStorage.setItem("flight_theme", current);
+  updateThemeIcon(current);
+  if (state.selectedRouteId) loadAnalytics(state.selectedRouteId);
 }
 
-function updateThemeIcon(t) {
-  const b = document.getElementById("btnThemeToggle");
-  if (b) b.textContent = t === "dark" ? "☀️" : "🌙";
+function updateThemeIcon(theme) {
+  const btn = document.getElementById("btnThemeToggle");
+  if (btn) btn.textContent = theme === "light" ? "🌙" : "☀️";
 }
+
+// Menutup modal jika user klik area luar (backdrop)
+document.addEventListener("click", (e) => {
+  if (e.target && e.target.classList && e.target.classList.contains("modal-backdrop")) {
+    e.target.classList.remove("open");
+    e.target.classList.remove("active");
+  }
+});
+
+// Expose fungsi interaktif ke global window object
+window.openModal = openModal;
+window.closeModal = closeModal;
+window.openAddRouteModal = openAddRouteModal;
+window.openEditRouteModal = openEditRouteModal;
+window.handleDeleteRoute = handleDeleteRoute;
+window.handleToggleRoute = handleToggleRoute;
+window.handleSelectRoute = handleSelectRoute;
+window.handleToggleRouteType = handleToggleRouteType;
+window.openNotificationsModal = openNotificationsModal;
+window.formatRupiah = formatRupiah;
+window.getTravelokaSearchUrl = getTravelokaSearchUrl;
