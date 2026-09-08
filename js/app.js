@@ -140,7 +140,7 @@ async function loadAirports() {
       ).join("");
     }
   } catch (err) {
-    console.warn("Gagal memuat airports.json:", err);
+    console.error("Gagal load bandara:", err);
   }
 }
 
@@ -224,58 +224,95 @@ async function loadFlights(routeId = null) {
     return today.toISOString().split("T")[0];
   })();
 
-  if (flights.length === 0) {
-    const sampleAirlines = [
-      { name: "Citilink", code: "QG", price: Math.round(currentRoute.max_price_idr * 0.85 / 1000) * 1000, dep: "06:00", arr: "07:45", dur: 105, seats: 5 },
-      { name: "Super Air Jet", code: "IU", price: Math.round(currentRoute.max_price_idr * 0.90 / 1000) * 1000, dep: "08:30", arr: "10:15", dur: 105, seats: 9 },
-      { name: "Lion Air", code: "JT", price: Math.round(currentRoute.max_price_idr * 0.80 / 1000) * 1000, dep: "11:15", arr: "13:00", dur: 105, seats: null },
-      { name: "AirAsia", code: "QZ", price: Math.round(currentRoute.max_price_idr * 0.95 / 1000) * 1000, dep: "14:00", arr: "15:45", dur: 105, seats: 4 },
-      { name: "Batik Air", code: "ID", price: Math.round(currentRoute.max_price_idr * 1.25 / 1000) * 1000, dep: "16:45", arr: "18:35", dur: 110, seats: 7 },
-      { name: "Garuda Indonesia", code: "GA", price: Math.round(currentRoute.max_price_idr * 1.65 / 1000) * 1000, dep: "19:20", arr: "21:10", dur: 110, seats: 6 }
-    ];
+  const isTransit = currentRoute.is_transit || (currentRoute.hub && currentRoute.hub !== "direct");
+  const hubCode = (currentRoute.hub && currentRoute.hub !== "AUTO" && currentRoute.hub !== "direct") ? currentRoute.hub : "CGK";
 
-    flights = sampleAirlines.map((a, idx) => ({
-      airline: a.name,
-      flight_number: `${a.code}-${100 + idx * 115}`,
-      origin: currentRoute.origin,
-      destination: currentRoute.destination,
-      flight_date: defaultDate,
-      departure_time: a.dep,
-      arrival_time: a.arr,
-      duration_minutes: a.dur,
-      price_idr: a.price,
-      seats_left: a.seats,
-      booking_url: getTravelokaSearchUrl(currentRoute.origin, currentRoute.destination, defaultDate)
-    }));
+  if (flights.length === 0) {
+    if (isTransit) {
+      const transitCombinations = [
+        { l1: "Lion Air", c1: "JT-311", l1_dep: "07:00", l1_arr: "07:45", layover: 135, l2: "Super Air Jet", c2: "IU-800", l2_dep: "10:00", l2_arr: "11:45", price: Math.round(currentRoute.max_price_idr * 0.82 / 1000) * 1000, dur: 285, seats: 4, safety: "🟢 Transit Aman (2j 15m)" },
+        { l1: "Citilink", c1: "QG-480", l1_dep: "09:15", l1_arr: "11:00", layover: 180, l2: "Batik Air", c2: "ID-6812", l2_dep: "14:00", l2_arr: "15:45", price: Math.round(currentRoute.max_price_idr * 0.92 / 1000) * 1000, dur: 390, seats: 7, safety: "🟢 Waktu Ideal (3j)" },
+        { l1: "Super Air Jet", c1: "IU-620", l1_dep: "11:30", l1_arr: "13:15", layover: 105, l2: "AirAsia", c2: "QZ-720", l2_dep: "15:00", l2_arr: "16:45", price: Math.round(currentRoute.max_price_idr * 0.88 / 1000) * 1000, dur: 315, seats: 5, safety: "🟢 Transit Cukup (1j 45m)" },
+        { l1: "Garuda Indonesia", c1: "GA-530", l1_dep: "14:20", l1_arr: "16:05", layover: 120, l2: "Garuda Indonesia", c2: "GA-160", l2_dep: "18:05", l2_arr: "19:55", price: Math.round(currentRoute.max_price_idr * 1.35 / 1000) * 1000, dur: 335, seats: 6, safety: "🟢 Bagasi Terusan (2j)" }
+      ];
+
+      flights = transitCombinations.map(c => ({
+        is_connecting: true,
+        airline: `${c.l1} ➔ ${c.l2}`,
+        flight_number: `${c.c1} + ${c.c2}`,
+        origin: currentRoute.origin,
+        hub: hubCode,
+        destination: currentRoute.destination,
+        flight_date: defaultDate,
+        departure_time: c.l1_dep,
+        arrival_time: c.l2_arr,
+        transit_info: `⏳ Transit di ${hubCode} (${c.safety})`,
+        duration_minutes: c.dur,
+        price_idr: c.price,
+        seats_left: c.seats,
+        booking_url: getTravelokaSearchUrl(currentRoute.origin, currentRoute.destination, defaultDate)
+      }));
+    } else {
+      const sampleAirlines = [
+        { name: "Citilink", code: "QG", price: Math.round(currentRoute.max_price_idr * 0.85 / 1000) * 1000, dep: "06:00", arr: "07:45", dur: 105, seats: 5 },
+        { name: "Super Air Jet", code: "IU", price: Math.round(currentRoute.max_price_idr * 0.90 / 1000) * 1000, dep: "08:30", arr: "10:15", dur: 105, seats: 9 },
+        { name: "Lion Air", code: "JT", price: Math.round(currentRoute.max_price_idr * 0.80 / 1000) * 1000, dep: "11:15", arr: "13:00", dur: 105, seats: null },
+        { name: "AirAsia", code: "QZ", price: Math.round(currentRoute.max_price_idr * 0.95 / 1000) * 1000, dep: "14:00", arr: "15:45", dur: 105, seats: 4 },
+        { name: "Batik Air", code: "ID", price: Math.round(currentRoute.max_price_idr * 1.25 / 1000) * 1000, dep: "16:45", arr: "18:35", dur: 110, seats: 7 },
+        { name: "Garuda Indonesia", code: "GA", price: Math.round(currentRoute.max_price_idr * 1.65 / 1000) * 1000, dep: "19:20", arr: "21:10", dur: 110, seats: 6 }
+      ];
+
+      flights = sampleAirlines.map((a, idx) => ({
+        is_connecting: false,
+        airline: a.name,
+        flight_number: `${a.code}-${100 + idx * 115}`,
+        origin: currentRoute.origin,
+        destination: currentRoute.destination,
+        flight_date: defaultDate,
+        departure_time: a.dep,
+        arrival_time: a.arr,
+        duration_minutes: a.dur,
+        price_idr: a.price,
+        seats_left: a.seats,
+        booking_url: getTravelokaSearchUrl(currentRoute.origin, currentRoute.destination, defaultDate)
+      }));
+    }
   }
 
   tbody.innerHTML = flights.slice(0, 30).map(f => {
     const seatsBadge = f.seats_left ? `<span style="font-size: 0.75rem; color: var(--accent-amber);">💺 ${f.seats_left} sisa</span>` : "-";
     const durText = f.duration_minutes ? `${Math.floor(f.duration_minutes/60)}j ${f.duration_minutes%60}m` : "-";
     const travelokaUrl = getTravelokaSearchUrl(f.origin, f.destination, f.flight_date);
+    const routeDisplay = f.is_connecting 
+      ? `<b>${f.origin} ➔ <span style="color: var(--accent-cyan);">${f.hub}</span> ➔ ${f.destination}</b>`
+      : `<b>${f.origin} ➔ ${f.destination}</b>`;
+    const transitSub = f.transit_info 
+      ? `<div style="font-size: 0.73rem; color: var(--accent-emerald); margin-top: 0.15rem;">${f.transit_info}</div>`
+      : '';
 
     return `
       <tr>
         <td>
           <div class="airline-badge">
-            <span>✈️</span>
+            <span>${f.is_connecting ? '🔄' : '✈️'}</span>
             <div>
               <div>${f.airline}</div>
               <div style="font-size: 0.75rem; color: var(--text-sub);">${f.flight_number || '-'}</div>
             </div>
           </div>
         </td>
-        <td><b>${f.origin} ➔ ${f.destination}</b></td>
+        <td>${routeDisplay}</td>
         <td><b style="color: var(--primary);">${f.flight_date}</b></td>
         <td>
           <div>${f.departure_time} - ${f.arrival_time}</div>
           <div style="font-size: 0.75rem; color: var(--text-sub);">${durText}</div>
+          ${transitSub}
         </td>
         <td><span class="price-tag">${formatRupiah(f.price_idr)}</span></td>
         <td>${seatsBadge}</td>
         <td>
           <a href="${travelokaUrl}" target="_blank" class="btn btn-primary btn-sm">
-            Beli Tiket ➔
+            ${f.is_connecting ? 'Beli Tiket Transit ➔' : 'Beli Tiket ➔'}
           </a>
         </td>
       </tr>
@@ -318,55 +355,132 @@ function renderRoutesGrid(routes) {
             <div class="meta-item-value highlight">${formattedMax}</div>
           </div>
           <div>
-            <div class="meta-item-label">Jadwal Target</div>
-            <div class="meta-item-value">${scheduleBadge}</div>
+            <div class="meta-item-label">Jadwal Pantau</div>
+            <div class="meta-item-value" style="font-size: 0.82rem;">${scheduleBadge}</div>
+          </div>
+          <div>
+            <div class="meta-item-label">Status</div>
+            <div class="meta-item-value" style="font-size: 0.8rem; color: ${r.is_active ? 'var(--accent-emerald)' : 'var(--text-sub)'};">
+              ${r.is_active ? '🟢 Aktif Memantau' : '⚪ Nonaktif'}
+            </div>
+          </div>
+          <div>
+            <div class="meta-item-label">Interval</div>
+            <div class="meta-item-value">${r.check_interval_hours || 4} jam</div>
           </div>
         </div>
 
-        <div class="route-actions-row">
-          <button class="btn btn-secondary btn-sm" onclick="handleSelectRoute(${r.id})" style="flex: 1;">
-            📊 Lihat Detail
+        <div class="route-card-actions">
+          <button class="btn btn-secondary btn-sm" onclick="handleSelectRouteAnalytics(${r.id})">
+            📊 Lihat Rute Ini
           </button>
-          <button class="btn btn-icon btn-sm" onclick="openEditRouteModal(${r.id})" title="Edit Rute">
-            ✏️
-          </button>
-          <button class="btn btn-icon btn-sm" onclick="handleDeleteRoute(${r.id})" title="Hapus Rute">
-            🗑️
-          </button>
+          <div style="display: flex; gap: 0.4rem;">
+            <button class="btn btn-secondary btn-sm" onclick="handleOpenTravelokaDirect('${r.origin}', '${r.destination}', '${r.target_date || ''}')" title="Cek Langsung di Traveloka">
+              ✈️ Buka
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="openEditRouteModal(${r.id})" title="Edit Rute">
+              ✏️
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="handleDeleteRoute(${r.id})" title="Hapus Rute">
+              🗑️
+            </button>
+          </div>
         </div>
       </div>
     `;
   }).join("");
 }
 
+function handleOpenTravelokaDirect(origin, dest, targetDate = "") {
+  let dateStr = targetDate;
+  if (!dateStr) {
+    const d = new Date();
+    d.setDate(d.getDate() + 7);
+    dateStr = d.toISOString().split("T")[0];
+  }
+  const url = getTravelokaSearchUrl(origin, dest, dateStr);
+  window.open(url, "_blank");
+}
+
 function updateRouteSelectOptions(routes) {
   const select = document.getElementById("analyticsRouteSelect");
   if (!select) return;
-
   select.innerHTML = routes.map(r => 
-    `<option value="${r.id}" ${r.id === state.selectedRouteId ? 'selected' : ''}>
-      ${r.label || `${r.origin} ➔ ${r.destination}`} (${formatRupiah(r.max_price_idr)})
-    </option>`
+    `<option value="${r.id}" ${r.id === state.selectedRouteId ? 'selected' : ''}>${r.label || `${r.origin} ➔ ${r.destination}`}</option>`
   ).join("");
+}
+
+function setupEventListeners() {
+  const themeBtn = document.getElementById("btnThemeToggle");
+  if (themeBtn) themeBtn.addEventListener("click", toggleTheme);
+
+  const scanAllBtn = document.getElementById("btnScanAll");
+  if (scanAllBtn) scanAllBtn.addEventListener("click", () => {
+    showToast("Data diperbarui", "success");
+    loadStaticData();
+  });
+
+  const routeSelect = document.getElementById("analyticsRouteSelect");
+  if (routeSelect) {
+    routeSelect.addEventListener("change", (e) => {
+      state.selectedRouteId = parseInt(e.target.value);
+      loadAnalytics(state.selectedRouteId);
+      loadFlights(state.selectedRouteId);
+    });
+  }
+
+  const tabTrend = document.getElementById("tabTrend");
+  const tabCal = document.getElementById("tabCalendar");
+  const trendView = document.getElementById("trendViewWrapper");
+  const calView = document.getElementById("calendarViewWrapper");
+
+  if (tabTrend && tabCal) {
+    tabTrend.addEventListener("click", () => {
+      tabTrend.classList.add("active");
+      tabCal.classList.remove("active");
+      trendView.style.display = "block";
+      calView.style.display = "none";
+    });
+
+    tabCal.addEventListener("click", () => {
+      tabCal.classList.add("active");
+      tabTrend.classList.remove("active");
+      trendView.style.display = "none";
+      calView.style.display = "block";
+    });
+  }
+
+  const routeForm = document.getElementById("routeForm");
+  if (routeForm) routeForm.addEventListener("submit", handleSaveRouteForm);
+
+  const settingsForm = document.getElementById("settingsForm");
+  if (settingsForm) settingsForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    closeModal("settingsModal");
+    showToast("Pengaturan disimpan!", "success");
+  });
+
+  const testTgBtn = document.getElementById("btnTestTelegram");
+  if (testTgBtn) testTgBtn.addEventListener("click", handleTestTelegram);
 }
 
 function handleToggleRouteType() {
   const type = document.getElementById("routeTypeSelect").value;
-  const groupTargetDate = document.getElementById("groupTargetDate");
-  const groupDaysAhead = document.getElementById("groupDaysAhead");
-
+  const groupTarget = document.getElementById("groupTargetDate");
+  const groupDays = document.getElementById("groupDaysAhead");
   if (type === "specific") {
-    if (groupTargetDate) groupTargetDate.style.display = "block";
-    if (groupDaysAhead) groupDaysAhead.style.display = "none";
+    groupTarget.style.display = "block";
+    groupDays.style.display = "none";
   } else {
-    if (groupTargetDate) groupTargetDate.style.display = "none";
-    if (groupDaysAhead) groupDaysAhead.style.display = "block";
+    groupTarget.style.display = "none";
+    groupDays.style.display = "block";
   }
 }
 
-function handleSelectRoute(routeId) {
+function handleSelectRouteAnalytics(routeId) {
   state.selectedRouteId = routeId;
-  updateRouteSelectOptions(state.routes);
+  const select = document.getElementById("analyticsRouteSelect");
+  if (select) select.value = routeId;
   loadAnalytics(routeId);
   loadFlights(routeId);
 
@@ -407,6 +521,14 @@ function handleDeleteRoute(routeId) {
   showToast("Rute berhasil dihapus dari dashboard", "success");
 }
 
+function handleToggleTransitHub() {
+  const isTransit = document.getElementById("routeTransitSelect") ? document.getElementById("routeTransitSelect").value === "transit" : false;
+  const groupHub = document.getElementById("groupTransitHub");
+  if (groupHub) {
+    groupHub.style.display = isTransit ? "block" : "none";
+  }
+}
+
 function openAddRouteModal() {
   const title = document.getElementById("routeModalTitle");
   if (title) title.textContent = "Tambah Rute Pantauan";
@@ -419,7 +541,7 @@ function openAddRouteModal() {
   const lblIn = document.getElementById("routeLabelInput");
   if (lblIn) lblIn.value = "";
   const maxIn = document.getElementById("routeMaxPriceInput");
-  if (maxIn) maxIn.value = "600000";
+  if (maxIn) maxIn.value = "1200000";
   const daysIn = document.getElementById("routeDaysAheadInput");
   if (daysIn) daysIn.value = "14";
 
@@ -430,6 +552,10 @@ function openAddRouteModal() {
   const typeSel = document.getElementById("routeTypeSelect");
   if (typeSel) typeSel.value = "specific";
   handleToggleRouteType();
+
+  const transitSel = document.getElementById("routeTransitSelect");
+  if (transitSel) transitSel.value = "direct";
+  handleToggleTransitHub();
 
   openModal("routeModal");
 }
@@ -454,6 +580,16 @@ function openEditRouteModal(routeId) {
   }
   handleToggleRouteType();
 
+  const transitSel = document.getElementById("routeTransitSelect");
+  const hubInput = document.getElementById("routeHubInput");
+  if (route.is_transit || (route.hub && route.hub !== "direct")) {
+    if (transitSel) transitSel.value = "transit";
+    if (hubInput && route.hub) hubInput.value = route.hub;
+  } else {
+    if (transitSel) transitSel.value = "direct";
+  }
+  handleToggleTransitHub();
+
   openModal("routeModal");
 }
 
@@ -468,12 +604,18 @@ function handleSaveRouteForm(e) {
   const targetDate = type === "specific" ? document.getElementById("routeTargetDateInput").value : null;
   const daysAhead = type === "range" ? parseInt(document.getElementById("routeDaysAheadInput").value) : 14;
 
+  const isTransit = document.getElementById("routeTransitSelect") ? document.getElementById("routeTransitSelect").value === "transit" : false;
+  const hub = isTransit ? (document.getElementById("routeHubInput") ? document.getElementById("routeHubInput").value : "AUTO") : null;
+
   if (!origin || !destination) {
     showToast("Bandara asal dan tujuan harus diisi", "error");
     return;
   }
 
-  const defaultLabel = targetDate ? `${origin} ➔ ${destination} (${targetDate})` : `${origin} ➔ ${destination}`;
+  const displayHub = hub && hub !== "AUTO" ? hub : "Hub";
+  const defaultLabel = isTransit
+    ? `${origin} ➔ ${displayHub} ➔ ${destination}${targetDate ? ` (${targetDate})` : ''}`
+    : `${origin} ➔ ${destination}${targetDate ? ` (${targetDate})` : ''}`;
 
   const payload = {
     id: routeId ? parseInt(routeId) : Date.now(),
@@ -483,6 +625,8 @@ function handleSaveRouteForm(e) {
     max_price_idr: maxPrice,
     target_date: targetDate,
     days_ahead: daysAhead,
+    is_transit: isTransit ? 1 : 0,
+    hub: hub,
     is_active: 1,
     check_interval_hours: 4
   };
@@ -507,47 +651,29 @@ function handleSaveRouteForm(e) {
   showToast(`✅ Rute ${payload.label} berhasil disimpan!`, "success");
 }
 
-function setupEventListeners() {
-  const form = document.getElementById("routeForm");
-  if (form) form.addEventListener("submit", handleSaveRouteForm);
-
-  const select = document.getElementById("analyticsRouteSelect");
-  if (select) {
-    select.addEventListener("change", (e) => {
-      handleSelectRoute(parseInt(e.target.value));
-    });
+function handleTestTelegram() {
+  const token = document.getElementById("settingTelegramToken").value.trim();
+  const chatId = document.getElementById("settingTelegramChatId").value.trim();
+  if (!token || !chatId) {
+    showToast("Masukkan Token dan Chat ID", "error");
+    return;
   }
-
-  const tabTrend = document.getElementById("tabTrend");
-  const tabCal = document.getElementById("tabCalendar");
-  if (tabTrend && tabCal) {
-    tabTrend.addEventListener("click", () => {
-      tabTrend.classList.add("active");
-      tabCal.classList.remove("active");
-      document.getElementById("trendViewWrapper").style.display = "block";
-      document.getElementById("calendarViewWrapper").style.display = "none";
+  try {
+    const url = `https://api.telegram.org/bot${token}/sendMessage`;
+    fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: "✅ <b>Tes Terhubung Berhasil!</b>\nFlight Price Monitor Pro aktif dan terhubung ke Telegram Anda.",
+        parse_mode: "HTML"
+      })
+    }).then(r => r.json()).then(data => {
+      if (data.ok) showToast("✅ Pesan tes terkirim ke Telegram!", "success");
+      else showToast("❌ Gagal: " + data.description, "error");
     });
-
-    tabCal.addEventListener("click", () => {
-      tabCal.classList.add("active");
-      tabTrend.classList.remove("active");
-      document.getElementById("trendViewWrapper").style.display = "none";
-      document.getElementById("calendarViewWrapper").style.display = "block";
-    });
-  }
-
-  const btnScan = document.getElementById("btnScanAll");
-  if (btnScan) {
-    btnScan.addEventListener("click", async () => {
-      showToast("🔄 Memperbarui data tiket terbaru...", "info");
-      await loadStaticData();
-      showToast("✅ Data berhasil disegarkan!", "success");
-    });
-  }
-
-  const btnTheme = document.getElementById("btnThemeToggle");
-  if (btnTheme) {
-    btnTheme.addEventListener("click", toggleTheme);
+  } catch (err) {
+    showToast("Error: " + err.message, "error");
   }
 }
 
@@ -625,7 +751,7 @@ function updateThemeIcon(theme) {
   if (btn) btn.textContent = theme === "light" ? "🌙" : "☀️";
 }
 
-// Menutup modal jika user klik area luar (backdrop)
+// Close modal when clicking outside on backdrop
 document.addEventListener("click", (e) => {
   if (e.target && e.target.classList && e.target.classList.contains("modal-backdrop")) {
     e.target.classList.remove("open");
@@ -633,15 +759,15 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// Expose fungsi interaktif ke global window object
+// Expose all interactive functions to global window scope for inline HTML onclick handlers
 window.openModal = openModal;
 window.closeModal = closeModal;
 window.openAddRouteModal = openAddRouteModal;
 window.openEditRouteModal = openEditRouteModal;
 window.handleDeleteRoute = handleDeleteRoute;
 window.handleToggleRoute = handleToggleRoute;
-window.handleSelectRoute = handleSelectRoute;
 window.handleToggleRouteType = handleToggleRouteType;
+window.handleToggleTransitHub = handleToggleTransitHub;
 window.openNotificationsModal = openNotificationsModal;
 window.formatRupiah = formatRupiah;
 window.getTravelokaSearchUrl = getTravelokaSearchUrl;
