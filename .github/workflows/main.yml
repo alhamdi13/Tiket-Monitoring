@@ -1,0 +1,54 @@
+name: Flight Price Monitor & GitHub Pages
+
+on:
+  schedule:
+    # Berjalan otomatis setiap 4 jam secara 100% gratis di GitHub
+    - cron: '0 */4 * * *'
+  workflow_dispatch: # Tombol pemicu manual untuk tes scan
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  scan-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: 📦 Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: ✈️ Jalankan Pemantauan & Kirim Alert Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python github_action_runner.py
+
+      - name: 💾 Commit & Push Hasil Scan Terbaru
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action Bot"
+          git add static/data/flights.json flights_monitor.db || true
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update flight prices data [skip ci]" && git push)
+
+      - name: 🚀 Deploy ke GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./static
