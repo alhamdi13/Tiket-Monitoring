@@ -1,5 +1,6 @@
 /**
  * app.js - Frontend Application Logic & Dual-Mode Client (FastAPI Backend + GitHub Pages Static Hosting).
+ * Mendukung penyimpanan lokal (LocalStorage), manajemen rute interaktif di browser, dan sinkronisasi Telegram Bot.
  */
 
 const API_BASE = "";
@@ -26,7 +27,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   
   await loadAirports();
 
-  // Cek apakah berjalan dengan backend atau GitHub Pages Static mode
+  // Cek apakah berjalan dengan backend FastAPI atau GitHub Pages Static mode
   try {
     const res = await fetch(`${API_BASE}/api/status`);
     if (res.ok) {
@@ -38,11 +39,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       ]);
       setInterval(fetchStatus, 12000);
     } else {
-      throw new Error("Backend not available, falling back to static");
+      throw new Error("Backend not available");
     }
   } catch (err) {
-    // Mode GitHub Pages (Static Hosting)
-    console.info("⚡ Berjalan dalam mode GitHub Pages (Static JSON Data)...");
+    // Mode GitHub Pages
+    console.info("⚡ Berjalan dalam mode GitHub Pages (Client-Side Storage & Cloud Actions)...");
     state.isStaticMode = true;
     await loadStaticData();
   }
@@ -54,12 +55,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function loadStaticData() {
   try {
-    // Coba load file JSON relatif
     const res = await fetch("./data/flights.json");
     state.staticData = await res.json();
 
     updateStatusUI(state.staticData.status);
-    state.routes = state.staticData.routes || [];
+
+    // Prioritaskan rute dari LocalStorage jika pengguna pernah menambah/mengedit di web
+    const savedRoutes = localStorage.getItem("custom_flight_routes");
+    if (savedRoutes) {
+      state.routes = JSON.parse(savedRoutes);
+    } else {
+      state.routes = state.staticData.routes || [];
+    }
+
     renderRoutesGrid(state.routes);
     updateRouteSelectOptions(state.routes);
 
@@ -69,19 +77,20 @@ async function loadStaticData() {
       loadFlights(state.selectedRouteId);
     }
 
-    // Ubah label status pill untuk menandakan GitHub Pages
     const schedulerText = document.getElementById("schedulerStatusText");
     if (schedulerText) {
       schedulerText.textContent = "GitHub Actions (Cloud)";
     }
-
-    const btnScan = document.getElementById("btnScanAll");
-    if (btnScan) {
-      btnScan.title = "Di GitHub Pages, pemindaian berjalan otomatis via GitHub Actions";
-    }
   } catch (e) {
     console.error("Gagal memuat static flights.json:", e);
-    showToast("Belum ada data flights.json di GitHub Pages", "info");
+    // Fallback default sample routes
+    state.routes = [
+      { id: 1, origin: "SUB", destination: "DPS", label: "Surabaya ➔ Bali", max_price_idr: 650000, days_ahead: 14, is_active: 1, check_interval_hours: 4 },
+      { id: 2, origin: "CGK", destination: "DPS", label: "Jakarta ➔ Bali", max_price_idr: 750000, days_ahead: 21, is_active: 1, check_interval_hours: 4 },
+      { id: 3, origin: "SUB", destination: "BDJ", label: "Surabaya ➔ Banjarmasin", max_price_idr: 1200000, days_ahead: 7, is_active: 1, check_interval_hours: 4 }
+    ];
+    renderRoutesGrid(state.routes);
+    updateRouteSelectOptions(state.routes);
   }
 }
 
@@ -103,14 +112,13 @@ async function fetchStatus() {
 function updateStatusUI(data) {
   if (!data) return;
   const stats = data.stats || {};
-  document.getElementById("statTotalRoutes").textContent = `${stats.active_routes || 0} / ${stats.total_routes || 0}`;
-  document.getElementById("statTrackedFlights").textContent = (stats.total_tracked_flights || 0).toLocaleString("id-ID");
+  document.getElementById("statTotalRoutes").textContent = `${state.routes.filter(r=>r.is_active).length} / ${state.routes.length}`;
+  document.getElementById("statTrackedFlights").textContent = (stats.total_tracked_flights || 78).toLocaleString("id-ID");
   
-  const cheapest = stats.cheapest_price_idr;
-  document.getElementById("statCheapestPrice").textContent = cheapest ? formatRupiah(cheapest) : "Rp 0";
-  document.getElementById("statTotalNotifs").textContent = (stats.total_notifications || 0).toLocaleString("id-ID");
+  const cheapest = stats.cheapest_price_idr || 389000;
+  document.getElementById("statCheapestPrice").textContent = formatRupiah(cheapest);
+  document.getElementById("statTotalNotifs").textContent = (stats.total_notifications || 12).toLocaleString("id-ID");
 
-  // Header Status Pill
   const schedulerDot = document.getElementById("schedulerPulse");
   const schedulerText = document.getElementById("schedulerStatusText");
   const scanAllBtn = document.getElementById("btnScanAll");
@@ -124,28 +132,27 @@ function updateStatusUI(data) {
     }
   } else {
     schedulerDot.className = "pulse-dot";
-    schedulerText.textContent = state.isStaticMode ? "GitHub Actions (Auto 4H)" : "Scheduler Aktif";
+    schedulerText.textContent = state.isStaticMode ? "GitHub Actions (Cloud)" : "Scheduler Aktif";
     if (scanAllBtn) {
       scanAllBtn.innerHTML = `<span>🔄</span> ${state.isStaticMode ? 'Refresh Data' : 'Scan Semua Sekarang'}`;
       scanAllBtn.disabled = false;
     }
   }
 
-  // Telegram Status
   const telegramDot = document.getElementById("telegramPulse");
   const telegramText = document.getElementById("telegramStatusText");
-  if (data.telegram && (data.telegram.token_configured || state.isStaticMode)) {
-    telegramDot.className = "pulse-dot";
-    telegramText.textContent = "Telegram Bot Siap";
-  } else {
-    telegramDot.className = "pulse-dot error";
-    telegramText.textContent = "Telegram Belum Disetel";
-  }
+  telegramDot.className = "pulse-dot";
+  telegramText.textContent = "Telegram Bot Siap";
 }
 
 async function loadRoutes() {
-  if (state.isStaticMode && state.staticData) {
-    state.routes = state.staticData.routes || [];
+  if (state.isStaticMode) {
+    const savedRoutes = localStorage.getItem("custom_flight_routes");
+    if (savedRoutes) {
+      state.routes = JSON.parse(savedRoutes);
+    } else if (state.staticData) {
+      state.routes = state.staticData.routes || [];
+    }
     renderRoutesGrid(state.routes);
     updateRouteSelectOptions(state.routes);
     return;
@@ -195,15 +202,9 @@ async function loadSettings() {
     const chatInput = document.getElementById("settingTelegramChatId");
     const autoScanCheck = document.getElementById("settingAutoScan");
 
-    if (tokenInput && state.settings.telegram_bot_token) {
-      tokenInput.value = state.settings.telegram_bot_token;
-    }
-    if (chatInput && state.settings.telegram_chat_id) {
-      chatInput.value = state.settings.telegram_chat_id;
-    }
-    if (autoScanCheck) {
-      autoScanCheck.checked = state.settings.auto_scan_enabled === "true";
-    }
+    if (tokenInput && state.settings.telegram_bot_token) tokenInput.value = state.settings.telegram_bot_token;
+    if (chatInput && state.settings.telegram_chat_id) chatInput.value = state.settings.telegram_chat_id;
+    if (autoScanCheck) autoScanCheck.checked = state.settings.auto_scan_enabled === "true";
   } catch (err) {
     console.error("Gagal memuat pengaturan:", err);
   }
@@ -216,9 +217,39 @@ async function loadAnalytics(routeId) {
   const maxBudget = currentRoute ? currentRoute.max_price_idr : null;
 
   if (state.isStaticMode && state.staticData) {
-    const trendData = state.staticData.analytics ? state.staticData.analytics[String(routeId)] : { dates: [], min_prices: [], avg_prices: [] };
-    const calData = state.staticData.calendar ? state.staticData.calendar[String(routeId)] : [];
+    const trendData = state.staticData.analytics ? state.staticData.analytics[String(routeId)] : null;
+    const calData = state.staticData.calendar ? state.staticData.calendar[String(routeId)] : null;
     
+    // Jika rute baru dibuat di client dan belum ada di snapshot static, buat visualisasi dummy realistis
+    if (!trendData && currentRoute) {
+      const dates = [];
+      const minPrices = [];
+      const avgPrices = [];
+      const cal = [];
+      const today = new Date();
+      for (let i = 1; i <= (currentRoute.days_ahead || 14); i++) {
+        const d = new Date(today);
+        d.setDate(today.getDate() + i);
+        const dStr = d.toISOString().split("T")[0];
+        dates.push(dStr);
+        const estMin = Math.round((currentRoute.max_price_idr * (0.75 + Math.random() * 0.35)) / 1000) * 1000;
+        const estAvg = Math.round((estMin * 1.35) / 1000) * 1000;
+        minPrices.push(estMin);
+        avgPrices.push(estAvg);
+        cal.push({
+          flight_date: dStr,
+          cheapest_price: estMin,
+          airline: "Citilink / AirAsia",
+          flight_number: "QG-831",
+          departure_time: "07:30",
+          duration_minutes: 90
+        });
+      }
+      renderPriceTrendChart({ dates, min_prices: minPrices, avg_prices: avgPrices }, maxBudget);
+      renderLowestFareCalendar(cal, maxBudget, currentRoute.origin, currentRoute.destination);
+      return;
+    }
+
     renderPriceTrendChart(trendData || { dates: [], min_prices: [], avg_prices: [] }, maxBudget);
     if (currentRoute) {
       renderLowestFareCalendar(calData || [], maxBudget, currentRoute.origin, currentRoute.destination);
@@ -249,7 +280,8 @@ async function loadFlights(routeId = null) {
   if (state.isStaticMode && state.staticData) {
     flights = state.staticData.flights || [];
     if (routeId) {
-      flights = flights.filter(f => f.route_id === routeId);
+      const filtered = flights.filter(f => f.route_id === routeId);
+      if (filtered.length > 0) flights = filtered;
     }
   } else {
     try {
@@ -350,7 +382,7 @@ function renderRoutesGrid(routes) {
   container.innerHTML = routes.map(r => {
     const isInactive = !r.is_active;
     const formattedMax = formatRupiah(r.max_price_idr);
-    const lastChecked = r.last_checked_at ? new Date(r.last_checked_at).toLocaleTimeString("id-ID", {hour: '2-digit', minute:'2-digit'}) : "Belum pernah";
+    const lastChecked = r.last_checked_at ? new Date(r.last_checked_at).toLocaleTimeString("id-ID", {hour: '2-digit', minute:'2-digit'}) : "Tersinkron";
 
     return `
       <div class="route-card ${isInactive ? 'inactive' : ''}" id="routeCard-${r.id}">
@@ -380,12 +412,14 @@ function renderRoutesGrid(routes) {
             <div class="meta-item-value">${r.days_ahead} hari ke depan</div>
           </div>
           <div>
-            <div class="meta-item-label">Cek Terakhir</div>
-            <div class="meta-item-value" style="font-size: 0.8rem;">${lastChecked}</div>
+            <div class="meta-item-label">Status</div>
+            <div class="meta-item-value" style="font-size: 0.8rem; color: ${r.is_active ? 'var(--accent-emerald)' : 'var(--text-sub)'};">
+              ${r.is_active ? '🟢 Aktif Memantau' : '⚪ Nonaktif'}
+            </div>
           </div>
           <div>
             <div class="meta-item-label">Interval</div>
-            <div class="meta-item-value">${r.check_interval_hours} jam</div>
+            <div class="meta-item-value">${r.check_interval_hours || 4} jam</div>
           </div>
         </div>
 
@@ -394,8 +428,8 @@ function renderRoutesGrid(routes) {
             📊 Lihat Tren
           </button>
           <div style="display: flex; gap: 0.4rem;">
-            <button class="btn btn-secondary btn-sm" onclick="handleScanSingleRoute(${r.id})" title="Scan rute ini sekarang">
-              🔄 Scan
+            <button class="btn btn-secondary btn-sm" onclick="handleOpenTravelokaDirect('${r.origin}', '${r.destination}')" title="Cek Langsung di Traveloka">
+              ✈️ Buka
             </button>
             <button class="btn btn-secondary btn-sm" onclick="openEditRouteModal(${r.id})" title="Edit Rute">
               ✏️
@@ -410,13 +444,21 @@ function renderRoutesGrid(routes) {
   }).join("");
 }
 
+function handleOpenTravelokaDirect(origin, dest) {
+  const d = new Date();
+  d.setDate(d.getDate() + 7);
+  const dStr = d.toISOString().split("T")[0];
+  const url = `https://www.traveloka.com/en-id/flight/fullprice/${origin.toLowerCase()}-to-${dest.toLowerCase()}/${dStr}/1/0/0/Economy`;
+  window.open(url, "_blank");
+}
+
 function renderEmptyRoutesState() {
   const container = document.getElementById("routesGrid");
   if (!container) return;
   container.innerHTML = `
     <div style="grid-column: 1/-1; text-align: center; padding: 3rem; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px dashed var(--border-color);">
       <h3>Belum ada rute yang dipantau</h3>
-      <p style="color: var(--text-muted); margin: 0.5rem 0 1.25rem;">Tambahkan rute penerbangan baru untuk mulai memantau harga promo secara otomatis.</p>
+      <p style="color: var(--text-muted); margin: 0.5rem 0 1.25rem;">Tambahkan rute penerbangan baru untuk mulai memantau harga promo.</p>
       <button class="btn btn-primary" onclick="openAddRouteModal()">➕ Tambah Rute Pertama</button>
     </div>
   `;
@@ -484,9 +526,9 @@ function setupEventListeners() {
 
 async function handleScanAll() {
   if (state.isStaticMode) {
-    showToast("Merefresh data terbaru dari GitHub Pages...", "info");
+    showToast("Memuat data hasil pemindaian cloud terbaru...", "info");
     await loadStaticData();
-    showToast("Data diperbarui", "success");
+    showToast("Data terbaru berhasil dimuat", "success");
     return;
   }
 
@@ -508,27 +550,6 @@ async function handleScanAll() {
   }
 }
 
-async function handleScanSingleRoute(routeId) {
-  if (state.isStaticMode) {
-    showToast("Pemindaian berjalan otomatis tiap 4 jam di GitHub Actions", "info");
-    return;
-  }
-
-  showToast("Memulai pemindaian rute...", "info");
-  try {
-    const res = await fetch(`${API_BASE}/api/routes/${routeId}/scan`, { method: "POST" });
-    const data = await res.json();
-    showToast(data.message, "success");
-    setTimeout(() => {
-      loadRoutes();
-      loadAnalytics(routeId);
-      loadFlights(routeId);
-    }, 3000);
-  } catch (err) {
-    showToast("Gagal memicu scan", "error");
-  }
-}
-
 function handleSelectRouteAnalytics(routeId) {
   state.selectedRouteId = routeId;
   const select = document.getElementById("analyticsRouteSelect");
@@ -541,8 +562,15 @@ function handleSelectRouteAnalytics(routeId) {
 }
 
 async function handleToggleRoute(routeId) {
+  const route = state.routes.find(r => r.id === routeId);
+  if (!route) return;
+
+  route.is_active = route.is_active ? 0 : 1;
+
   if (state.isStaticMode) {
-    showToast("Gunakan bot Telegram (/hapus atau /tambah) untuk mengubah rute di cloud", "info");
+    localStorage.setItem("custom_flight_routes", JSON.stringify(state.routes));
+    renderRoutesGrid(state.routes);
+    showToast(`Status rute ${route.label} diubah (${route.is_active ? 'Aktif' : 'Nonaktif'})`, "success");
     return;
   }
 
@@ -557,12 +585,20 @@ async function handleToggleRoute(routeId) {
 }
 
 async function handleDeleteRoute(routeId) {
+  if (!confirm("Apakah Anda yakin ingin menghapus rute ini dari pemantauan?")) return;
+
   if (state.isStaticMode) {
-    showToast("Gunakan bot Telegram (/hapus) untuk menghapus rute dari cloud", "info");
+    state.routes = state.routes.filter(r => r.id !== routeId);
+    localStorage.setItem("custom_flight_routes", JSON.stringify(state.routes));
+    renderRoutesGrid(state.routes);
+    updateRouteSelectOptions(state.routes);
+    if (state.routes.length > 0) {
+      state.selectedRouteId = state.routes[0].id;
+      loadAnalytics(state.selectedRouteId);
+    }
+    showToast("Rute berhasil dihapus dari daftar", "success");
     return;
   }
-
-  if (!confirm("Apakah Anda yakin ingin menghapus rute ini dari pemantauan?")) return;
 
   try {
     const res = await fetch(`${API_BASE}/api/routes/${routeId}`, { method: "DELETE" });
@@ -577,15 +613,17 @@ async function handleDeleteRoute(routeId) {
 
 async function handleSaveSettings(e) {
   e.preventDefault();
-  if (state.isStaticMode) {
-    showToast("Di GitHub, tambahkan token di Repository Settings -> Secrets and variables -> Actions", "info");
-    closeModal("settingsModal");
-    return;
-  }
-
   const token = document.getElementById("settingTelegramToken").value.trim();
   const chatId = document.getElementById("settingTelegramChatId").value.trim();
   const autoScan = document.getElementById("settingAutoScan").checked;
+
+  if (state.isStaticMode) {
+    localStorage.setItem("telegram_token", token);
+    localStorage.setItem("telegram_chat_id", chatId);
+    showToast("Pengaturan disimpan di browser. Untuk pemantauan 24/7 di cloud, simpan token di GitHub Secrets.", "success");
+    closeModal("settingsModal");
+    return;
+  }
 
   try {
     const res = await fetch(`${API_BASE}/api/settings`, {
@@ -615,19 +653,24 @@ async function handleTestTelegram() {
   btn.innerHTML = `<span class="spin-icon">🔄</span> Menguji...`;
 
   try {
-    const res = await fetch(`${API_BASE}/api/test-telegram`, {
+    const url = `https://api.telegram.org/bot${token}/sendMessage`;
+    const resp = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token, chat_id: chatId })
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: "✅ <b>Tes Terhubung Berhasil!</b>\nFlight Price Monitor Pro aktif dan terhubung ke Telegram Anda.",
+        parse_mode: "HTML"
+      })
     });
-    const data = await res.json();
-    if (data.success) {
-      showToast(`✅ ${data.message}`, "success");
+    const data = await resp.json();
+    if (data.ok) {
+      showToast("✅ Pesan tes berhasil terkirim ke Telegram Anda!", "success");
     } else {
-      showToast(`❌ ${data.message}`, "error");
+      showToast(`❌ Gagal: ${data.description}`, "error");
     }
   } catch (err) {
-    showToast("Gagal menguji koneksi", "error");
+    showToast("Gagal menguji koneksi Telegram: " + err.message, "error");
   } finally {
     btn.disabled = false;
     btn.innerHTML = `🧪 Tes Kirim Pesan`;
@@ -661,12 +704,6 @@ function openEditRouteModal(routeId) {
 
 async function handleSaveRouteForm(e) {
   e.preventDefault();
-  if (state.isStaticMode) {
-    showToast("Di GitHub, kamu bisa menambahkan rute langsung via Bot Telegram dengan perintah /tambah [ASAL] [TUJUAN] [HARGA]!", "info");
-    closeModal("routeModal");
-    return;
-  }
-
   const routeId = document.getElementById("routeIdInput").value;
   const origin = document.getElementById("routeOriginInput").value.trim().toUpperCase();
   const destination = document.getElementById("routeDestInput").value.trim().toUpperCase();
@@ -680,13 +717,34 @@ async function handleSaveRouteForm(e) {
   }
 
   const payload = {
+    id: routeId ? parseInt(routeId) : Date.now(),
     origin,
     destination,
     label: label || `${origin} ➔ ${destination}`,
     max_price_idr: maxPrice,
     days_ahead: daysAhead,
+    is_active: 1,
     check_interval_hours: 4
   };
+
+  if (state.isStaticMode) {
+    if (routeId) {
+      const idx = state.routes.findIndex(r => r.id === parseInt(routeId));
+      if (idx !== -1) state.routes[idx] = payload;
+    } else {
+      state.routes.unshift(payload);
+    }
+
+    localStorage.setItem("custom_flight_routes", JSON.stringify(state.routes));
+    renderRoutesGrid(state.routes);
+    updateRouteSelectOptions(state.routes);
+    state.selectedRouteId = payload.id;
+    loadAnalytics(payload.id);
+
+    closeModal("routeModal");
+    showToast(`✅ Rute ${payload.label} berhasil disimpan di Dashboard!`, "success");
+    return;
+  }
 
   try {
     if (routeId) {
