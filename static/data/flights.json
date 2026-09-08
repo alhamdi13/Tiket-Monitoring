@@ -2,11 +2,11 @@
   "status": {
     "status": "online",
     "mode": "github_pages",
-    "last_updated": "2026-09-08T15:51:40.265094",
+    "last_updated": "2026-09-08T15:53:18.722544",
     "scheduler": {
       "running": true,
       "is_scanning": false,
-      "last_scan": "2026-09-08T15:51:40.265103",
+      "last_scan": "2026-09-08T15:53:18.722547",
       "auto_scan_enabled": true
     },
     "telegram": {
@@ -17,9 +17,9 @@
     "stats": {
       "total_routes": 3,
       "active_routes": 3,
-      "total_tracked_flights": 3468,
+      "total_tracked_flights": 3694,
       "cheapest_price_idr": 389000,
-      "total_notifications": 585
+      "total_notifications": 624
     }
   },
   "routes": [
@@ -32,7 +32,7 @@
       "days_ahead": 7,
       "is_active": 1,
       "check_interval_hours": 4,
-      "last_checked_at": "2026-09-08T15:51:15.397297",
+      "last_checked_at": "2026-09-08T15:52:54.217319",
       "created_at": "2026-09-08T22:07:26.176453",
       "updated_at": "2026-09-08T22:07:26.176453"
     },
@@ -45,7 +45,7 @@
       "days_ahead": 21,
       "is_active": 1,
       "check_interval_hours": 4,
-      "last_checked_at": "2026-09-08T15:51:31.590451",
+      "last_checked_at": "2026-09-08T15:53:10.316624",
       "created_at": "2026-09-08T22:07:26.176453",
       "updated_at": "2026-09-08T22:07:26.176453"
     },
@@ -58,7 +58,7 @@
       "days_ahead": 14,
       "is_active": 1,
       "check_interval_hours": 4,
-      "last_checked_at": "2026-09-08T15:51:40.252203",
+      "last_checked_at": "2026-09-08T15:53:18.709288",
       "created_at": "2026-09-08T22:07:26.176453",
       "updated_at": "2026-09-08T22:07:26.176453"
     }
@@ -2218,101 +2218,101 @@
       "route_label": "Surabaya ➔ Banjarmasin"
     },
     {
-      "id": 585,
+      "id": 624,
       "route_id": 1,
-      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-22)\n📅 <b>Tanggal:</b> 2026-09-22\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🟢 Citilink</b> (QG-633)\n   🕒 13:45 ➔ 15:35 (1j 50m)\n   💰 <b>Rp 439.000</b> | 💺 5 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-22/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. 🦁 Lion Air</b> (JT-875)\n   🕒 15:20 ➔ 17:10 (1j 50m)\n   💰 <b>Rp 491.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-22/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>3. ⚡ Super Air Jet</b> (IU-330)\n   🕒 17:40 ➔ 19:30 (1j 50m)\n   💰 <b>Rp 555.000</b> | 💺 9 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-22/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:51 WIB</i>",
+      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-22)\n📅 <b>Tanggal:</b> 2026-09-22\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🟢 Citilink</b> (QG-633)\n   🕒 13:45 ➔ 15:35 (1j 50m)\n   💰 <b>Rp 439.000</b> | 💺 5 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-22/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. 🦁 Lion Air</b> (JT-875)\n   🕒 15:20 ➔ 17:10 (1j 50m)\n   💰 <b>Rp 491.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-22/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>3. ⚡ Super Air Jet</b> (IU-330)\n   🕒 17:40 ➔ 19:30 (1j 50m)\n   💰 <b>Rp 555.000</b> | 💺 9 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-22/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:53 WIB</i>",
       "price_idr": 439000,
-      "sent_at": "2026-09-08T15:51:40.250716",
+      "sent_at": "2026-09-08T15:53:18.707323",
       "status": "SUCCESS",
       "route_label": "Surabaya ➔ Bali"
     },
     {
-      "id": 584,
+      "id": 623,
       "route_id": 1,
-      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-21)\n📅 <b>Tanggal:</b> 2026-09-21\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🟢 Citilink</b> (QG-664)\n   🕒 15:20 ➔ 17:10 (1j 50m)\n   💰 <b>Rp 537.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-21/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. 🦁 Lion Air</b> (JT-777)\n   🕒 15:20 ➔ 17:10 (1j 50m)\n   💰 <b>Rp 587.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-21/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>3. ⚡ Super Air Jet</b> (IU-842)\n   🕒 20:10 ➔ 22:00 (1j 50m)\n   💰 <b>Rp 591.000</b> | 💺 8 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-21/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>4. ✈️ TransNusa</b> (8B-978)\n   🕒 13:45 ➔ 15:35 (1j 50m)\n   💰 <b>Rp 619.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-21/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:51 WIB</i>",
+      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-21)\n📅 <b>Tanggal:</b> 2026-09-21\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🟢 Citilink</b> (QG-664)\n   🕒 15:20 ➔ 17:10 (1j 50m)\n   💰 <b>Rp 537.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-21/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. 🦁 Lion Air</b> (JT-777)\n   🕒 15:20 ➔ 17:10 (1j 50m)\n   💰 <b>Rp 587.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-21/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>3. ⚡ Super Air Jet</b> (IU-842)\n   🕒 20:10 ➔ 22:00 (1j 50m)\n   💰 <b>Rp 591.000</b> | 💺 8 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-21/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>4. ✈️ TransNusa</b> (8B-978)\n   🕒 13:45 ➔ 15:35 (1j 50m)\n   💰 <b>Rp 619.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-21/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:53 WIB</i>",
       "price_idr": 537000,
-      "sent_at": "2026-09-08T15:51:39.474553",
+      "sent_at": "2026-09-08T15:53:17.976294",
       "status": "SUCCESS",
       "route_label": "Surabaya ➔ Bali"
     },
     {
-      "id": 583,
+      "id": 622,
       "route_id": 1,
-      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-20)\n📅 <b>Tanggal:</b> 2026-09-20\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🦁 Lion Air</b> (JT-160)\n   🕒 09:15 ➔ 11:00 (1j 45m)\n   💰 <b>Rp 542.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-20/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. ⚡ Super Air Jet</b> (IU-493)\n   🕒 05:30 ➔ 07:15 (1j 45m)\n   💰 <b>Rp 613.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-20/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:51 WIB</i>",
+      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-20)\n📅 <b>Tanggal:</b> 2026-09-20\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🦁 Lion Air</b> (JT-160)\n   🕒 09:15 ➔ 11:00 (1j 45m)\n   💰 <b>Rp 542.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-20/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. ⚡ Super Air Jet</b> (IU-493)\n   🕒 05:30 ➔ 07:15 (1j 45m)\n   💰 <b>Rp 613.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-20/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:53 WIB</i>",
       "price_idr": 542000,
-      "sent_at": "2026-09-08T15:51:38.658788",
+      "sent_at": "2026-09-08T15:53:17.221827",
       "status": "SUCCESS",
       "route_label": "Surabaya ➔ Bali"
     },
     {
-      "id": 582,
+      "id": 621,
       "route_id": 1,
-      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-17)\n📅 <b>Tanggal:</b> 2026-09-17\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🦁 Lion Air</b> (JT-216)\n   🕒 09:15 ➔ 11:00 (1j 45m)\n   💰 <b>Rp 389.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-17/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. ✈️ TransNusa</b> (8B-454)\n   🕒 07:00 ➔ 08:45 (1j 45m)\n   💰 <b>Rp 531.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-17/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>3. ⚡ Super Air Jet</b> (IU-721)\n   🕒 13:45 ➔ 15:35 (1j 50m)\n   💰 <b>Rp 600.000</b> | 💺 3 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-17/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:51 WIB</i>",
+      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-17)\n📅 <b>Tanggal:</b> 2026-09-17\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🦁 Lion Air</b> (JT-216)\n   🕒 09:15 ➔ 11:00 (1j 45m)\n   💰 <b>Rp 389.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-17/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. ✈️ TransNusa</b> (8B-454)\n   🕒 07:00 ➔ 08:45 (1j 45m)\n   💰 <b>Rp 531.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-17/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>3. ⚡ Super Air Jet</b> (IU-721)\n   🕒 13:45 ➔ 15:35 (1j 50m)\n   💰 <b>Rp 600.000</b> | 💺 3 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-17/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:53 WIB</i>",
       "price_idr": 389000,
-      "sent_at": "2026-09-08T15:51:37.785547",
+      "sent_at": "2026-09-08T15:53:16.404213",
       "status": "SUCCESS",
       "route_label": "Surabaya ➔ Bali"
     },
     {
-      "id": 581,
+      "id": 620,
       "route_id": 1,
-      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-16)\n📅 <b>Tanggal:</b> 2026-09-16\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🔴 AirAsia Indonesia</b> (QZ-273)\n   🕒 09:15 ➔ 11:00 (1j 45m)\n   💰 <b>Rp 453.000</b> | 💺 6 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-16/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. ✈️ TransNusa</b> (8B-321)\n   🕒 20:10 ➔ 22:00 (1j 50m)\n   💰 <b>Rp 471.000</b> | 💺 4 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-16/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>3. 🦁 Lion Air</b> (JT-702)\n   🕒 07:00 ➔ 08:45 (1j 45m)\n   💰 <b>Rp 560.000</b> | 💺 2 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-16/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:51 WIB</i>",
+      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-16)\n📅 <b>Tanggal:</b> 2026-09-16\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🔴 AirAsia Indonesia</b> (QZ-273)\n   🕒 09:15 ➔ 11:00 (1j 45m)\n   💰 <b>Rp 453.000</b> | 💺 6 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-16/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. ✈️ TransNusa</b> (8B-321)\n   🕒 20:10 ➔ 22:00 (1j 50m)\n   💰 <b>Rp 471.000</b> | 💺 4 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-16/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>3. 🦁 Lion Air</b> (JT-702)\n   🕒 07:00 ➔ 08:45 (1j 45m)\n   💰 <b>Rp 560.000</b> | 💺 2 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-16/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:53 WIB</i>",
       "price_idr": 453000,
-      "sent_at": "2026-09-08T15:51:36.997794",
+      "sent_at": "2026-09-08T15:53:15.659276",
       "status": "SUCCESS",
       "route_label": "Surabaya ➔ Bali"
     },
     {
-      "id": 580,
+      "id": 619,
       "route_id": 1,
-      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-15)\n📅 <b>Tanggal:</b> 2026-09-15\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🟢 Citilink</b> (QG-362)\n   🕒 17:40 ➔ 19:30 (1j 50m)\n   💰 <b>Rp 461.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-15/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. ✈️ TransNusa</b> (8B-860)\n   🕒 15:20 ➔ 17:10 (1j 50m)\n   💰 <b>Rp 552.000</b> | 💺 7 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-15/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:51 WIB</i>",
+      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-15)\n📅 <b>Tanggal:</b> 2026-09-15\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🟢 Citilink</b> (QG-362)\n   🕒 17:40 ➔ 19:30 (1j 50m)\n   💰 <b>Rp 461.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-15/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. ✈️ TransNusa</b> (8B-860)\n   🕒 15:20 ➔ 17:10 (1j 50m)\n   💰 <b>Rp 552.000</b> | 💺 7 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-15/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:53 WIB</i>",
       "price_idr": 461000,
-      "sent_at": "2026-09-08T15:51:36.254489",
+      "sent_at": "2026-09-08T15:53:14.926759",
       "status": "SUCCESS",
       "route_label": "Surabaya ➔ Bali"
     },
     {
-      "id": 579,
+      "id": 618,
       "route_id": 1,
-      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-14)\n📅 <b>Tanggal:</b> 2026-09-14\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🦁 Lion Air</b> (JT-286)\n   🕒 05:30 ➔ 07:15 (1j 45m)\n   💰 <b>Rp 512.000</b> | 💺 3 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-14/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. ✈️ TransNusa</b> (8B-740)\n   🕒 20:10 ➔ 22:00 (1j 50m)\n   💰 <b>Rp 575.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-14/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>3. ⚡ Super Air Jet</b> (IU-229)\n   🕒 15:20 ➔ 17:10 (1j 50m)\n   💰 <b>Rp 591.000</b> | 💺 9 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-14/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>4. 🔵 Pelita Air</b> (IP-708)\n   🕒 07:00 ➔ 08:45 (1j 45m)\n   💰 <b>Rp 599.000</b> | 💺 6 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-14/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>5. 🔴 AirAsia Indonesia</b> (QZ-956)\n   🕒 20:10 ➔ 22:00 (1j 50m)\n   💰 <b>Rp 609.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-14/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:51 WIB</i>",
+      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-14)\n📅 <b>Tanggal:</b> 2026-09-14\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🦁 Lion Air</b> (JT-286)\n   🕒 05:30 ➔ 07:15 (1j 45m)\n   💰 <b>Rp 512.000</b> | 💺 3 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-14/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. ✈️ TransNusa</b> (8B-740)\n   🕒 20:10 ➔ 22:00 (1j 50m)\n   💰 <b>Rp 575.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-14/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>3. ⚡ Super Air Jet</b> (IU-229)\n   🕒 15:20 ➔ 17:10 (1j 50m)\n   💰 <b>Rp 591.000</b> | 💺 9 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-14/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>4. 🔵 Pelita Air</b> (IP-708)\n   🕒 07:00 ➔ 08:45 (1j 45m)\n   💰 <b>Rp 599.000</b> | 💺 6 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-14/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>5. 🔴 AirAsia Indonesia</b> (QZ-956)\n   🕒 20:10 ➔ 22:00 (1j 50m)\n   💰 <b>Rp 609.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-14/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:53 WIB</i>",
       "price_idr": 512000,
-      "sent_at": "2026-09-08T15:51:35.438181",
+      "sent_at": "2026-09-08T15:53:14.093278",
       "status": "SUCCESS",
       "route_label": "Surabaya ➔ Bali"
     },
     {
-      "id": 578,
+      "id": 617,
       "route_id": 1,
-      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-13)\n📅 <b>Tanggal:</b> 2026-09-13\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🦁 Lion Air</b> (JT-462)\n   🕒 09:15 ➔ 11:00 (1j 45m)\n   💰 <b>Rp 558.000</b> | 💺 6 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-13/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:51 WIB</i>",
+      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-13)\n📅 <b>Tanggal:</b> 2026-09-13\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🦁 Lion Air</b> (JT-462)\n   🕒 09:15 ➔ 11:00 (1j 45m)\n   💰 <b>Rp 558.000</b> | 💺 6 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-13/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:53 WIB</i>",
       "price_idr": 558000,
-      "sent_at": "2026-09-08T15:51:34.694081",
+      "sent_at": "2026-09-08T15:53:13.379630",
       "status": "SUCCESS",
       "route_label": "Surabaya ➔ Bali"
     },
     {
-      "id": 577,
+      "id": 616,
       "route_id": 1,
-      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-11)\n📅 <b>Tanggal:</b> 2026-09-11\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🟢 Citilink</b> (QG-653)\n   🕒 20:10 ➔ 22:00 (1j 50m)\n   💰 <b>Rp 618.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-11/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:51 WIB</i>",
+      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-11)\n📅 <b>Tanggal:</b> 2026-09-11\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🟢 Citilink</b> (QG-653)\n   🕒 20:10 ➔ 22:00 (1j 50m)\n   💰 <b>Rp 618.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-11/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:53 WIB</i>",
       "price_idr": 618000,
-      "sent_at": "2026-09-08T15:51:33.873379",
+      "sent_at": "2026-09-08T15:53:12.566452",
       "status": "SUCCESS",
       "route_label": "Surabaya ➔ Bali"
     },
     {
-      "id": 576,
+      "id": 615,
       "route_id": 1,
-      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-10)\n📅 <b>Tanggal:</b> 2026-09-10\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. ⚡ Super Air Jet</b> (IU-908)\n   🕒 09:15 ➔ 11:00 (1j 45m)\n   💰 <b>Rp 512.000</b> | 💺 3 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-10/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. 🟢 Citilink</b> (QG-833)\n   🕒 07:00 ➔ 08:45 (1j 45m)\n   💰 <b>Rp 600.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-10/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:51 WIB</i>",
+      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-10)\n📅 <b>Tanggal:</b> 2026-09-10\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. ⚡ Super Air Jet</b> (IU-908)\n   🕒 09:15 ➔ 11:00 (1j 45m)\n   💰 <b>Rp 512.000</b> | 💺 3 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-10/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. 🟢 Citilink</b> (QG-833)\n   🕒 07:00 ➔ 08:45 (1j 45m)\n   💰 <b>Rp 600.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-10/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:53 WIB</i>",
       "price_idr": 512000,
-      "sent_at": "2026-09-08T15:51:33.145742",
+      "sent_at": "2026-09-08T15:53:11.831583",
       "status": "SUCCESS",
       "route_label": "Surabaya ➔ Bali"
     },
     {
-      "id": 575,
+      "id": 614,
       "route_id": 1,
-      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-09)\n📅 <b>Tanggal:</b> 2026-09-09\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🦁 Lion Air</b> (JT-710)\n   🕒 20:10 ➔ 22:00 (1j 50m)\n   💰 <b>Rp 476.000</b> | 💺 2 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. ⚡ Super Air Jet</b> (IU-540)\n   🕒 15:20 ➔ 17:10 (1j 50m)\n   💰 <b>Rp 596.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>3. 🔴 AirAsia Indonesia</b> (QZ-296)\n   🕒 07:00 ➔ 08:45 (1j 45m)\n   💰 <b>Rp 616.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:51 WIB</i>",
+      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-09)\n📅 <b>Tanggal:</b> 2026-09-09\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🦁 Lion Air</b> (JT-710)\n   🕒 20:10 ➔ 22:00 (1j 50m)\n   💰 <b>Rp 476.000</b> | 💺 2 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. ⚡ Super Air Jet</b> (IU-540)\n   🕒 15:20 ➔ 17:10 (1j 50m)\n   💰 <b>Rp 596.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>3. 🔴 AirAsia Indonesia</b> (QZ-296)\n   🕒 07:00 ➔ 08:45 (1j 45m)\n   💰 <b>Rp 616.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 15:53 WIB</i>",
       "price_idr": 476000,
-      "sent_at": "2026-09-08T15:51:32.303986",
+      "sent_at": "2026-09-08T15:53:11.077144",
       "status": "SUCCESS",
       "route_label": "Surabaya ➔ Bali"
     }
@@ -2350,42 +2350,42 @@
         {
           "airline": "Citilink",
           "min_price": 487000,
-          "flight_count": 75
+          "flight_count": 80
         },
         {
           "airline": "Super Air Jet",
           "min_price": 503000,
-          "flight_count": 45
+          "flight_count": 48
         },
         {
           "airline": "Pelita Air",
           "min_price": 542000,
-          "flight_count": 75
+          "flight_count": 80
         },
         {
           "airline": "Lion Air",
           "min_price": 570000,
-          "flight_count": 90
+          "flight_count": 96
         },
         {
           "airline": "AirAsia Indonesia",
           "min_price": 621000,
-          "flight_count": 30
+          "flight_count": 32
         },
         {
           "airline": "Batik Air",
           "min_price": 661000,
-          "flight_count": 60
+          "flight_count": 64
         },
         {
           "airline": "TransNusa",
           "min_price": 671000,
-          "flight_count": 90
+          "flight_count": 96
         },
         {
           "airline": "Garuda Indonesia",
           "min_price": 946000,
-          "flight_count": 60
+          "flight_count": 64
         }
       ],
       "summary": [
@@ -2394,49 +2394,49 @@
           "min_price": 493000,
           "avg_price": 586000.0,
           "max_price": 674000,
-          "total_flights": 60
+          "total_flights": 64
         },
         {
           "flight_date": "2026-09-10",
           "min_price": 519000,
           "avg_price": 659500.0,
           "max_price": 1011000,
-          "total_flights": 90
+          "total_flights": 96
         },
         {
           "flight_date": "2026-09-11",
           "min_price": 695000,
           "avg_price": 871000.0,
           "max_price": 1010000,
-          "total_flights": 60
+          "total_flights": 64
         },
         {
           "flight_date": "2026-09-12",
           "min_price": 765000,
           "avg_price": 1045750.0,
           "max_price": 1736000,
-          "total_flights": 60
+          "total_flights": 64
         },
         {
           "flight_date": "2026-09-13",
           "min_price": 742000,
           "avg_price": 911750.0,
           "max_price": 1075000,
-          "total_flights": 60
+          "total_flights": 64
         },
         {
           "flight_date": "2026-09-14",
           "min_price": 542000,
           "avg_price": 766428.5714285715,
           "max_price": 1524000,
-          "total_flights": 105
+          "total_flights": 112
         },
         {
           "flight_date": "2026-09-15",
           "min_price": 487000,
           "avg_price": 673833.3333333334,
           "max_price": 946000,
-          "total_flights": 90
+          "total_flights": 96
         }
       ]
     },
@@ -2514,42 +2514,42 @@
         {
           "airline": "Citilink",
           "min_price": 413000,
-          "flight_count": 225
+          "flight_count": 240
         },
         {
           "airline": "Super Air Jet",
           "min_price": 437000,
-          "flight_count": 195
+          "flight_count": 208
         },
         {
           "airline": "AirAsia Indonesia",
           "min_price": 467000,
-          "flight_count": 240
+          "flight_count": 256
         },
         {
           "airline": "Lion Air",
           "min_price": 502000,
-          "flight_count": 255
+          "flight_count": 272
         },
         {
           "airline": "TransNusa",
           "min_price": 514000,
-          "flight_count": 195
+          "flight_count": 208
         },
         {
           "airline": "Pelita Air",
           "min_price": 517000,
-          "flight_count": 195
+          "flight_count": 208
         },
         {
           "airline": "Batik Air",
           "min_price": 599000,
-          "flight_count": 240
+          "flight_count": 256
         },
         {
           "airline": "Garuda Indonesia",
           "min_price": 976000,
-          "flight_count": 150
+          "flight_count": 160
         }
       ],
       "summary": [
@@ -2558,147 +2558,147 @@
           "min_price": 528000,
           "avg_price": 647600.0,
           "max_price": 750000,
-          "total_flights": 75
+          "total_flights": 80
         },
         {
           "flight_date": "2026-09-10",
           "min_price": 555000,
           "avg_price": 624500.0,
           "max_price": 763000,
-          "total_flights": 60
+          "total_flights": 64
         },
         {
           "flight_date": "2026-09-11",
           "min_price": 571000,
           "avg_price": 973428.5714285715,
           "max_price": 1743000,
-          "total_flights": 105
+          "total_flights": 112
         },
         {
           "flight_date": "2026-09-12",
           "min_price": 653000,
           "avg_price": 957714.2857142857,
           "max_price": 1824000,
-          "total_flights": 105
+          "total_flights": 112
         },
         {
           "flight_date": "2026-09-13",
           "min_price": 633000,
           "avg_price": 916666.6666666666,
           "max_price": 1842000,
-          "total_flights": 90
+          "total_flights": 96
         },
         {
           "flight_date": "2026-09-14",
           "min_price": 437000,
           "avg_price": 774857.1428571428,
           "max_price": 1542000,
-          "total_flights": 105
+          "total_flights": 112
         },
         {
           "flight_date": "2026-09-15",
           "min_price": 414000,
           "avg_price": 514400.0,
           "max_price": 599000,
-          "total_flights": 75
+          "total_flights": 80
         },
         {
           "flight_date": "2026-09-16",
           "min_price": 470000,
           "avg_price": 563200.0,
           "max_price": 687000,
-          "total_flights": 75
+          "total_flights": 80
         },
         {
           "flight_date": "2026-09-17",
           "min_price": 457000,
           "avg_price": 717000.0,
           "max_price": 1315000,
-          "total_flights": 105
+          "total_flights": 112
         },
         {
           "flight_date": "2026-09-18",
           "min_price": 653000,
           "avg_price": 802000.0,
           "max_price": 924000,
-          "total_flights": 60
+          "total_flights": 64
         },
         {
           "flight_date": "2026-09-19",
           "min_price": 701000,
           "avg_price": 759000.0,
           "max_price": 924000,
-          "total_flights": 60
+          "total_flights": 64
         },
         {
           "flight_date": "2026-09-20",
           "min_price": 726000,
           "avg_price": 994600.0,
           "max_price": 1810000,
-          "total_flights": 75
+          "total_flights": 80
         },
         {
           "flight_date": "2026-09-21",
           "min_price": 441000,
           "avg_price": 597200.0,
           "max_price": 789000,
-          "total_flights": 75
+          "total_flights": 80
         },
         {
           "flight_date": "2026-09-22",
           "min_price": 467000,
           "avg_price": 723400.0,
           "max_price": 1298000,
-          "total_flights": 75
+          "total_flights": 80
         },
         {
           "flight_date": "2026-09-23",
           "min_price": 458000,
           "avg_price": 567000.0,
           "max_price": 699000,
-          "total_flights": 60
+          "total_flights": 64
         },
         {
           "flight_date": "2026-09-24",
           "min_price": 536000,
           "avg_price": 742250.0,
           "max_price": 976000,
-          "total_flights": 60
+          "total_flights": 64
         },
         {
           "flight_date": "2026-09-25",
           "min_price": 547000,
           "avg_price": 742000.0,
           "max_price": 1025000,
-          "total_flights": 90
+          "total_flights": 96
         },
         {
           "flight_date": "2026-09-26",
           "min_price": 723000,
           "avg_price": 813500.0,
           "max_price": 868000,
-          "total_flights": 90
+          "total_flights": 96
         },
         {
           "flight_date": "2026-09-27",
           "min_price": 547000,
           "avg_price": 977666.6666666666,
           "max_price": 1716000,
-          "total_flights": 90
+          "total_flights": 96
         },
         {
           "flight_date": "2026-09-28",
           "min_price": 413000,
           "avg_price": 818666.6666666666,
           "max_price": 1506000,
-          "total_flights": 90
+          "total_flights": 96
         },
         {
           "flight_date": "2026-09-29",
           "min_price": 561000,
           "avg_price": 619000.0,
           "max_price": 682000,
-          "total_flights": 75
+          "total_flights": 80
         }
       ]
     },
@@ -2755,42 +2755,42 @@
         {
           "airline": "Lion Air",
           "min_price": 389000,
-          "flight_count": 160
+          "flight_count": 170
         },
         {
           "airline": "Citilink",
           "min_price": 439000,
-          "flight_count": 144
+          "flight_count": 153
         },
         {
           "airline": "AirAsia Indonesia",
           "min_price": 453000,
-          "flight_count": 128
+          "flight_count": 136
         },
         {
           "airline": "TransNusa",
           "min_price": 471000,
-          "flight_count": 192
+          "flight_count": 204
         },
         {
           "airline": "Super Air Jet",
           "min_price": 512000,
-          "flight_count": 192
+          "flight_count": 204
         },
         {
           "airline": "Pelita Air",
           "min_price": 599000,
-          "flight_count": 128
+          "flight_count": 136
         },
         {
           "airline": "Batik Air",
           "min_price": 690000,
-          "flight_count": 160
+          "flight_count": 170
         },
         {
           "airline": "Garuda Indonesia",
           "min_price": 962000,
-          "flight_count": 144
+          "flight_count": 153
         }
       ],
       "summary": [
@@ -2799,98 +2799,98 @@
           "min_price": 476000,
           "avg_price": 760571.4285714285,
           "max_price": 1531000,
-          "total_flights": 112
+          "total_flights": 119
         },
         {
           "flight_date": "2026-09-10",
           "min_price": 512000,
           "avg_price": 697800.0,
           "max_price": 958000,
-          "total_flights": 80
+          "total_flights": 85
         },
         {
           "flight_date": "2026-09-11",
           "min_price": 618000,
           "avg_price": 825400.0,
           "max_price": 1220000,
-          "total_flights": 80
+          "total_flights": 85
         },
         {
           "flight_date": "2026-09-12",
           "min_price": 670000,
           "avg_price": 1034750.0,
           "max_price": 1855000,
-          "total_flights": 64
+          "total_flights": 68
         },
         {
           "flight_date": "2026-09-13",
           "min_price": 558000,
           "avg_price": 890000.0,
           "max_price": 1442000,
-          "total_flights": 112
+          "total_flights": 119
         },
         {
           "flight_date": "2026-09-14",
           "min_price": 512000,
           "avg_price": 686166.6666666666,
           "max_price": 1231000,
-          "total_flights": 96
+          "total_flights": 102
         },
         {
           "flight_date": "2026-09-15",
           "min_price": 461000,
           "avg_price": 701000.0,
           "max_price": 1047000,
-          "total_flights": 80
+          "total_flights": 85
         },
         {
           "flight_date": "2026-09-16",
           "min_price": 453000,
           "avg_price": 541250.0,
           "max_price": 681000,
-          "total_flights": 64
+          "total_flights": 68
         },
         {
           "flight_date": "2026-09-17",
           "min_price": 389000,
           "avg_price": 662200.0,
           "max_price": 962000,
-          "total_flights": 80
+          "total_flights": 85
         },
         {
           "flight_date": "2026-09-18",
           "min_price": 678000,
           "avg_price": 839800.0,
           "max_price": 1101000,
-          "total_flights": 80
+          "total_flights": 85
         },
         {
           "flight_date": "2026-09-19",
           "min_price": 674000,
           "avg_price": 978428.5714285715,
           "max_price": 1752000,
-          "total_flights": 112
+          "total_flights": 119
         },
         {
           "flight_date": "2026-09-20",
           "min_price": 542000,
           "avg_price": 878833.3333333334,
           "max_price": 1599000,
-          "total_flights": 96
+          "total_flights": 102
         },
         {
           "flight_date": "2026-09-21",
           "min_price": 537000,
           "avg_price": 648142.8571428572,
           "max_price": 764000,
-          "total_flights": 112
+          "total_flights": 119
         },
         {
           "flight_date": "2026-09-22",
           "min_price": 439000,
           "avg_price": 696000.0,
           "max_price": 1184000,
-          "total_flights": 80
+          "total_flights": 85
         }
       ]
     }
