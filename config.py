@@ -1,81 +1,53 @@
 """
-config.py — Konfigurasi utama flight monitor.
-Semua nilai dibaca dari file .env
+config.py - Konfigurasi Terpusat untuk Flight Monitor Pro.
+Mendukung pembacaan dari file .env dengan fallback dinamis ke database SQLite.
 """
+
 import os
 from dataclasses import dataclass, field
 from dotenv import load_dotenv
+import database
 
 load_dotenv()
 
 
 @dataclass
-class FlightRoute:
-    origin: str           # Kode IATA bandara asal (misal: CGK, MLG, SUB)
-    destination: str      # Kode IATA bandara tujuan (misal: DPS, JOG, BPN)
-    label: str = ""       # Label tampilan (misal: "Jakarta → Bali")
-
-    def __post_init__(self):
-        self.origin = self.origin.upper()
-        self.destination = self.destination.upper()
-        if not self.label:
-            self.label = f"{self.origin} → {self.destination}"
-
-
-@dataclass
 class Config:
-    # ── Telegram ──────────────────────────────────────────────────────
-    telegram_bot_token: str = field(
-        default_factory=lambda: os.getenv("TELEGRAM_BOT_TOKEN", "")
-    )
-    telegram_chat_id: str = field(
-        default_factory=lambda: os.getenv("TELEGRAM_CHAT_ID", "")
-    )
+    # Server Web
+    host: str = field(default_factory=lambda: os.getenv("HOST", "0.0.0.0"))
+    port: int = field(default_factory=lambda: int(os.getenv("PORT", "8000")))
 
-    # ── Rute & Budget ─────────────────────────────────────────────────
-    route: FlightRoute = field(
-        default_factory=lambda: FlightRoute(
-            origin=os.getenv("FLIGHT_ORIGIN", "CGK"),
-            destination=os.getenv("FLIGHT_DESTINATION", "DPS"),
-            label=os.getenv("FLIGHT_LABEL", ""),
-        )
-    )
+    # Logging
+    log_level: str = field(default_factory=lambda: os.getenv("LOG_LEVEL", "INFO"))
 
-    # Harga maksimum (IDR) agar dianggap "murah" dan notif dikirim
-    max_price_idr: int = field(
-        default_factory=lambda: int(os.getenv("MAX_PRICE_IDR", "500000"))
-    )
+    @property
+    def telegram_bot_token(self) -> str:
+        # Prioritaskan database setting jika ada, fallback ke .env
+        val = database.get_setting("telegram_bot_token")
+        if val:
+            return val
+        return os.getenv("TELEGRAM_BOT_TOKEN", "")
 
-    # Berapa hari ke depan yang dicek (misal: 7 = cek 7 hari ke depan)
-    days_ahead: int = field(
-        default_factory=lambda: int(os.getenv("DAYS_AHEAD", "30"))
-    )
+    @property
+    def telegram_chat_id(self) -> str:
+        val = database.get_setting("telegram_chat_id")
+        if val:
+            return val
+        return os.getenv("TELEGRAM_CHAT_ID", "")
 
-    # ── Jadwal Pengecekan ─────────────────────────────────────────────
-    # Interval dalam JAM (misal: 6 = cek setiap 6 jam)
-    check_interval_hours: int = field(
-        default_factory=lambda: int(os.getenv("CHECK_INTERVAL_HOURS", "6"))
-    )
+    @property
+    def auto_scan_enabled(self) -> bool:
+        val = database.get_setting("auto_scan_enabled", "true")
+        return val.lower() in ("true", "1", "yes")
 
-    # ── Logging ───────────────────────────────────────────────────────
-    log_level: str = field(
-        default_factory=lambda: os.getenv("LOG_LEVEL", "INFO")
-    )
+    @property
+    def mock_simulation_enabled(self) -> bool:
+        val = database.get_setting("mock_simulation_enabled", "true")
+        return val.lower() in ("true", "1", "yes")
 
-    def validate(self):
-        errors = []
-        if not self.telegram_bot_token:
-            errors.append("TELEGRAM_BOT_TOKEN belum diisi di .env")
-        if not self.telegram_chat_id:
-            errors.append("TELEGRAM_CHAT_ID belum diisi di .env")
-        if not self.route.origin or not self.route.destination:
-            errors.append("FLIGHT_ORIGIN dan FLIGHT_DESTINATION harus diisi")
-        if self.max_price_idr <= 0:
-            errors.append("MAX_PRICE_IDR harus lebih dari 0")
-        if errors:
-            raise ValueError("Konfigurasi tidak valid:\n" + "\n".join(f"  - {e}" for e in errors))
-        return True
+    def update_telegram_credentials(self, token: str, chat_id: str):
+        database.set_setting("telegram_bot_token", token.strip())
+        database.set_setting("telegram_chat_id", chat_id.strip())
 
 
-# Singleton config — import dari modul lain pakai: from config import cfg
 cfg = Config()

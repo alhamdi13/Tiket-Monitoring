@@ -1,136 +1,77 @@
-# ✈️ Flight Price Monitor — Telegram Bot
+# ✈️ Flight Price Monitor Pro
 
-Bot otomatis yang memantau harga tiket pesawat di Traveloka/Tiket.com dan mengirimkan notifikasi ke Telegram saat tiket murah ditemukan.
+Sistem pemantauan harga tiket pesawat otomatis all-in-one yang dilengkapi dengan **Web Dashboard Interaktif (FastAPI)**, penyimpanan database **SQLite**, serta **Bot Telegram 2 Arah (Interactive Command & Push Alert)**.
 
 ---
 
-## 🚀 Setup (5 Langkah)
+## 🚀 Fitur Unggulan
 
-### 1. Buat Telegram Bot
-1. Buka Telegram → cari **@BotFather**
-2. Kirim `/newbot`
-3. Masukkan nama bot (misal: `Flight Monitor Saya`)
-4. Salin **token** yang diberikan (format: `123456:ABCdef...`)
+1. **Modern Web Dashboard**:
+   - **Price Trend Chart**: Grafik fluktuasi harga terendah dan rata-rata per tanggal.
+   - **Lowest Fare Heatmap Calendar**: Matriks kalender 30 hari tarif termurah dengan tautan pemesanan langsung ke Traveloka / Tiket.com.
+   - **Multi-Route Manager**: Tambah, edit, aktifkan/nonaktifkan, dan hapus rute pemantauan dengan autocomplete bandara IATA.
+   - **Instant Scan Trigger**: Tombol pemindaian instan untuk rute tertentu atau seluruh rute sekaligus.
+   - **Theme Switcher**: Dukungan mode Gelap (*Dark Glassmorphism*) dan mode Terang (*Light*).
 
-### 2. Dapatkan Chat ID Kamu
-1. Cari **@userinfobot** di Telegram
-2. Kirim `/start`
-3. Salin angka **Id** yang muncul (misal: `987654321`)
+2. **Bot Telegram Interaktif 2 Arah**:
+   - Menerima dan merespons perintah langsung di chat:
+     - `/cek CGK DPS 2026-10-15` — Cari harga tiket detik itu juga.
+     - `/tambah SUB DPS 600000 14` — Daftarkan rute pantauan baru dari chat.
+     - `/list` — Tampilkan seluruh rute yang sedang dipantau.
+     - `/hapus [ID]` — Hapus rute pantauan tertentu.
+     - `/scan` — Jalankan scan harga sekarang juga.
+     - `/status` — Cek status sistem, database, dan scheduler.
 
-### 3. Konfigurasi
-```bash
-cp .env.example .env
-nano .env   # atau edit dengan text editor apa saja
-```
+3. **Smart Push Alert**:
+   - Format HTML rapi dengan perbandingan harga vs budget, info maskapai, jam penerbangan, estimasi durasi, dan sisa kursi.
+   - Anti-spam cerdas: Notifikasi hanya dikirim jika harga baru lebih murah dari notifikasi sebelumnya.
 
-Isi nilai berikut di `.env`:
-```
-TELEGRAM_BOT_TOKEN=token-dari-botfather
-TELEGRAM_CHAT_ID=id-dari-userinfobot
-FLIGHT_ORIGIN=CGK       # Bandara asal (kode IATA)
-FLIGHT_DESTINATION=DPS  # Bandara tujuan (kode IATA)
-MAX_PRICE_IDR=500000     # Notif jika harga di bawah ini
-DAYS_AHEAD=30            # Cek 30 hari ke depan
-CHECK_INTERVAL_HOURS=6   # Cek setiap 6 jam
-```
+4. **Database Persistence (SQLite)**:
+   - Menyimpan seluruh riwayat harga penerbangan, log notifikasi, dan rute pantauan secara permanen.
 
-**Kode IATA Bandara Indonesia yang Umum:**
-| Kota | Bandara | Kode |
-|------|---------|------|
-| Jakarta | Soekarno-Hatta | CGK |
-| Bali | Ngurah Rai | DPS |
-| Surabaya | Juanda | SUB |
-| Malang | Abdul Rachman Saleh | MLG |
-| Yogyakarta | YIA / Adisutjipto | YIA / JOG |
-| Medan | Kualanamu | KNO |
-| Makassar | Sultan Hasanuddin | UPG |
-| Lombok | Zainuddin Abdul Madjid | LOP |
+---
 
-### 4. Install & Jalankan
+## 🛠️ Panduan Menjalankan
 
-**Cara A — Python langsung:**
+### 1. Install Dependensi
 ```bash
 pip install -r requirements.txt
-python monitor.py
 ```
 
-**Cara B — Docker (direkomendasikan agar jalan terus):**
+### 2. Konfigurasi Bot Telegram
+Buka file `.env` dan masukkan token serta Chat ID Telegram kamu:
+```env
+TELEGRAM_BOT_TOKEN=token_bot_dari_botfather
+TELEGRAM_CHAT_ID=chat_id_kamu
+```
+
+### 3. Jalankan Aplikasi
 ```bash
-docker build -t flight-monitor .
-docker run -d --name flight-monitor --env-file .env flight-monitor
+python main.py
 ```
 
-### 5. Deploy Gratis (Pilih Salah Satu)
-
-#### Option 1: Railway (Termudah)
-1. Daftar di [railway.app](https://railway.app) (gratis)
-2. New Project → Deploy from GitHub
-3. Push kode ke GitHub dulu
-4. Tambahkan Environment Variables dari `.env` di dashboard Railway
-5. Deploy!
-
-#### Option 2: Render
-1. Daftar di [render.com](https://render.com)
-2. New → Background Worker
-3. Connect GitHub repo
-4. Set Environment Variables
-5. Deploy!
-
-#### Option 3: VPS / Raspberry Pi
-```bash
-# Jalankan di background dengan nohup
-nohup python monitor.py > flight-monitor.log 2>&1 &
-
-# Atau gunakan screen
-screen -S flight-monitor
-python monitor.py
-# Ctrl+A, D untuk detach
-```
+Buka browser dan akses Dashboard di:
+👉 **`http://localhost:8000`**
 
 ---
 
-## 📱 Contoh Notifikasi Telegram
+## 📁 Struktur Folder
 
 ```
-🚨 TIKET MURAH DITEMUKAN!
-──────────────────────────────
-🛫 Rute: Jakarta → Bali (2024-07-15)
-💸 Batas harga: Rp 500.000
-
-1. 🟢 Citilink QG-831
-   🕐 06:00 → 08:55 (2j 55m)
-   💰 Rp 389.000
-
-2. ❤️ AirAsia QZ-7684
-   🕐 08:30 → 11:20 (2j 50m)
-   💰 Rp 425.000
-
-──────────────────────────────
-🔗 Lihat di Traveloka
-⏰ Cek dilakukan: 15 Jun 2024, 06:00 WIB
+Tiket-Monitoring-Pro/
+├── main.py                   # FastAPI REST API & Server Entry Point
+├── database.py               # SQLite Data Access Layer & Schema
+├── config.py                 # Konfigurasi terpusat
+├── scraper.py                # Multi-provider scraping engine & fallback
+├── notifier.py               # Telegram push notification formatter
+├── telegram_bot.py           # Telegram interactive 2-way bot handler
+├── scheduler.py              # Background worker & periodic scheduler
+├── airports.json             # Database bandara & kode IATA
+├── static/                   # Web Dashboard UI
+│   ├── index.html            # Halaman Web SPA
+│   ├── css/style.css         # Styling Glassmorphism modern
+│   └── js/
+│       ├── app.js            # State management & REST API client
+│       └── charts.js         # Renderer grafik Chart.js & kalender tarif
+└── .env                      # File konfigurasi
 ```
-
----
-
-## ⚠️ Catatan Penting
-
-- **Anti-spam**: Bot tidak akan mengirim notifikasi berulang untuk harga yang sama. Notifikasi baru hanya dikirim jika ada harga yang lebih murah dari sebelumnya.
-- **Scraping**: Endpoint Traveloka/Tiket.com adalah unofficial. Jika tidak berfungsi, buka issue di repo.
-- **Rate limiting**: Bot menunggu antar request untuk menghindari pemblokiran IP.
-- **Akurasi harga**: Harga di Traveloka bisa berubah sewaktu-waktu. Selalu verifikasi sebelum membeli.
-
----
-
-## 🐛 Troubleshooting
-
-**Bot tidak mengirim pesan:**
-- Pastikan kamu sudah `/start` bot di Telegram terlebih dahulu
-- Cek token dan chat ID di `.env`
-
-**Scraping gagal terus:**
-- Coba tambah `LOG_LEVEL=DEBUG` di `.env` untuk lihat detail error
-- Bisa jadi IP kamu di-rate-limit; tunggu beberapa jam
-
-**Harga tidak ditemukan:**
-- Cek kode IATA sudah benar
-- Coba perbesar `DAYS_AHEAD`

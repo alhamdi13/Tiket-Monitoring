@@ -1,162 +1,164 @@
 """
-notifier.py — Kirim notifikasi Telegram saat tiket murah ditemukan.
-
-Menggunakan Telegram Bot API (tanpa library eksternal berat,
-cukup dengan requests biasa).
+notifier.py - Telegram Push Notifier untuk Flight Price Monitor Pro.
+Mengirimkan notifikasi tiket murah dengan format pesan HTML yang rapi, tombol direct booking, dan logging ke database.
 """
 
 import logging
-from typing import Optional
-
+from datetime import datetime
+from typing import List, Optional
 import requests
 
+import database
 from scraper import FlightResult
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("notifier")
 
-TELEGRAM_API = "https://api.telegram.org/bot{token}/{method}"
-
-# ── Emoji & Format ────────────────────────────────────────────────────────────
-
-AIRLINE_EMOJI = {
+AIRLINE_EMOJIS = {
     "garuda": "🦅",
     "lion": "🦁",
-    "batik": "🌺",
+    "batik": "👑",
     "citilink": "🟢",
-    "airasia": "❤️",
-    "sriwijaya": "🌴",
-    "trans nusa": "✈️",
+    "airasia": "🔴",
+    "super air jet": "⚡",
+    "pelita": "🔵",
+    "sriwijaya": "⭐",
+    "transnusa": "✈️",
     "wings": "🕊️",
 }
 
 
-def _airline_emoji(name: str) -> str:
+def get_airline_emoji(name: str) -> str:
     name_lower = name.lower()
-    for key, emoji in AIRLINE_EMOJI.items():
-        if key in name_lower:
+    for k, emoji in AIRLINE_EMOJIS.items():
+        if k in name_lower:
             return emoji
     return "✈️"
 
 
-def _format_duration(minutes: int) -> str:
+def format_duration(minutes: int) -> str:
     if not minutes:
         return ""
     h, m = divmod(minutes, 60)
     return f"{h}j {m}m" if m else f"{h}j"
 
 
-# ── Telegram Sender ───────────────────────────────────────────────────────────
-
 class TelegramNotifier:
-    def __init__(self, bot_token: str, chat_id: str):
-        self.token = bot_token
-        self.chat_id = chat_id
-        self._base = f"https://api.telegram.org/bot{bot_token}"
+    def __init__(self, bot_token: Optional[str] = None, chat_id: Optional[str] = None):
+        self._token = bot_token
+        self._chat_id = chat_id
+
+    @property
+    def token(self) -> str:
+        if self._token:
+            return self._token
+        return database.get_setting("telegram_bot_token")
+
+    @property
+    def chat_id(self) -> str:
+        if self._chat_id:
+            return self._chat_id
+        return database.get_setting("telegram_chat_id")
 
     def _post(self, method: str, payload: dict) -> dict:
-        url = f"{self._base}/{method}"
-        resp = requests.post(url, json=payload, timeout=15)
+        if not self.token:
+            raise ValueError("Token Telegram bot belum disetel!")
+        url = f"https://api.telegram.org/bot{self.token}/{method}"
+        resp = requests.post(url, json=payload, timeout=12)
         resp.raise_for_status()
         return resp.json()
 
-    def send_message(self, text: str, parse_mode: str = "HTML") -> bool:
+    def send_message(self, text: str, parse_mode: str = "HTML", route_id: Optional[int] = None, price_idr: int = 0) -> bool:
+        if not self.token or not self.chat_id:
+            logger.warning("[Telegram] Token atau Chat ID belum disetel, pesan tidak dikirim.")
+            return False
+
         try:
             self._post("sendMessage", {
                 "chat_id": self.chat_id,
                 "text": text,
                 "parse_mode": parse_mode,
-                "disable_web_page_preview": True,
+                "disable_web_page_preview": False,
             })
-            logger.info("[Telegram] Pesan berhasil dikirim")
+            logger.info("[Telegram] Pesan berhasil dikirim ke Telegram")
+            database.log_notification(route_id, text, price_idr, "SUCCESS")
             return True
         except Exception as e:
-            logger.error(f"[Telegram] Gagal kirim pesan: {e}")
+            logger.error(f"[Telegram] Gagal mengirim pesan: {e}")
+            database.log_notification(route_id, f"Error: {e}\n{text}", price_idr, "FAILED")
             return False
 
-    def send_cheap_alert(
-        self,
-        flights: list[FlightResult],
-        route_label: str,
-        max_price: int,
-    ) -> bool:
-        """Kirim notifikasi tiket murah dalam format yang rapi."""
+    def send_cheap_alert(self, flights: List[FlightResult], route_label: str, max_price: int, route_id: Optional[int] = None) -> bool:
         if not flights:
             return False
 
         cheapest = flights[0]
         count = len(flights)
+        formatted_max = f"Rp {max_price:,.0f}".replace(",", ".")
+        now_str = datetime.now().strftime("%d %b %Y, %H:%M WIB")
 
+        # Hitung perkiraan diskon
         header = (
-            f"🚨 <b>TIKET MURAH DITEMUKAN!</b>\n"
-            f"{'─' * 30}\n"
-            f"🛫 <b>Rute:</b> {route_label}\n"
+            f"🎉 <b>TIKET MURAH DITEMUKAN!</b>\n"
+            f"━━━━━━━━━━━━━━━━━━━━━━━\n"
+            f"📍 <b>Rute:</b> {route_label}\n"
             f"📅 <b>Tanggal:</b> {cheapest.date}\n"
-            f"💸 <b>Batas harga:</b> Rp {max_price:,.0f}\n".replace(",", ".")
+            f"🎯 <b>Target Budget:</b> {formatted_max}\n"
         )
 
         body = ""
-        for i, f in enumerate(flights[:5], 1):  # Tampilkan maks 5 penerbangan
-            emoji = _airline_emoji(f.airline)
-            duration_str = f" ({_format_duration(f.duration_minutes)})" if f.duration_minutes else ""
-            seats_str = f" | 🪑 {f.seats_left} kursi" if f.seats_left else ""
+        for i, f in enumerate(flights[:5], 1):
+            emoji = get_airline_emoji(f.airline)
+            dur_str = f" ({format_duration(f.duration_minutes)})" if f.duration_minutes else ""
+            seats_str = f" | 💺 {f.seats_left} kursi" if f.seats_left else ""
             body += (
-                f"\n{i}. {emoji} <b>{f.airline}</b> {f.flight_number}\n"
-                f"   🕐 {f.departure_time} → {f.arrival_time}{duration_str}\n"
+                f"\n<b>{i}. {emoji} {f.airline}</b> ({f.flight_number})\n"
+                f"   🕒 {f.departure_time} ➔ {f.arrival_time}{dur_str}\n"
                 f"   💰 <b>{f.price_formatted}</b>{seats_str}\n"
-                f"   📍 Sumber: {f.source.capitalize()}\n"
+                f"   🔗 <a href='{f.booking_url}'>Cek & Pesan di Traveloka</a>\n"
             )
 
         if count > 5:
-            body += f"\n<i>...dan {count - 5} penerbangan murah lainnya</i>\n"
-
-        traveloka_url = (
-            f"https://www.traveloka.com/en-id/flight/fullprice/"
-            f"{cheapest.origin.lower()}-to-{cheapest.destination.lower()}"
-            f"/{cheapest.date}/1/0/0/Economy"
-        )
+            body += f"\n<i>...dan {count - 5} opsi penerbangan murah lainnya</i>\n"
 
         footer = (
-            f"\n{'─' * 30}\n"
-            f"🔗 <a href='{traveloka_url}'>Lihat di Traveloka</a>\n"
-            f"⏰ Cek dilakukan: {_now_str()}"
+            f"\n━━━━━━━━━━━━━━━━━━━━━━━\n"
+            f"🕒 <i>Waktu Scan: {now_str}</i>"
         )
 
-        return self.send_message(header + body + footer)
+        full_message = header + body + footer
+        return self.send_message(full_message, route_id=route_id, price_idr=cheapest.price_idr)
 
-    def send_startup_message(self, route_label: str, max_price: int, interval_hours: int):
-        """Kirim pesan konfirmasi saat bot pertama kali dijalankan."""
-        text = (
-            f"✅ <b>Flight Monitor aktif!</b>\n\n"
-            f"🛫 Rute: <b>{route_label}</b>\n"
-            f"💸 Batas harga: <b>Rp {max_price:,.0f}</b>\n".replace(",", ".")
-            + f"⏱ Cek setiap: <b>{interval_hours} jam</b>\n\n"
-            f"Saya akan memberi tahu kamu jika ada tiket di bawah batas harga. ✈️"
-        )
-        return self.send_message(text)
+    def test_connection(self, token: Optional[str] = None, chat_id: Optional[str] = None) -> dict:
+        use_token = token or self.token
+        use_chat = chat_id or self.chat_id
+        if not use_token:
+            return {"success": False, "message": "Token bot belum diisi."}
 
-    def send_no_results_alert(self, route_label: str):
-        """Kirim pesan jika tidak ada penerbangan yang ditemukan sama sekali."""
-        text = (
-            f"ℹ️ <b>Tidak ada penerbangan ditemukan</b>\n"
-            f"Rute: {route_label}\n"
-            f"Akan dicek kembali sesuai jadwal."
-        )
-        return self.send_message(text)
-
-    def test_connection(self) -> bool:
-        """Test apakah bot bisa mengirim pesan."""
         try:
-            resp = self._post("getMe", {})
-            bot_name = resp.get("result", {}).get("username", "?")
-            logger.info(f"[Telegram] Koneksi OK — bot: @{bot_name}")
-            return True
+            url = f"https://api.telegram.org/bot{use_token}/getMe"
+            resp = requests.get(url, timeout=10)
+            data = resp.json()
+            if not data.get("ok"):
+                return {"success": False, "message": f"Token tidak valid: {data.get('description')}"}
+
+            bot_user = data["result"]["username"]
+
+            # Coba kirim pesan jika chat_id diberikan
+            if use_chat:
+                send_url = f"https://api.telegram.org/bot{use_token}/sendMessage"
+                s_resp = requests.post(send_url, json={
+                    "chat_id": use_chat,
+                    "text": f"✅ <b>Tes Koneksi Berhasil!</b>\nFlight Price Monitor Pro terhubung ke bot <b>@{bot_user}</b>.",
+                    "parse_mode": "HTML"
+                }, timeout=10)
+                s_data = s_resp.json()
+                if not s_data.get("ok"):
+                    return {"success": False, "message": f"Bot valid (@{bot_user}), tapi gagal kirim ke Chat ID: {s_data.get('description')}"}
+
+            return {
+                "success": True,
+                "bot_username": bot_user,
+                "message": f"Terhubung ke @{bot_user}" + (f" dan pesan tes terkirim ke Chat ID {use_chat}" if use_chat else "")
+            }
         except Exception as e:
-            logger.error(f"[Telegram] Koneksi gagal: {e}")
-            return False
-
-
-# ── Helper ────────────────────────────────────────────────────────────────────
-
-def _now_str() -> str:
-    from datetime import datetime
-    return datetime.now().strftime("%d %b %Y, %H:%M WIB")
+            return {"success": False, "message": f"Koneksi gagal: {str(e)}"}
