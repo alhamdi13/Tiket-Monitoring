@@ -1,0 +1,12 @@
+[
+  {
+    "origin": "BDJ",
+    "destination": "PDG",
+    "label": "Banjarmasin ➔ Padang (Transit CGK)",
+    "max_price_idr": 2500000,
+    "days_ahead": 1,
+    "target_date": "2026-10-25",
+    "is_active": 1,
+    "check_interval_hours": 4
+  }
+]
