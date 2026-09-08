@@ -723,7 +723,10 @@ input:checked + .slider:before {
   visibility: hidden;
   transition: var(--transition);
 }
-.modal-backdrop.open {
+
+/* Mendukung selector .open dan .active secara bersamaan */
+.modal-backdrop.open,
+.modal-backdrop.active {
   opacity: 1;
   visibility: visible;
 }
@@ -739,7 +742,9 @@ input:checked + .slider:before {
   transform: scale(0.95);
   transition: var(--transition);
 }
-.modal-backdrop.open .modal-content {
+
+.modal-backdrop.open .modal-content,
+.modal-backdrop.active .modal-content {
   transform: scale(1);
 }
 
