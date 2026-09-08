@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flight Price Monitor Pro - Pemantau Tiket Pesawat Murah Real-Time</title>
-  <meta name="description" content="Dashboard pemantauan otomatis harga tiket pesawat Traveloka dan Tiket.com dengan integrasi Telegram Bot dan analitik tren harga.">
+  <meta name="description" content="Dashboard pemantauan otomatis harga tiket pesawat dengan integrasi Telegram Bot dan analitik tren harga.">
   
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✈️</text></svg>">
   
-  <!-- CSS Stylesheet (Relative Path for GitHub Pages) -->
+  <!-- CSS Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
   
   <!-- Chart.js CDN -->
@@ -115,7 +115,6 @@
       </div>
 
       <div class="routes-grid" id="routesGrid">
-        <!-- Route Cards dynamically rendered via app.js -->
         <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">
           Memuat daftar rute pantauan...
         </div>
@@ -149,9 +148,7 @@
 
       <!-- Tab 2: Calendar Matrix -->
       <div id="calendarViewWrapper" style="display: none;">
-        <div class="calendar-grid" id="fareCalendarGrid">
-          <!-- Calendar cells rendered via charts.js -->
-        </div>
+        <div class="calendar-grid" id="fareCalendarGrid"></div>
       </div>
     </section>
 
@@ -187,11 +184,11 @@
 
   </div>
 
-  <!-- Datalist Bandara Indonesia untuk Auto-complete -->
+  <!-- Datalist Bandara Indonesia -->
   <datalist id="airportsDatalist"></datalist>
 
   <!-- ==========================================================================
-       MODAL: Tambah / Edit Rute
+       MODAL: Tambah / Edit Rute (Mendukung Pemilihan Tanggal Kalender)
        ========================================================================== -->
   <div class="modal-backdrop" id="routeModal">
     <div class="modal-content">
@@ -215,24 +212,39 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="routeLabelInput">Label Tampilan (Opsional):</label>
-          <input type="text" id="routeLabelInput" class="form-control" placeholder="Contoh: Surabaya ➔ Bali">
+          <label class="form-label" for="routeTypeSelect">Tipe Jadwal Pemantauan:</label>
+          <select id="routeTypeSelect" class="form-control" onchange="handleToggleRouteType()">
+            <option value="specific">📅 Pantau Tanggal Spesifik (Pilih 1 Tanggal Pasti)</option>
+            <option value="range">📆 Pantau Rentang Hari (Contoh: 14 hari ke depan)</option>
+          </select>
+        </div>
+
+        <!-- Opsi 1: Pemilih Tanggal Spesifik (Date Picker) -->
+        <div class="form-group" id="groupTargetDate">
+          <label class="form-label" for="routeTargetDateInput">Pilih Tanggal Penerbangan Target:</label>
+          <input type="date" id="routeTargetDateInput" class="form-control">
+          <small style="font-size: 0.75rem; color: var(--text-sub); margin-top: 0.25rem; display: block;">
+            Bot akan memantau tanggal ini dan mengirim alert setiap ada penurunan harga.
+          </small>
+        </div>
+
+        <!-- Opsi 2: Rentang Hari -->
+        <div class="form-group" id="groupDaysAhead" style="display: none;">
+          <label class="form-label" for="routeDaysAheadInput">Rentang Hari ke Depan (1 - 60):</label>
+          <input type="number" id="routeDaysAheadInput" class="form-control" value="14" min="1" max="60">
         </div>
 
         <div class="form-group">
           <label class="form-label" for="routeMaxPriceInput">Target Budget Maksimal (IDR):</label>
           <input type="number" id="routeMaxPriceInput" class="form-control" placeholder="600000" step="10000" required>
           <small style="font-size: 0.75rem; color: var(--text-sub); margin-top: 0.25rem; display: block;">
-            Bot akan mengirim notifikasi jika harga tiket di bawah angka ini.
+            Bot akan memberi tahu jika harga tiket di bawah budget ini.
           </small>
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="routeDaysAheadInput">Rentang Hari yang Dipantau:</label>
-          <input type="number" id="routeDaysAheadInput" class="form-control" value="14" min="1" max="60" required>
-          <small style="font-size: 0.75rem; color: var(--text-sub); margin-top: 0.25rem; display: block;">
-            Memantau harga dari besok hingga N hari ke depan.
-          </small>
+          <label class="form-label" for="routeLabelInput">Label Tampilan (Opsional):</label>
+          <input type="text" id="routeLabelInput" class="form-control" placeholder="Contoh: Liburan Bali">
         </div>
 
         <div class="modal-footer">
@@ -243,9 +255,7 @@
     </div>
   </div>
 
-  <!-- ==========================================================================
-       MODAL: Pengaturan Sistem & Bot Telegram
-       ========================================================================== -->
+  <!-- MODAL: Settings -->
   <div class="modal-backdrop" id="settingsModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -256,65 +266,43 @@
       <form id="settingsForm">
         <div class="form-group">
           <label class="form-label" for="settingTelegramToken">Telegram Bot Token:</label>
-          <input type="text" id="settingTelegramToken" class="form-control" placeholder="123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11">
-          <small style="font-size: 0.75rem; color: var(--text-sub);">Dapatkan dari <b>@BotFather</b> di Telegram.</small>
+          <input type="text" id="settingTelegramToken" class="form-control" placeholder="8784730971:AAH1UXfl_0gTxbplXhTCizhJJpZY9WDHeWw">
         </div>
 
         <div class="form-group">
           <label class="form-label" for="settingTelegramChatId">Telegram Chat ID / User ID:</label>
           <input type="text" id="settingTelegramChatId" class="form-control" placeholder="5217528489">
-          <small style="font-size: 0.75rem; color: var(--text-sub);">Dapatkan ID kamu dari <b>@userinfobot</b> di Telegram.</small>
-        </div>
-
-        <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; background: var(--bg-glass); padding: 0.85rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-          <div>
-            <div style="font-weight: 600; font-size: 0.9rem;">Auto-Scan Berkala</div>
-            <div style="font-size: 0.75rem; color: var(--text-sub);">Jalankan pemindaian otomatis di background</div>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" id="settingAutoScan" checked>
-            <span class="slider"></span>
-          </label>
         </div>
 
         <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
           <button type="button" id="btnTestTelegram" class="btn btn-secondary btn-sm">
             🧪 Tes Kirim Pesan
           </button>
-          
-          <div style="display: flex; gap: 0.5rem;">
-            <button type="button" class="btn btn-secondary" onclick="closeModal('settingsModal')">Tutup</button>
-            <button type="submit" class="btn btn-primary">Simpan</button>
-          </div>
+          <button type="submit" class="btn btn-primary">Tutup</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- ==========================================================================
-       MODAL: Riwayat Notifikasi
-       ========================================================================== -->
+  <!-- MODAL: Notifikasi -->
   <div class="modal-backdrop" id="notificationsModal">
     <div class="modal-content" style="max-width: 650px;">
       <div class="modal-header">
         <h3 class="modal-title">🔔 Riwayat Notifikasi Telegram</h3>
         <button class="btn btn-icon btn-sm" onclick="closeModal('notificationsModal')">✕</button>
       </div>
-
       <div id="notificationsLogContainer" style="max-height: 400px; overflow-y: auto;">
         <p style="color: var(--text-muted); text-align: center; padding: 2rem;">Memuat log notifikasi...</p>
       </div>
-
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" onclick="closeModal('notificationsModal')">Tutup</button>
       </div>
     </div>
   </div>
 
-  <!-- Toast Notification Container -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- Application Scripts (Relative Paths for GitHub Pages) -->
+  <!-- Application Scripts -->
   <script src="js/charts.js"></script>
   <script src="js/app.js"></script>
 </body>
