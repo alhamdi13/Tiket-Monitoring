@@ -1,6 +1,6 @@
 """
 database.py - Data Access Layer & SQLite Persistence untuk Flight Price Monitor Pro.
-Menangani penyimpanan multi-rute, histori pergerakan harga tiket, log notifikasi, dan pengaturan sistem.
+Mendukung sinkronisasi konfigurasi data/routes.json, target date, dan histori harga.
 """
 
 import sqlite3
@@ -19,11 +19,9 @@ def get_db():
 
 
 def init_db():
-    """Inisialisasi schema database dan data awal jika tabel masih kosong."""
     conn = get_db()
     cursor = conn.cursor()
 
-    # Tabel Rute Pemantauan
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS routes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -32,15 +30,23 @@ def init_db():
             label TEXT,
             max_price_idr INTEGER NOT NULL DEFAULT 1000000,
             days_ahead INTEGER NOT NULL DEFAULT 14,
+            target_date TEXT,
             is_active INTEGER NOT NULL DEFAULT 1,
             check_interval_hours INTEGER NOT NULL DEFAULT 4,
             last_checked_at TEXT,
+            last_price_idr INTEGER DEFAULT 0,
             created_at TEXT NOT NULL,
             updated_at TEXT NOT NULL
         )
     """)
 
-    # Tabel Riwayat Harga Penerbangan
+    cursor.execute("PRAGMA table_info(routes)")
+    columns = [col["name"] for col in cursor.fetchall()]
+    if "target_date" not in columns:
+        cursor.execute("ALTER TABLE routes ADD COLUMN target_date TEXT")
+    if "last_price_idr" not in columns:
+        cursor.execute("ALTER TABLE routes ADD COLUMN last_price_idr INTEGER DEFAULT 0")
+
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS flight_history (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -61,13 +67,11 @@ def init_db():
         )
     """)
 
-    # Indeks untuk query performa tinggi
     cursor.execute("""
         CREATE INDEX IF NOT EXISTS idx_flight_history_lookup 
         ON flight_history (route_id, flight_date, price_idr)
     """)
 
-    # Tabel Log Notifikasi Terkirim
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS notifications_log (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -80,7 +84,6 @@ def init_db():
         )
     """)
 
-    # Tabel Pengaturan Sistem (Key-Value)
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS settings (
             key TEXT PRIMARY KEY,
@@ -88,7 +91,6 @@ def init_db():
         )
     """)
 
-    # Seed Default Settings jika belum ada
     default_settings = {
         "telegram_bot_token": os.getenv("TELEGRAM_BOT_TOKEN", ""),
         "telegram_chat_id": os.getenv("TELEGRAM_CHAT_ID", ""),
@@ -100,27 +102,78 @@ def init_db():
     for k, v in default_settings.items():
         cursor.execute("INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)", (k, v))
 
-    # Seed default sample route jika tabel routes kosong
-    cursor.execute("SELECT COUNT(*) FROM routes")
-    if cursor.fetchone()[0] == 0:
-        now_str = datetime.now().isoformat()
-        sample_routes = [
-            ("SUB", "DPS", "Surabaya ➔ Bali", 650000, 14, 1, 4, now_str, now_str),
-            ("CGK", "DPS", "Jakarta ➔ Bali", 750000, 21, 1, 4, now_str, now_str),
-            ("SUB", "BDJ", "Surabaya ➔ Banjarmasin", 1200000, 7, 1, 4, now_str, now_str)
-        ]
-        cursor.executemany("""
-            INSERT INTO routes (origin, destination, label, max_price_idr, days_ahead, is_active, check_interval_hours, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, sample_routes)
-
+    sync_routes_from_json_file(cursor)
     conn.commit()
     conn.close()
 
 
-# ==========================================
-# CRUD ROUTE
-# ==========================================
+def sync_routes_from_json_file(cursor=None):
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    candidates = [
+        os.path.join(base_dir, "data", "routes.json"),
+        os.path.join(base_dir, "routes.json"),
+        os.path.join(base_dir, "static", "data", "routes.json")
+    ]
+    json_path = None
+    for c in candidates:
+        if os.path.exists(c):
+            json_path = c
+            break
+
+    should_close = False
+    if cursor is None:
+        conn = get_db()
+        cursor = conn.cursor()
+        should_close = True
+
+    now_str = datetime.now().isoformat()
+
+    if json_path:
+        try:
+            with open(json_path, "r", encoding="utf-8") as f:
+                routes_data = json.load(f)
+            if isinstance(routes_data, list) and len(routes_data) > 0:
+                cursor.execute("DELETE FROM routes")
+                records = []
+                for r in routes_data:
+                    orig = r.get("origin", "").strip().upper()
+                    dest = r.get("destination", "").strip().upper()
+                    target_d = r.get("target_date")
+                    date_lbl = f" ({target_d})" if target_d else ""
+                    label = r.get("label") or f"{orig} ➔ {dest}{date_lbl}"
+                    records.append((
+                        orig,
+                        dest,
+                        label,
+                        int(r.get("max_price_idr", 1500000)),
+                        int(r.get("days_ahead", 14)),
+                        target_d,
+                        int(r.get("is_active", 1)),
+                        int(r.get("check_interval_hours", 4)),
+                        now_str,
+                        now_str
+                    ))
+                cursor.executemany("""
+                    INSERT INTO routes (origin, destination, label, max_price_idr, days_ahead, target_date, is_active, check_interval_hours, created_at, updated_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, records)
+        except Exception as e:
+            print(f"[DB] Warning reading {json_path}: {e}")
+    else:
+        cursor.execute("SELECT COUNT(*) FROM routes")
+        if cursor.fetchone()[0] == 0:
+            sample_routes = [
+                ("BDJ", "PDG", "Banjarmasin ➔ Padang (Transit CGK)", 2500000, 14, "2026-10-25", 1, 4, now_str, now_str)
+            ]
+            cursor.executemany("""
+                INSERT INTO routes (origin, destination, label, max_price_idr, days_ahead, target_date, is_active, check_interval_hours, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, sample_routes)
+
+    if should_close:
+        conn.commit()
+        conn.close()
+
 
 def get_routes(active_only: bool = False) -> List[Dict[str, Any]]:
     conn = get_db()
@@ -143,20 +196,21 @@ def get_route_by_id(route_id: int) -> Optional[Dict[str, Any]]:
     return dict(row) if row else None
 
 
-def create_route(origin: str, destination: str, max_price_idr: int, days_ahead: int = 14,
-                 label: str = "", check_interval_hours: int = 4) -> Dict[str, Any]:
+def add_route(origin: str, destination: str, max_price_idr: int, days_ahead: int = 14,
+              target_date: Optional[str] = None, label: str = "", check_interval_hours: int = 4) -> Dict[str, Any]:
     origin = origin.strip().upper()
     destination = destination.strip().upper()
     if not label:
-        label = f"{origin} ➔ {destination}"
+        date_suffix = f" ({target_date})" if target_date else ""
+        label = f"{origin} ➔ {destination}{date_suffix}"
     now_str = datetime.now().isoformat()
 
     conn = get_db()
     cursor = conn.cursor()
     cursor.execute("""
-        INSERT INTO routes (origin, destination, label, max_price_idr, days_ahead, is_active, check_interval_hours, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?)
-    """, (origin, destination, label, max_price_idr, days_ahead, check_interval_hours, now_str, now_str))
+        INSERT INTO routes (origin, destination, label, max_price_idr, days_ahead, target_date, is_active, check_interval_hours, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, 1, ?, ?, ?)
+    """, (origin, destination, label, max_price_idr, days_ahead, target_date, check_interval_hours, now_str, now_str))
     route_id = cursor.lastrowid
     conn.commit()
     conn.close()
@@ -164,20 +218,21 @@ def create_route(origin: str, destination: str, max_price_idr: int, days_ahead: 
 
 
 def update_route(route_id: int, origin: str, destination: str, max_price_idr: int,
-                 days_ahead: int, label: str = "", check_interval_hours: int = 4) -> Optional[Dict[str, Any]]:
+                 days_ahead: int, target_date: Optional[str] = None, label: str = "", check_interval_hours: int = 4) -> Optional[Dict[str, Any]]:
     origin = origin.strip().upper()
     destination = destination.strip().upper()
     if not label:
-        label = f"{origin} ➔ {destination}"
+        date_suffix = f" ({target_date})" if target_date else ""
+        label = f"{origin} ➔ {destination}{date_suffix}"
     now_str = datetime.now().isoformat()
 
     conn = get_db()
     cursor = conn.cursor()
     cursor.execute("""
         UPDATE routes 
-        SET origin = ?, destination = ?, label = ?, max_price_idr = ?, days_ahead = ?, check_interval_hours = ?, updated_at = ?
+        SET origin = ?, destination = ?, label = ?, max_price_idr = ?, days_ahead = ?, target_date = ?, check_interval_hours = ?, updated_at = ?
         WHERE id = ?
-    """, (origin, destination, label, max_price_idr, days_ahead, check_interval_hours, now_str, route_id))
+    """, (origin, destination, label, max_price_idr, days_ahead, target_date, check_interval_hours, now_str, route_id))
     conn.commit()
     conn.close()
     return get_route_by_id(route_id)
@@ -206,21 +261,16 @@ def delete_route(route_id: int) -> bool:
     return deleted
 
 
-def update_route_last_checked(route_id: int):
+def update_route_last_checked(route_id: int, last_price: int = 0):
     now_str = datetime.now().isoformat()
     conn = get_db()
     cursor = conn.cursor()
-    cursor.execute("UPDATE routes SET last_checked_at = ? WHERE id = ?", (now_str, route_id))
+    cursor.execute("UPDATE routes SET last_checked_at = ?, last_price_idr = ? WHERE id = ?", (now_str, last_price, route_id))
     conn.commit()
     conn.close()
 
 
-# ==========================================
-# FLIGHT HISTORY & ANALYTICS
-# ==========================================
-
 def save_flight_results(route_id: int, flights: List[Any]):
-    """Menyimpan list FlightResult ke database."""
     if not flights:
         return
     now_str = datetime.now().isoformat()
@@ -282,7 +332,6 @@ def get_latest_flights(route_id: Optional[int] = None, flight_date: Optional[str
 
 
 def get_price_trends(route_id: int) -> Dict[str, Any]:
-    """Mengambil tren harga per tanggal (harga termurah & rata-rata)."""
     conn = get_db()
     cursor = conn.cursor()
     cursor.execute("""
@@ -323,7 +372,6 @@ def get_price_trends(route_id: int) -> Dict[str, Any]:
 
 
 def get_lowest_fare_calendar(route_id: int, days_ahead: int = 30) -> List[Dict[str, Any]]:
-    """Mengambil harga tiket termurah untuk kalender matriks hari."""
     conn = get_db()
     cursor = conn.cursor()
     cursor.execute("""
@@ -365,10 +413,6 @@ def get_lowest_fare_calendar(route_id: int, days_ahead: int = 30) -> List[Dict[s
 
     return calendar
 
-
-# ==========================================
-# NOTIFICATIONS & SETTINGS
-# ==========================================
 
 def log_notification(route_id: Optional[int], message: str, price_idr: int, status: str = "SUCCESS"):
     now_str = datetime.now().isoformat()
