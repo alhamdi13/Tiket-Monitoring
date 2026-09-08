@@ -2,9 +2,8 @@ name: Flight Price Monitor & GitHub Pages
 
 on:
   schedule:
-    # Berjalan otomatis setiap 4 jam secara 100% gratis di GitHub
     - cron: '0 */4 * * *'
-  workflow_dispatch: # Tombol pemicu manual untuk tes scan
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -14,10 +13,13 @@ permissions:
   pages: write
   id-token: write
 
-jobs:
-  scan-and-deploy:
-    runs-on: ubuntu-latest
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
+jobs:
+  scan-and-build:
+    runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout Repository
         uses: actions/checkout@v4
@@ -47,8 +49,18 @@ jobs:
           git add static/data/flights.json flights_monitor.db || true
           git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update flight prices data [skip ci]" && git push)
 
-      - name: 🚀 Deploy ke GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: 📤 Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./static
+          path: ./static
+
+  deploy-pages:
+    needs: scan-and-build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚀 Deploy ke GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
