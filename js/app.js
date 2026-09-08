@@ -1,6 +1,6 @@
 /**
  * app.js - Frontend Application Logic & Dual-Mode Client (FastAPI Backend + GitHub Pages Static Hosting).
- * Menggunakan format URL pencarian resmi Traveloka agar tidak terjadi error 404 saat klik tombol "Beli Tiket".
+ * Mendukung pemantauan TANGGAL SPESIFIK dan pemantauan rentang hari secara realtime.
  */
 
 const API_BASE = "";
@@ -140,7 +140,7 @@ async function loadAirports() {
       ).join("");
     }
   } catch (err) {
-    console.error("Gagal load bandara:", err);
+    console.warn("Gagal memuat airports.json:", err);
   }
 }
 
@@ -170,10 +170,15 @@ async function loadAnalytics(routeId) {
       const avgPrices = [];
       const cal = [];
       const today = new Date();
-      for (let i = 1; i <= (currentRoute.days_ahead || 14); i++) {
-        const d = new Date(today);
-        d.setDate(today.getDate() + i);
-        const dStr = d.toISOString().split("T")[0];
+      const countDays = currentRoute.target_date ? 1 : (currentRoute.days_ahead || 14);
+
+      for (let i = 1; i <= countDays; i++) {
+        let dStr = currentRoute.target_date;
+        if (!dStr) {
+          const d = new Date(today);
+          d.setDate(today.getDate() + i);
+          dStr = d.toISOString().split("T")[0];
+        }
         dates.push(dStr);
         const estMin = Math.round((currentRoute.max_price_idr * (0.75 + Math.random() * 0.35)) / 1000) * 1000;
         const estAvg = Math.round((estMin * 1.35) / 1000) * 1000;
@@ -213,7 +218,12 @@ async function loadFlights(routeId = null) {
     );
   }
 
-  // Jika rute baru dan belum ada data statis, buat jadwal penerbangan otomatis sesuai rute tersebut
+  const defaultDate = currentRoute.target_date || (() => {
+    const today = new Date();
+    today.setDate(today.getDate() + 7);
+    return today.toISOString().split("T")[0];
+  })();
+
   if (flights.length === 0) {
     const sampleAirlines = [
       { name: "Citilink", code: "QG", price: Math.round(currentRoute.max_price_idr * 0.85 / 1000) * 1000, dep: "06:00", arr: "07:45", dur: 105, seats: 5 },
@@ -224,22 +234,18 @@ async function loadFlights(routeId = null) {
       { name: "Garuda Indonesia", code: "GA", price: Math.round(currentRoute.max_price_idr * 1.65 / 1000) * 1000, dep: "19:20", arr: "21:10", dur: 110, seats: 6 }
     ];
 
-    const today = new Date();
-    today.setDate(today.getDate() + 7);
-    const dateStr = today.toISOString().split("T")[0];
-
     flights = sampleAirlines.map((a, idx) => ({
       airline: a.name,
       flight_number: `${a.code}-${100 + idx * 115}`,
       origin: currentRoute.origin,
       destination: currentRoute.destination,
-      flight_date: dateStr,
+      flight_date: defaultDate,
       departure_time: a.dep,
       arrival_time: a.arr,
       duration_minutes: a.dur,
       price_idr: a.price,
       seats_left: a.seats,
-      booking_url: getTravelokaSearchUrl(currentRoute.origin, currentRoute.destination, dateStr)
+      booking_url: getTravelokaSearchUrl(currentRoute.origin, currentRoute.destination, defaultDate)
     }));
   }
 
@@ -260,7 +266,7 @@ async function loadFlights(routeId = null) {
           </div>
         </td>
         <td><b>${f.origin} ➔ ${f.destination}</b></td>
-        <td>${f.flight_date}</td>
+        <td><b style="color: var(--primary);">${f.flight_date}</b></td>
         <td>
           <div>${f.departure_time} - ${f.arrival_time}</div>
           <div style="font-size: 0.75rem; color: var(--text-sub);">${durText}</div>
@@ -284,6 +290,9 @@ function renderRoutesGrid(routes) {
   container.innerHTML = routes.map(r => {
     const isInactive = !r.is_active;
     const formattedMax = formatRupiah(r.max_price_idr);
+    const scheduleBadge = r.target_date 
+      ? `<span style="color: var(--accent-cyan); font-weight: 700;">📅 Tanggal: ${r.target_date}</span>`
+      : `${r.days_ahead || 14} hari ke depan`;
 
     return `
       <div class="route-card ${isInactive ? 'inactive' : ''}" id="routeCard-${r.id}">
@@ -309,116 +318,55 @@ function renderRoutesGrid(routes) {
             <div class="meta-item-value highlight">${formattedMax}</div>
           </div>
           <div>
-            <div class="meta-item-label">Rentang Cek</div>
-            <div class="meta-item-value">${r.days_ahead} hari ke depan</div>
-          </div>
-          <div>
-            <div class="meta-item-label">Status</div>
-            <div class="meta-item-value" style="font-size: 0.8rem; color: ${r.is_active ? 'var(--accent-emerald)' : 'var(--text-sub)'};">
-              ${r.is_active ? '🟢 Aktif Memantau' : '⚪ Nonaktif'}
-            </div>
-          </div>
-          <div>
-            <div class="meta-item-label">Interval</div>
-            <div class="meta-item-value">${r.check_interval_hours || 4} jam</div>
+            <div class="meta-item-label">Jadwal Target</div>
+            <div class="meta-item-value">${scheduleBadge}</div>
           </div>
         </div>
 
-        <div class="route-card-actions">
-          <button class="btn btn-secondary btn-sm" onclick="handleSelectRouteAnalytics(${r.id})">
-            📊 Lihat Rute Ini
+        <div class="route-actions-row">
+          <button class="btn btn-secondary btn-sm" onclick="handleSelectRoute(${r.id})" style="flex: 1;">
+            📊 Lihat Detail
           </button>
-          <div style="display: flex; gap: 0.4rem;">
-            <button class="btn btn-secondary btn-sm" onclick="handleOpenTravelokaDirect('${r.origin}', '${r.destination}')" title="Cek Langsung di Traveloka">
-              ✈️ Buka
-            </button>
-            <button class="btn btn-secondary btn-sm" onclick="openEditRouteModal(${r.id})" title="Edit Rute">
-              ✏️
-            </button>
-            <button class="btn btn-danger btn-sm" onclick="handleDeleteRoute(${r.id})" title="Hapus Rute">
-              🗑️
-            </button>
-          </div>
+          <button class="btn btn-icon btn-sm" onclick="openEditRouteModal(${r.id})" title="Edit Rute">
+            ✏️
+          </button>
+          <button class="btn btn-icon btn-sm" onclick="handleDeleteRoute(${r.id})" title="Hapus Rute">
+            🗑️
+          </button>
         </div>
       </div>
     `;
   }).join("");
 }
 
-function handleOpenTravelokaDirect(origin, dest) {
-  const d = new Date();
-  d.setDate(d.getDate() + 7);
-  const dStr = d.toISOString().split("T")[0];
-  const url = getTravelokaSearchUrl(origin, dest, dStr);
-  window.open(url, "_blank");
-}
-
 function updateRouteSelectOptions(routes) {
   const select = document.getElementById("analyticsRouteSelect");
   if (!select) return;
+
   select.innerHTML = routes.map(r => 
-    `<option value="${r.id}" ${r.id === state.selectedRouteId ? 'selected' : ''}>${r.label || `${r.origin} ➔ ${r.destination}`}</option>`
+    `<option value="${r.id}" ${r.id === state.selectedRouteId ? 'selected' : ''}>
+      ${r.label || `${r.origin} ➔ ${r.destination}`} (${formatRupiah(r.max_price_idr)})
+    </option>`
   ).join("");
 }
 
-function setupEventListeners() {
-  const themeBtn = document.getElementById("btnThemeToggle");
-  if (themeBtn) themeBtn.addEventListener("click", toggleTheme);
+function handleToggleRouteType() {
+  const type = document.getElementById("routeTypeSelect").value;
+  const groupTargetDate = document.getElementById("groupTargetDate");
+  const groupDaysAhead = document.getElementById("groupDaysAhead");
 
-  const scanAllBtn = document.getElementById("btnScanAll");
-  if (scanAllBtn) scanAllBtn.addEventListener("click", () => {
-    showToast("Data diperbarui", "success");
-    loadStaticData();
-  });
-
-  const routeSelect = document.getElementById("analyticsRouteSelect");
-  if (routeSelect) {
-    routeSelect.addEventListener("change", (e) => {
-      state.selectedRouteId = parseInt(e.target.value);
-      loadAnalytics(state.selectedRouteId);
-      loadFlights(state.selectedRouteId);
-    });
+  if (type === "specific") {
+    groupTargetDate.style.display = "block";
+    groupDaysAhead.style.display = "none";
+  } else {
+    groupTargetDate.style.display = "none";
+    groupDaysAhead.style.display = "block";
   }
-
-  const tabTrend = document.getElementById("tabTrend");
-  const tabCal = document.getElementById("tabCalendar");
-  const trendView = document.getElementById("trendViewWrapper");
-  const calView = document.getElementById("calendarViewWrapper");
-
-  if (tabTrend && tabCal) {
-    tabTrend.addEventListener("click", () => {
-      tabTrend.classList.add("active");
-      tabCal.classList.remove("active");
-      trendView.style.display = "block";
-      calView.style.display = "none";
-    });
-
-    tabCal.addEventListener("click", () => {
-      tabCal.classList.add("active");
-      tabTrend.classList.remove("active");
-      trendView.style.display = "none";
-      calView.style.display = "block";
-    });
-  }
-
-  const routeForm = document.getElementById("routeForm");
-  if (routeForm) routeForm.addEventListener("submit", handleSaveRouteForm);
-
-  const settingsForm = document.getElementById("settingsForm");
-  if (settingsForm) settingsForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    closeModal("settingsModal");
-    showToast("Pengaturan disimpan!", "success");
-  });
-
-  const testTgBtn = document.getElementById("btnTestTelegram");
-  if (testTgBtn) testTgBtn.addEventListener("click", handleTestTelegram);
 }
 
-function handleSelectRouteAnalytics(routeId) {
+function handleSelectRoute(routeId) {
   state.selectedRouteId = routeId;
-  const select = document.getElementById("analyticsRouteSelect");
-  if (select) select.value = routeId;
+  updateRouteSelectOptions(state.routes);
   loadAnalytics(routeId);
   loadFlights(routeId);
 
@@ -467,6 +415,13 @@ function openAddRouteModal() {
   document.getElementById("routeLabelInput").value = "";
   document.getElementById("routeMaxPriceInput").value = "600000";
   document.getElementById("routeDaysAheadInput").value = "14";
+
+  const defaultDate = new Date();
+  defaultDate.setDate(defaultDate.getDate() + 14);
+  document.getElementById("routeTargetDateInput").value = defaultDate.toISOString().split("T")[0];
+  document.getElementById("routeTypeSelect").value = "specific";
+  handleToggleRouteType();
+
   openModal("routeModal");
 }
 
@@ -480,7 +435,16 @@ function openEditRouteModal(routeId) {
   document.getElementById("routeDestInput").value = route.destination;
   document.getElementById("routeLabelInput").value = route.label || "";
   document.getElementById("routeMaxPriceInput").value = route.max_price_idr;
-  document.getElementById("routeDaysAheadInput").value = route.days_ahead;
+  document.getElementById("routeDaysAheadInput").value = route.days_ahead || 14;
+
+  if (route.target_date) {
+    document.getElementById("routeTypeSelect").value = "specific";
+    document.getElementById("routeTargetDateInput").value = route.target_date;
+  } else {
+    document.getElementById("routeTypeSelect").value = "range";
+  }
+  handleToggleRouteType();
+
   openModal("routeModal");
 }
 
@@ -491,19 +455,24 @@ function handleSaveRouteForm(e) {
   const destination = document.getElementById("routeDestInput").value.trim().toUpperCase();
   const label = document.getElementById("routeLabelInput").value.trim();
   const maxPrice = parseInt(document.getElementById("routeMaxPriceInput").value);
-  const daysAhead = parseInt(document.getElementById("routeDaysAheadInput").value);
+  const type = document.getElementById("routeTypeSelect").value;
+  const targetDate = type === "specific" ? document.getElementById("routeTargetDateInput").value : null;
+  const daysAhead = type === "range" ? parseInt(document.getElementById("routeDaysAheadInput").value) : 14;
 
   if (!origin || !destination) {
     showToast("Bandara asal dan tujuan harus diisi", "error");
     return;
   }
 
+  const defaultLabel = targetDate ? `${origin} ➔ ${destination} (${targetDate})` : `${origin} ➔ ${destination}`;
+
   const payload = {
     id: routeId ? parseInt(routeId) : Date.now(),
     origin,
     destination,
-    label: label || `${origin} ➔ ${destination}`,
+    label: label || defaultLabel,
     max_price_idr: maxPrice,
+    target_date: targetDate,
     days_ahead: daysAhead,
     is_active: 1,
     check_interval_hours: 4
@@ -526,90 +495,112 @@ function handleSaveRouteForm(e) {
   loadFlights(payload.id);
 
   closeModal("routeModal");
-  showToast(`✅ Rute ${payload.label} berhasil disimpan di Dashboard!`, "success");
+  showToast(`✅ Rute ${payload.label} berhasil disimpan!`, "success");
 }
 
-async function handleTestTelegram() {
-  const token = document.getElementById("settingTelegramToken").value.trim();
-  const chatId = document.getElementById("settingTelegramChatId").value.trim();
-  if (!token || !chatId) {
-    showToast("Masukkan Token dan Chat ID", "error");
-    return;
-  }
-  try {
-    const url = `https://api.telegram.org/bot${token}/sendMessage`;
-    const resp = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: "✅ <b>Tes Terhubung Berhasil!</b>\nFlight Price Monitor Pro aktif dan terhubung ke Telegram Anda.",
-        parse_mode: "HTML"
-      })
+function setupEventListeners() {
+  const form = document.getElementById("routeForm");
+  if (form) form.addEventListener("submit", handleSaveRouteForm);
+
+  const select = document.getElementById("analyticsRouteSelect");
+  if (select) {
+    select.addEventListener("change", (e) => {
+      handleSelectRoute(parseInt(e.target.value));
     });
-    const data = await resp.json();
-    if (data.ok) showToast("✅ Pesan tes terkirim ke Telegram!", "success");
-    else showToast("❌ Gagal: " + data.description, "error");
-  } catch (err) {
-    showToast("Error: " + err.message, "error");
+  }
+
+  const tabTrend = document.getElementById("tabTrend");
+  const tabCal = document.getElementById("tabCalendar");
+  if (tabTrend && tabCal) {
+    tabTrend.addEventListener("click", () => {
+      tabTrend.classList.add("active");
+      tabCal.classList.remove("active");
+      document.getElementById("trendViewWrapper").style.display = "block";
+      document.getElementById("calendarViewWrapper").style.display = "none";
+    });
+
+    tabCal.addEventListener("click", () => {
+      tabCal.classList.add("active");
+      tabTrend.classList.remove("active");
+      document.getElementById("trendViewWrapper").style.display = "none";
+      document.getElementById("calendarViewWrapper").style.display = "block";
+    });
+  }
+
+  const btnScan = document.getElementById("btnScanAll");
+  if (btnScan) {
+    btnScan.addEventListener("click", async () => {
+      showToast("🔄 Memperbarui data tiket terbaru...", "info");
+      await loadStaticData();
+      showToast("✅ Data berhasil disegarkan!", "success");
+    });
+  }
+
+  const btnTheme = document.getElementById("btnThemeToggle");
+  if (btnTheme) {
+    btnTheme.addEventListener("click", toggleTheme);
   }
 }
 
 function openModal(id) {
   const modal = document.getElementById(id);
-  if (modal) modal.classList.add("open");
+  if (modal) modal.classList.add("active");
 }
 
 function closeModal(id) {
   const modal = document.getElementById(id);
-  if (modal) modal.classList.remove("open");
+  if (modal) modal.classList.remove("active");
 }
 
 function openNotificationsModal() {
   const container = document.getElementById("notificationsLogContainer");
-  if (container && state.staticData && state.staticData.notifications) {
-    container.innerHTML = state.staticData.notifications.map(l => `
-      <div style="padding: 0.85rem; border-bottom: 1px solid var(--border-color); font-size: 0.85rem;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
-          <b>${l.route_label || 'Notifikasi'}</b>
-          <span style="color: var(--text-sub); font-size: 0.75rem;">${new Date(l.sent_at).toLocaleString("id-ID")}</span>
+  const logs = state.staticData ? state.staticData.notifications || [] : [];
+
+  if (logs.length === 0) {
+    container.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 2rem;">Belum ada riwayat notifikasi terkirim.</p>`;
+  } else {
+    container.innerHTML = logs.map(n => `
+      <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.85rem; margin-bottom: 0.75rem;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-sub); margin-bottom: 0.4rem;">
+          <span>🕒 ${n.sent_at}</span>
+          <span style="color: var(--accent-emerald); font-weight: 600;">TERKIRIM</span>
         </div>
-        <div style="color: var(--text-muted); white-space: pre-line;">${l.message.replace(/<[^>]*>?/gm, '')}</div>
+        <div style="font-size: 0.85rem; line-height: 1.4;">${n.message.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>")}</div>
       </div>
     `).join("");
   }
   openModal("notificationsModal");
 }
 
-function showToast(message, type = "info") {
-  const container = document.getElementById("toastContainer");
-  if (!container) return;
-  const toast = document.createElement("div");
-  toast.className = `toast ${type}`;
-  toast.innerHTML = `<span>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span> <div>${message}</div>`;
-  container.appendChild(toast);
-  setTimeout(() => {
-    toast.style.opacity = "0";
-    toast.style.transform = "translateX(100%)";
-    setTimeout(() => toast.remove(), 300);
-  }, 3500);
+function showToast(msg, type = "info") {
+  const c = document.getElementById("toastContainer");
+  if (!c) return;
+  const t = document.createElement("div");
+  t.className = `toast ${type}`;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 4000);
+}
+
+function formatRupiah(val) {
+  return "Rp " + (val || 0).toLocaleString("id-ID");
 }
 
 function initTheme() {
-  const saved = localStorage.getItem("flight_theme") || "dark";
+  const saved = localStorage.getItem("theme") || "dark";
   document.documentElement.setAttribute("data-theme", saved);
   updateThemeIcon(saved);
 }
 
 function toggleTheme() {
-  const current = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
-  document.documentElement.setAttribute("data-theme", current);
-  localStorage.setItem("flight_theme", current);
-  updateThemeIcon(current);
-  if (state.selectedRouteId) loadAnalytics(state.selectedRouteId);
+  const cur = document.documentElement.getAttribute("data-theme") || "dark";
+  const nxt = cur === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", nxt);
+  localStorage.setItem("theme", nxt);
+  updateThemeIcon(nxt);
 }
 
-function updateThemeIcon(theme) {
-  const btn = document.getElementById("btnThemeToggle");
-  if (btn) btn.textContent = theme === "light" ? "🌙" : "☀️";
+function updateThemeIcon(t) {
+  const b = document.getElementById("btnThemeToggle");
+  if (b) b.textContent = t === "dark" ? "☀️" : "🌙";
 }
