@@ -2,11 +2,11 @@
   "status": {
     "status": "online",
     "mode": "github_pages",
-    "last_updated": "2026-09-08T16:22:12.391279",
+    "last_updated": "2026-09-08T19:21:44.413798",
     "scheduler": {
       "running": true,
       "is_scanning": false,
-      "last_scan": "2026-09-08T16:22:12.391281",
+      "last_scan": "2026-09-08T19:21:44.413801",
       "auto_scan_enabled": true
     },
     "telegram": {
@@ -17,14 +17,14 @@
     "stats": {
       "total_routes": 1,
       "active_routes": 1,
-      "total_tracked_flights": 4604,
+      "total_tracked_flights": 4610,
       "cheapest_price_idr": 389000,
-      "total_notifications": 781
+      "total_notifications": 782
     }
   },
   "routes": [
     {
-      "id": 4,
+      "id": 5,
       "origin": "BDJ",
       "destination": "PDG",
       "label": "Banjarmasin ➔ Padang (Transit CGK)",
@@ -32,9 +32,9 @@
       "days_ahead": 1,
       "is_active": 1,
       "check_interval_hours": 4,
-      "last_checked_at": "2026-09-08T16:22:12.384772",
-      "created_at": "2026-09-08T16:22:11.378818",
-      "updated_at": "2026-09-08T16:22:11.378818",
+      "last_checked_at": "2026-09-08T19:21:44.403724",
+      "created_at": "2026-09-08T19:21:43.567792",
+      "updated_at": "2026-09-08T19:21:43.567792",
       "target_date": "2026-10-25",
       "last_price_idr": 0
     }
@@ -2194,13 +2194,22 @@
       "route_label": null
     },
     {
+      "id": 782,
+      "route_id": 5,
+      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Banjarmasin ➔ Padang (Transit CGK) (2026-09-09)\n📅 <b>Tanggal:</b> 2026-09-09\n🎯 <b>Target Budget:</b> Rp 2.500.000\n\n<b>1. ⚡ Super Air Jet</b> (IU-628)\n   🕒 13:45 ➔ 15:35 (1j 50m)\n   💰 <b>Rp 527.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/bdj-to-pdg/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. 🟢 Citilink</b> (QG-377)\n   🕒 13:45 ➔ 15:35 (1j 50m)\n   💰 <b>Rp 606.000</b> | 💺 7 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/bdj-to-pdg/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>3. ✈️ TransNusa</b> (8B-975)\n   🕒 07:00 ➔ 08:45 (1j 45m)\n   💰 <b>Rp 660.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/bdj-to-pdg/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>4. 🔴 AirAsia Indonesia</b> (QZ-196)\n   🕒 07:00 ➔ 08:45 (1j 45m)\n   💰 <b>Rp 661.000</b> | 💺 7 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/bdj-to-pdg/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>5. 🔵 Pelita Air</b> (IP-352)\n   🕒 15:20 ➔ 17:10 (1j 50m)\n   💰 <b>Rp 788.000</b> | 💺 5 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/bdj-to-pdg/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<i>...dan 1 opsi penerbangan murah lainnya</i>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 19:21 WIB</i>",
+      "price_idr": 527000,
+      "sent_at": "2026-09-08T19:21:44.401413",
+      "status": "SUCCESS",
+      "route_label": "Banjarmasin ➔ Padang (Transit CGK)"
+    },
+    {
       "id": 781,
       "route_id": 4,
       "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Banjarmasin ➔ Padang (Transit CGK) (2026-09-09)\n📅 <b>Tanggal:</b> 2026-09-09\n🎯 <b>Target Budget:</b> Rp 2.500.000\n\n<b>1. ⚡ Super Air Jet</b> (IU-628)\n   🕒 13:45 ➔ 15:35 (1j 50m)\n   💰 <b>Rp 527.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/bdj-to-pdg/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. 🟢 Citilink</b> (QG-377)\n   🕒 13:45 ➔ 15:35 (1j 50m)\n   💰 <b>Rp 606.000</b> | 💺 7 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/bdj-to-pdg/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>3. ✈️ TransNusa</b> (8B-975)\n   🕒 07:00 ➔ 08:45 (1j 45m)\n   💰 <b>Rp 660.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/bdj-to-pdg/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>4. 🔴 AirAsia Indonesia</b> (QZ-196)\n   🕒 07:00 ➔ 08:45 (1j 45m)\n   💰 <b>Rp 661.000</b> | 💺 7 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/bdj-to-pdg/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>5. 🔵 Pelita Air</b> (IP-352)\n   🕒 15:20 ➔ 17:10 (1j 50m)\n   💰 <b>Rp 788.000</b> | 💺 5 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/bdj-to-pdg/2026-09-09/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<i>...dan 1 opsi penerbangan murah lainnya</i>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 16:22 WIB</i>",
       "price_idr": 527000,
       "sent_at": "2026-09-08T16:22:12.383167",
       "status": "SUCCESS",
-      "route_label": "Banjarmasin ➔ Padang (Transit CGK)"
+      "route_label": null
     },
     {
       "id": 780,
@@ -2282,19 +2291,10 @@
       "sent_at": "2026-09-08T16:11:54.015860",
       "status": "SUCCESS",
       "route_label": null
-    },
-    {
-      "id": 771,
-      "route_id": 1,
-      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-10)\n📅 <b>Tanggal:</b> 2026-09-10\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. ⚡ Super Air Jet</b> (IU-908)\n   🕒 09:15 ➔ 11:00 (1j 45m)\n   💰 <b>Rp 512.000</b> | 💺 3 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-10/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. 🟢 Citilink</b> (QG-833)\n   🕒 07:00 ➔ 08:45 (1j 45m)\n   💰 <b>Rp 600.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-10/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 16:11 WIB</i>",
-      "price_idr": 512000,
-      "sent_at": "2026-09-08T16:11:53.384728",
-      "status": "SUCCESS",
-      "route_label": null
     }
   ],
   "analytics": {
-    "4": {
+    "5": {
       "dates": [
         "2026-09-09"
       ],
@@ -2348,7 +2348,7 @@
     }
   },
   "calendar": {
-    "4": [
+    "5": [
       {
         "flight_date": "2026-09-09",
         "cheapest_price": 527000,
