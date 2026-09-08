@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flight Price Monitor Pro - Pemantau Tiket Pesawat Murah Real-Time</title>
+  <meta name="description" content="Dashboard pemantauan otomatis harga tiket pesawat Traveloka dan Tiket.com dengan integrasi Telegram Bot dan analitik tren harga.">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✈️</text></svg>">
+  
+  <!-- CSS Stylesheet (Relative Path for GitHub Pages) -->
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Top Header Bar -->
+    <header class="header-bar">
+      <div class="brand-area">
+        <div class="brand-logo">✈️</div>
+        <div>
+          <div style="display: flex; align-items: center;">
+            <h1 class="brand-title">Flight Monitor Pro</h1>
+            <span class="brand-badge">v2.0</span>
+          </div>
+          <div style="font-size: 0.78rem; color: var(--text-muted); font-weight: 500;">
+            Pemantau Harga Tiket & Alert Telegram Otomatis
+          </div>
+        </div>
+      </div>
+
+      <div class="header-status">
+        <div class="status-pill" title="Status Background Worker">
+          <div id="schedulerPulse" class="pulse-dot"></div>
+          <span id="schedulerStatusText">GitHub Actions (Cloud)</span>
+        </div>
+        <div class="status-pill" title="Status Integrasi Telegram Bot">
+          <div id="telegramPulse" class="pulse-dot"></div>
+          <span id="telegramStatusText">Telegram Siap</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="btnScanAll" class="btn btn-primary" title="Refresh Data Terbaru">
+          <span>🔄</span> Refresh Data
+        </button>
+        <button class="btn btn-secondary" onclick="openAddRouteModal()">
+          <span>➕</span> Tambah Rute
+        </button>
+        <button class="btn btn-icon" onclick="openNotificationsModal()" title="Riwayat Notifikasi">
+          🔔
+        </button>
+        <button class="btn btn-icon" onclick="openModal('settingsModal')" title="Pengaturan Sistem & Bot">
+          ⚙️
+        </button>
+        <button id="btnThemeToggle" class="btn btn-icon" title="Ubah Tema Gelap/Terang">
+          ☀️
+        </button>
+      </div>
+    </header>
+
+    <!-- Top KPI Stats -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">Rute Dipantau</span>
+          <div class="stat-icon purple">📍</div>
+        </div>
+        <div class="stat-value" id="statTotalRoutes">-</div>
+        <div class="stat-sub">Rute aktif vs total terdaftar</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">Tiket Termurah Hari Ini</span>
+          <div class="stat-icon emerald">🏷️</div>
+        </div>
+        <div class="stat-value" id="statCheapestPrice" style="color: var(--accent-emerald);">-</div>
+        <div class="stat-sub">Harga terendah di seluruh rute</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">Penerbangan Terpantau</span>
+          <div class="stat-icon cyan">✈️</div>
+        </div>
+        <div class="stat-value" id="statTrackedFlights">-</div>
+        <div class="stat-sub">Total data harga tersimpan</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">Notifikasi Terkirim</span>
+          <div class="stat-icon amber">🔔</div>
+        </div>
+        <div class="stat-value" id="statTotalNotifs">-</div>
+        <div class="stat-sub">Alert promo tiket terkirim ke Telegram</div>
+      </div>
+    </section>
+
+    <!-- Section 1: Active Routes Grid -->
+    <section style="margin-bottom: 2.5rem;">
+      <div class="section-header">
+        <div class="section-title">
+          <span>🎯</span> Rute Pemantauan Aktif
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="openAddRouteModal()">
+          ➕ Tambah Rute Baru
+        </button>
+      </div>
+
+      <div class="routes-grid" id="routesGrid">
+        <!-- Route Cards dynamically rendered via app.js -->
+        <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">
+          Memuat daftar rute pantauan...
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Analytics & Lowest Fare Matrix -->
+    <section id="analyticsSection" class="analytics-container">
+      <div class="analytics-tabs">
+        <button id="tabTrend" class="tab-btn active">
+          📈 Grafik Tren Fluktuasi Harga
+        </button>
+        <button id="tabCalendar" class="tab-btn">
+          📅 Kalender Tarif Termurah 30 Hari
+        </button>
+
+        <div class="route-selector-box">
+          <label style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600;">Rute:</label>
+          <select id="analyticsRouteSelect" class="select-control">
+            <option value="">Pilih Rute...</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Tab 1: Line Chart -->
+      <div id="trendViewWrapper">
+        <div style="height: 340px; position: relative; width: 100%;">
+          <canvas id="priceTrendCanvas"></canvas>
+        </div>
+      </div>
+
+      <!-- Tab 2: Calendar Matrix -->
+      <div id="calendarViewWrapper" style="display: none;">
+        <div class="calendar-grid" id="fareCalendarGrid">
+          <!-- Calendar cells rendered via charts.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Live Flight Results Explorer Table -->
+    <section class="table-card">
+      <div class="section-header">
+        <div class="section-title">
+          <span>📋</span> Hasil Pemindaian Tiket Terbaru
+        </div>
+      </div>
+
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Maskapai</th>
+            <th>Rute</th>
+            <th>Tanggal</th>
+            <th>Jam Terbang</th>
+            <th>Harga Tiket</th>
+            <th>Sisa Kursi</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="flightTableBody">
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+              Memuat data penerbangan...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </div>
+
+  <!-- Datalist Bandara Indonesia untuk Auto-complete -->
+  <datalist id="airportsDatalist"></datalist>
+
+  <!-- ==========================================================================
+       MODAL: Tambah / Edit Rute
+       ========================================================================== -->
+  <div class="modal-backdrop" id="routeModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="routeModalTitle">Tambah Rute Pantauan</h3>
+        <button class="btn btn-icon btn-sm" onclick="closeModal('routeModal')">✕</button>
+      </div>
+
+      <form id="routeForm">
+        <input type="hidden" id="routeIdInput">
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label" for="routeOriginInput">Bandara Asal (IATA):</label>
+            <input type="text" id="routeOriginInput" class="form-control" placeholder="Contoh: CGK / SUB" list="airportsDatalist" required maxlength="3" style="text-transform: uppercase;">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="routeDestInput">Bandara Tujuan (IATA):</label>
+            <input type="text" id="routeDestInput" class="form-control" placeholder="Contoh: DPS / BDJ" list="airportsDatalist" required maxlength="3" style="text-transform: uppercase;">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="routeLabelInput">Label Tampilan (Opsional):</label>
+          <input type="text" id="routeLabelInput" class="form-control" placeholder="Contoh: Surabaya ➔ Bali">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="routeMaxPriceInput">Target Budget Maksimal (IDR):</label>
+          <input type="number" id="routeMaxPriceInput" class="form-control" placeholder="600000" step="10000" required>
+          <small style="font-size: 0.75rem; color: var(--text-sub); margin-top: 0.25rem; display: block;">
+            Bot akan mengirim notifikasi jika harga tiket di bawah angka ini.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="routeDaysAheadInput">Rentang Hari yang Dipantau:</label>
+          <input type="number" id="routeDaysAheadInput" class="form-control" value="14" min="1" max="60" required>
+          <small style="font-size: 0.75rem; color: var(--text-sub); margin-top: 0.25rem; display: block;">
+            Memantau harga dari besok hingga N hari ke depan.
+          </small>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('routeModal')">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan Rute</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: Pengaturan Sistem & Bot Telegram
+       ========================================================================== -->
+  <div class="modal-backdrop" id="settingsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Pengaturan Sistem & Bot Telegram</h3>
+        <button class="btn btn-icon btn-sm" onclick="closeModal('settingsModal')">✕</button>
+      </div>
+
+      <form id="settingsForm">
+        <div class="form-group">
+          <label class="form-label" for="settingTelegramToken">Telegram Bot Token:</label>
+          <input type="text" id="settingTelegramToken" class="form-control" placeholder="123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11">
+          <small style="font-size: 0.75rem; color: var(--text-sub);">Dapatkan dari <b>@BotFather</b> di Telegram.</small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="settingTelegramChatId">Telegram Chat ID / User ID:</label>
+          <input type="text" id="settingTelegramChatId" class="form-control" placeholder="5217528489">
+          <small style="font-size: 0.75rem; color: var(--text-sub);">Dapatkan ID kamu dari <b>@userinfobot</b> di Telegram.</small>
+        </div>
+
+        <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; background: var(--bg-glass); padding: 0.85rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+          <div>
+            <div style="font-weight: 600; font-size: 0.9rem;">Auto-Scan Berkala</div>
+            <div style="font-size: 0.75rem; color: var(--text-sub);">Jalankan pemindaian otomatis di background</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="settingAutoScan" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+          <button type="button" id="btnTestTelegram" class="btn btn-secondary btn-sm">
+            🧪 Tes Kirim Pesan
+          </button>
+          
+          <div style="display: flex; gap: 0.5rem;">
+            <button type="button" class="btn btn-secondary" onclick="closeModal('settingsModal')">Tutup</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: Riwayat Notifikasi
+       ========================================================================== -->
+  <div class="modal-backdrop" id="notificationsModal">
+    <div class="modal-content" style="max-width: 650px;">
+      <div class="modal-header">
+        <h3 class="modal-title">🔔 Riwayat Notifikasi Telegram</h3>
+        <button class="btn btn-icon btn-sm" onclick="closeModal('notificationsModal')">✕</button>
+      </div>
+
+      <div id="notificationsLogContainer" style="max-height: 400px; overflow-y: auto;">
+        <p style="color: var(--text-muted); text-align: center; padding: 2rem;">Memuat log notifikasi...</p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('notificationsModal')">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Application Scripts (Relative Paths for GitHub Pages) -->
+  <script src="js/charts.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
