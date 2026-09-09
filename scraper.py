@@ -84,6 +84,22 @@ class ConnectingFlightResult:
         h, m = divmod(self.total_duration_minutes, 60)
         return f"{h}j {m}m" if m else f"{h}j"
 
+    @property
+    def leg1_booking_url(self) -> str:
+        return get_traveloka_url(self.origin, self.hub, self.date)
+
+    @property
+    def leg2_booking_url(self) -> str:
+        return get_traveloka_url(self.hub, self.destination, self.date)
+
+    @property
+    def leg1_tiket_url(self) -> str:
+        return get_tiket_url(self.origin, self.hub, self.date)
+
+    @property
+    def leg2_tiket_url(self) -> str:
+        return get_tiket_url(self.hub, self.destination, self.date)
+
     def __post_init__(self):
         if not self.booking_url:
             self.booking_url = get_traveloka_url(self.origin, self.destination, self.date)
@@ -99,19 +115,23 @@ def get_traveloka_url(origin: str, destination: str, date_str: str) -> str:
             return f"https://www.traveloka.com/id-id/flight/fullsearch?ap={origin.upper()}.{destination.upper()}&dt={dt}&ps=1.0.0&sc=ECONOMY"
     except Exception:
         pass
-    return f"https://www.traveloka.com/id-id/flight"
+    return "https://www.traveloka.com/id-id/flight"
 
 
 def get_tiket_url(origin: str, destination: str, date_str: str) -> str:
     return (
         f"https://www.tiket.com/pesawat/search?"
-        f"d={origin.upper()}&a={destination.upper()}&date={date_str}&adult=1&tripType=ONE_WAY&cabinClass=ECONOMY"
+        f"d={origin}&a={destination}&date={date_str}&adult=1&tripType=ONE_WAY&cabinClass=ECONOMY"
     )
 
 
 class ScraperException(Exception):
     pass
 
+
+# ==========================================
+# 1. TRAVELOKA SCRAPER
+# ==========================================
 
 class TravelokaScraper:
     API_BASE = "https://api.traveloka.com"
@@ -120,59 +140,59 @@ class TravelokaScraper:
     HEADERS = {
         "Content-Type": "application/json",
         "Accept": "application/json, text/plain, */*",
-        "User-Agent": (
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/122.0.0.0 Safari/537.36"
-        ),
+        "Accept-Language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+        "X-Domain": "traveloka.com",
+        "X-Tvlk-Encrypted-Request": "false",
         "Origin": "https://www.traveloka.com",
-        "Referer": "https://www.traveloka.com/id-id/flight",
-        "x-domain": "flight",
+        "Referer": "https://www.traveloka.com/",
     }
 
     def __init__(self):
-        self.scraper = cloudscraper.create_scraper(
+        self.client = cloudscraper.create_scraper(
             browser={"browser": "chrome", "platform": "windows", "mobile": False}
         )
 
     def search(self, origin: str, destination: str, date: datetime, adults: int = 1) -> List[FlightResult]:
-        date_str = date.strftime("%Y-%m-%d")
         payload = {
-            "fields": [],
             "data": {
-                "flightSearchContext": {
-                    "isDomestic": True,
-                    "cabinClass": "ECONOMY",
-                    "passengerInfo": {"adult": adults, "child": 0, "infant": 0},
+                "flightSpec": {
                     "flightType": "ONE_WAY",
-                    "flightSearchLines": [{
-                        "originAirportOrArea": origin.upper(),
-                        "destinationAirportOrArea": destination.upper(),
-                        "departureDate": {
-                            "day": date.day,
-                            "month": date.month,
-                            "year": date.year,
+                    "segments": [
+                        {
+                            "departureAirport": {"code": origin},
+                            "arrivalAirport": {"code": destination},
+                            "departureDate": {
+                                "year": date.year,
+                                "month": date.month,
+                                "day": date.day,
+                            },
                         }
-                    }]
-                }
-            },
-            "clientInterface": "DESKTOP"
+                    ],
+                    "adultsCount": adults,
+                    "childrenCount": 0,
+                    "infantsCount": 0,
+                    "cabinClass": "ECONOMY",
+                },
+                "page": {"limit": 30, "offset": 0},
+                "sort": {"by": "PRICE", "order": "ASC"},
+                "filters": {},
+            }
         }
+        date_str = date.strftime("%Y-%m-%d")
+        logger.info(f"[Traveloka] Searching {origin} ➔ {destination} on {date_str}")
 
         try:
-            logger.info(f"[Traveloka] Searching {origin} ➔ {destination} on {date_str}")
-            resp = self.scraper.post(
+            resp = self.client.post(
                 f"{self.API_BASE}{self.SEARCH_PATH}",
                 json=payload,
                 headers=self.HEADERS,
                 timeout=15,
             )
-            if resp.status_code == 200:
-                data = resp.json()
-                return self._parse_response(data, origin, destination, date_str)
-            else:
-                logger.warning(f"Traveloka API returned status {resp.status_code}")
-                return []
+            if resp.status_code != 200:
+                raise ScraperException(f"Traveloka HTTP {resp.status_code}")
+            raw = resp.json()
+            return self._parse_response(raw, origin, destination, date_str)
         except Exception as exc:
             raise ScraperException(f"Traveloka error: {exc}") from exc
 
@@ -214,8 +234,7 @@ class TravelokaScraper:
                         seats_left=seats,
                         source="traveloka",
                         date=date_str,
-                        booking_url=get_traveloka_url(origin, destination, date_str),
-                        tiket_url=get_tiket_url(origin, destination, date_str)
+                        booking_url=get_traveloka_url(origin, destination, date_str)
                     )
                 )
             except Exception:
@@ -223,6 +242,10 @@ class TravelokaScraper:
 
         return sorted(flights, key=lambda f: f.price_idr)
 
+
+# ==========================================
+# 2. TIKET.COM SCRAPER
+# ==========================================
 
 class TiketScraper:
     API_BASE = "https://www.tiket.com"
@@ -251,61 +274,82 @@ class TiketScraper:
             "infant": 0,
             "class": "economy",
             "page": 1,
+            "limit": 30,
+            "sort": "cheapest",
         }
+        date_str = date.strftime("%Y-%m-%d")
+        logger.info(f"[Tiket.com] Searching {origin} ➔ {destination} on {date_str}")
+
         try:
-            logger.info(f"[Tiket.com] Searching {origin} ➔ {destination} on {date.strftime('%Y-%m-%d')}")
             resp = self.client.get(
                 f"{self.API_BASE}{self.SEARCH_PATH}",
                 params=params,
                 headers=self.HEADERS,
-                timeout=12,
+                timeout=15,
             )
-            if resp.status_code == 200:
-                return self._parse(resp.json(), origin, destination, date.strftime("%Y-%m-%d"))
-            return []
+            if resp.status_code != 200:
+                raise ScraperException(f"Tiket.com HTTP {resp.status_code}")
+            raw = resp.json()
+            return self._parse_response(raw, origin, destination, date_str)
         except Exception as exc:
             raise ScraperException(f"Tiket.com error: {exc}") from exc
 
-    def _parse(self, data: dict, origin: str, destination: str, date_str: str) -> List[FlightResult]:
+    def _parse_response(self, data: dict, origin: str, destination: str, date_str: str) -> List[FlightResult]:
         flights = []
-        schedules = data.get("data", {}).get("schedules", []) or data.get("schedules", [])
-        for item in schedules:
+        items = data.get("data", {}).get("flights") or data.get("data", []) or []
+
+        for item in items:
             try:
-                price = int(item.get("fare", {}).get("adult", 0) or item.get("price", 0))
+                price = int(item.get("price", {}).get("amount", 0) or item.get("totalFare", 0) or 0)
                 if price <= 0:
                     continue
+
+                airline = item.get("airlineName") or item.get("carrier", {}).get("name", "Unknown")
+                flight_number = item.get("flightNumber") or item.get("number", "-")
+                dep_time = item.get("departureTime") or "09:00"
+                arr_time = item.get("arrivalTime") or "11:00"
+                duration = int(item.get("durationMinutes", 0) or 0)
+
                 flights.append(
                     FlightResult(
-                        airline=item.get("airlineName", "Airlines"),
-                        flight_number=item.get("flightNumber", "-"),
+                        airline=airline,
+                        flight_number=flight_number,
                         origin=origin,
                         destination=destination,
-                        departure_time=item.get("departureTime", "08:00"),
-                        arrival_time=item.get("arrivalTime", "10:00"),
-                        duration_minutes=int(item.get("duration", 0)),
+                        departure_time=dep_time,
+                        arrival_time=arr_time,
+                        duration_minutes=duration,
                         price_idr=price,
-                        seats_left=item.get("seatsAvailable"),
+                        seats_left=None,
                         source="tiket",
                         date=date_str,
-                        booking_url=get_traveloka_url(origin, destination, date_str),
-                        tiket_url=get_tiket_url(origin, destination, date_str)
+                        booking_url=get_tiket_url(origin, destination, date_str)
                     )
                 )
             except Exception:
                 continue
+
         return sorted(flights, key=lambda f: f.price_idr)
 
 
+# ==========================================
+# 3. REALISTIC FALLBACK SIMULATOR
+# ==========================================
+
 class SimulationScraper:
+    """
+    Simulator cerdas yang menghasilkan harga realistis berdasarkan rute, hari libur/weekend,
+    dan variasi maskapai Indonesia ketika API OTA terblokir atau dalam mode simulasi.
+    """
     AIRLINES = [
-        {"name": "Lion Air", "code": "JT", "base_price": 540000},
-        {"name": "Super Air Jet", "code": "IU", "base_price": 570000},
-        {"name": "Citilink", "code": "QG", "base_price": 610000},
-        {"name": "Pelita Air", "code": "IP", "base_price": 650000},
-        {"name": "AirAsia Indonesia", "code": "QZ", "base_price": 590000},
-        {"name": "TransNusa", "code": "8B", "base_price": 560000},
-        {"name": "Batik Air", "code": "ID", "base_price": 790000},
-        {"name": "Garuda Indonesia", "code": "GA", "base_price": 1350000},
+        {"name": "Citilink", "code": "QG", "base_price": 550000, "speed": 85},
+        {"name": "Super Air Jet", "code": "IU", "base_price": 520000, "speed": 85},
+        {"name": "AirAsia Indonesia", "code": "QZ", "base_price": 580000, "speed": 90},
+        {"name": "Lion Air", "code": "JT", "base_price": 500000, "speed": 85},
+        {"name": "Batik Air", "code": "ID", "base_price": 780000, "speed": 90},
+        {"name": "Garuda Indonesia", "code": "GA", "base_price": 1250000, "speed": 95},
+        {"name": "Pelita Air", "code": "IP", "base_price": 680000, "speed": 90},
+        {"name": "TransNusa", "code": "8B", "base_price": 610000, "speed": 85},
     ]
 
     DEPARTURE_SLOTS = [
@@ -321,18 +365,14 @@ class SimulationScraper:
 
     def search(self, origin: str, destination: str, date: datetime) -> List[FlightResult]:
         date_str = date.strftime("%Y-%m-%d")
-        is_weekend = date.weekday() in (4, 5, 6)
-        
-        pair = f"{origin.upper()}-{destination.upper()}"
-        popular_routes = {
-            "CGK-DPS": 0.95, "SUB-DPS": 0.75, "CGK-SUB": 0.85, "CGK-KNO": 1.25,
-            "SUB-BDJ": 0.90, "BDJ-CGK": 1.05, "CGK-PDG": 1.15, "BDJ-PDG": 1.85,
-            "CGK-UPG": 1.40, "CGK-YIA": 0.80, "DPS-LAB": 1.10
-        }
-        route_factor = popular_routes.get(pair)
-        if not route_factor:
-            reverse_pair = f"{destination.upper()}-{origin.upper()}"
-            route_factor = popular_routes.get(reverse_pair, 1.10)
+        day_of_week = date.weekday()
+        is_weekend = day_of_week in (4, 5, 6)
+
+        route_factor = 1.0
+        if "DPS" in (origin, destination) or "BDJ" in (origin, destination):
+            route_factor = 1.15
+        if "KNO" in (origin, destination) or "UPG" in (origin, destination):
+            route_factor = 1.45
 
         flights = []
         seed = int(f"{date.year}{date.month:02d}{date.day:02d}" + str(sum(ord(c) for c in origin + destination)))
@@ -369,15 +409,22 @@ class SimulationScraper:
                     seats_left=seats,
                     source="traveloka (cached)",
                     date=date_str,
-                    booking_url=get_traveloka_url(origin, destination, date_str),
-                    tiket_url=get_tiket_url(origin, destination, date_str)
+                    booking_url=get_traveloka_url(origin, destination, date_str)
                 )
             )
 
         return sorted(flights, key=lambda f: f.price_idr)
 
 
+# ==========================================
+# 4. UNIFIED FLIGHT SCRAPER
+# ==========================================
+
 class FlightScraper:
+    """
+    Scraper terpadu yang mencoba Traveloka ➔ Tiket.com ➔ Simulation Fallback.
+    """
+
     def __init__(self):
         self._traveloka = TravelokaScraper()
         self._tiket = TiketScraper()
@@ -417,6 +464,10 @@ class FlightScraper:
     def search_connecting(self, origin: str, destination: str, date: datetime,
                           hub: Optional[str] = None, min_transit_min: int = 75,
                           max_transit_min: int = 480) -> List[ConnectingFlightResult]:
+        """
+        Mencari dan memvalidasi rute connecting flight transit (Leg 1 + Leg 2)
+        dengan jaminan buffer waktu transit yang aman dan bebas salah beli.
+        """
         origin = origin.strip().upper()
         destination = destination.strip().upper()
         date_str = date.strftime("%Y-%m-%d")
@@ -462,6 +513,7 @@ class FlightScraper:
 
                     total_dur = l1.duration_minutes + layover + l2.duration_minutes
                     total_price = l1.price_idr + l2.price_idr
+                    booking_url = get_traveloka_url(origin, destination, date_str)
 
                     all_connecting.append(ConnectingFlightResult(
                         origin=origin,
@@ -484,8 +536,7 @@ class FlightScraper:
                         total_duration_minutes=total_dur,
                         total_price_idr=total_price,
                         safety_rating=safety,
-                        booking_url=get_traveloka_url(origin, destination, date_str),
-                        tiket_url=get_tiket_url(origin, destination, date_str)
+                        booking_url=booking_url
                     ))
 
         return sorted(all_connecting, key=lambda c: (c.total_price_idr, c.total_duration_minutes))
