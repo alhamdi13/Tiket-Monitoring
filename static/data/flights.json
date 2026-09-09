@@ -2,11 +2,11 @@
   "status": {
     "status": "online",
     "mode": "github_pages",
-    "last_updated": "2026-09-08T22:37:07.132020",
+    "last_updated": "2026-09-09T01:03:55.830372",
     "scheduler": {
       "running": true,
       "is_scanning": false,
-      "last_scan": "2026-09-08T22:37:07.132022",
+      "last_scan": "2026-09-09T01:03:55.830376",
       "auto_scan_enabled": true
     },
     "telegram": {
@@ -17,14 +17,14 @@
     "stats": {
       "total_routes": 1,
       "active_routes": 1,
-      "total_tracked_flights": 4619,
+      "total_tracked_flights": 4622,
       "cheapest_price_idr": 389000,
-      "total_notifications": 784
+      "total_notifications": 785
     }
   },
   "routes": [
     {
-      "id": 7,
+      "id": 8,
       "origin": "BDJ",
       "destination": "PDG",
       "label": "Banjarmasin ➔ Padang (Transit CGK)",
@@ -32,14 +32,68 @@
       "days_ahead": 1,
       "is_active": 1,
       "check_interval_hours": 4,
-      "last_checked_at": "2026-09-08T22:37:07.122008",
-      "created_at": "2026-09-08T22:37:06.071527",
-      "updated_at": "2026-09-08T22:37:06.071527",
+      "last_checked_at": "2026-09-09T01:03:55.820040",
+      "created_at": "2026-09-09T01:03:54.830402",
+      "updated_at": "2026-09-09T01:03:54.830402",
       "target_date": "2026-10-25",
-      "last_price_idr": 1295000
+      "last_price_idr": 1471000
     }
   ],
   "flights": [
+    {
+      "id": 4620,
+      "route_id": 8,
+      "airline": "Citilink + Batik Air",
+      "flight_number": "QG-983/ID-173",
+      "origin": "BDJ",
+      "destination": "PDG",
+      "flight_date": "2026-10-25",
+      "departure_time": "09:15",
+      "arrival_time": "19:30",
+      "duration_minutes": 615,
+      "price_idr": 1471000,
+      "seats_left": null,
+      "source": "connecting",
+      "recorded_at": "2026-09-09T01:03:55.174194",
+      "route_label": "Banjarmasin ➔ Padang (Transit CGK)",
+      "max_price_idr": 2500000
+    },
+    {
+      "id": 4621,
+      "route_id": 8,
+      "airline": "Garuda Indonesia + Citilink",
+      "flight_number": "GA-972/QG-462",
+      "origin": "BDJ",
+      "destination": "PDG",
+      "flight_date": "2026-10-25",
+      "departure_time": "15:20",
+      "arrival_time": "22:00",
+      "duration_minutes": 400,
+      "price_idr": 2183000,
+      "seats_left": null,
+      "source": "connecting",
+      "recorded_at": "2026-09-09T01:03:55.174194",
+      "route_label": "Banjarmasin ➔ Padang (Transit CGK)",
+      "max_price_idr": 2500000
+    },
+    {
+      "id": 4622,
+      "route_id": 8,
+      "airline": "Batik Air + Garuda Indonesia",
+      "flight_number": "ID-318/GA-581",
+      "origin": "BDJ",
+      "destination": "PDG",
+      "flight_date": "2026-10-25",
+      "departure_time": "05:30",
+      "arrival_time": "13:20",
+      "duration_minutes": 470,
+      "price_idr": 2296000,
+      "seats_left": null,
+      "source": "connecting",
+      "recorded_at": "2026-09-09T01:03:55.174194",
+      "route_label": "Banjarmasin ➔ Padang (Transit CGK)",
+      "max_price_idr": 2500000
+    },
     {
       "id": 4617,
       "route_id": 7,
@@ -55,8 +109,8 @@
       "seats_left": null,
       "source": "connecting",
       "recorded_at": "2026-09-08T22:37:06.467456",
-      "route_label": "Banjarmasin ➔ Padang (Transit CGK)",
-      "max_price_idr": 2500000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 4618,
@@ -73,8 +127,8 @@
       "seats_left": null,
       "source": "connecting",
       "recorded_at": "2026-09-08T22:37:06.467456",
-      "route_label": "Banjarmasin ➔ Padang (Transit CGK)",
-      "max_price_idr": 2500000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 4619,
@@ -91,8 +145,8 @@
       "seats_left": null,
       "source": "connecting",
       "recorded_at": "2026-09-08T22:37:06.467456",
-      "route_label": "Banjarmasin ➔ Padang (Transit CGK)",
-      "max_price_idr": 2500000
+      "route_label": null,
+      "max_price_idr": null
     },
     {
       "id": 4611,
@@ -1785,63 +1839,18 @@
       "recorded_at": "2026-09-08T22:11:01.460802",
       "route_label": null,
       "max_price_idr": null
-    },
-    {
-      "id": 221,
-      "route_id": 2,
-      "airline": "Garuda Indonesia",
-      "flight_number": "GA-729",
-      "origin": "CGK",
-      "destination": "DPS",
-      "flight_date": "2026-09-28",
-      "departure_time": "05:30",
-      "arrival_time": "07:15",
-      "duration_minutes": 105,
-      "price_idr": 1506000,
-      "seats_left": 7,
-      "source": "traveloka (cached)",
-      "recorded_at": "2026-09-08T22:11:01.460802",
-      "route_label": null,
-      "max_price_idr": null
-    },
-    {
-      "id": 210,
-      "route_id": 2,
-      "airline": "Lion Air",
-      "flight_number": "JT-125",
-      "origin": "CGK",
-      "destination": "DPS",
-      "flight_date": "2026-09-27",
-      "departure_time": "09:15",
-      "arrival_time": "11:00",
-      "duration_minutes": 105,
-      "price_idr": 547000,
-      "seats_left": null,
-      "source": "traveloka (cached)",
-      "recorded_at": "2026-09-08T22:10:59.054865",
-      "route_label": null,
-      "max_price_idr": null
-    },
-    {
-      "id": 211,
-      "route_id": 2,
-      "airline": "Super Air Jet",
-      "flight_number": "IU-200",
-      "origin": "CGK",
-      "destination": "DPS",
-      "flight_date": "2026-09-27",
-      "departure_time": "05:30",
-      "arrival_time": "07:15",
-      "duration_minutes": 105,
-      "price_idr": 777000,
-      "seats_left": 7,
-      "source": "traveloka (cached)",
-      "recorded_at": "2026-09-08T22:10:59.054865",
-      "route_label": null,
-      "max_price_idr": null
     }
   ],
   "notifications": [
+    {
+      "id": 785,
+      "route_id": 8,
+      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Banjarmasin ➔ Padang (Transit CGK) (Target: 2026-10-25)\n📅 <b>Tanggal:</b> 2026-10-25\n🎯 <b>Target Budget:</b> Rp 2.500.000\n\n<b>1. 🔀 Connecting via CGK</b>\n   🛫 Leg 1 (BDJ➔CGK): 🟢 Citilink [09:15 ➔ 11:00]\n      👉 <a href='https://www.traveloka.com/id-id/flight/fullsearch?ap=BDJ.CGK&dt=25-10-2026.NA&ps=1.0.0&sc=ECONOMY'>Pesan Leg 1 di Traveloka</a>\n   ⏳ Transit di CGK: 6j 40m (🔵 Waktu Transit Santai (Bisa Istirahat di Bandara))\n   🛫 Leg 2 (CGK➔PDG): 👑 Batik Air [17:40 ➔ 19:30]\n      👉 <a href='https://www.traveloka.com/id-id/flight/fullsearch?ap=CGK.PDG&dt=25-10-2026.NA&ps=1.0.0&sc=ECONOMY'>Pesan Leg 2 di Traveloka</a>\n   💰 <b>Total Tarif 2 Tiket: Rp 1.471.000</b> (Durasi: 10j 15m)\n   🔗 <a href='https://www.traveloka.com/id-id/flight/fullsearch?ap=BDJ.PDG&dt=25-10-2026.NA&ps=1.0.0&sc=ECONOMY'>Cek Tiket Terusan di Traveloka</a> | <a href='https://www.tiket.com/pesawat/search?d=BDJ&a=PDG&date=2026-10-25&adult=1&tripType=ONE_WAY&cabinClass=ECONOMY'>Tiket.com</a>\n\n<b>2. 🔀 Connecting via CGK</b>\n   🛫 Leg 1 (BDJ➔CGK): 🦅 Garuda Indonesia [15:20 ➔ 17:10]\n      👉 <a href='https://www.traveloka.com/id-id/flight/fullsearch?ap=BDJ.CGK&dt=25-10-2026.NA&ps=1.0.0&sc=ECONOMY'>Pesan Leg 1 di Traveloka</a>\n   ⏳ Transit di CGK: 3j (🟢 Waktu Transit Sangat Ideal & Aman (Rekomendasi))\n   🛫 Leg 2 (CGK➔PDG): 🟢 Citilink [20:10 ➔ 22:00]\n      👉 <a href='https://www.traveloka.com/id-id/flight/fullsearch?ap=CGK.PDG&dt=25-10-2026.NA&ps=1.0.0&sc=ECONOMY'>Pesan Leg 2 di Traveloka</a>\n   💰 <b>Total Tarif 2 Tiket: Rp 2.183.000</b> (Durasi: 6j 40m)\n   🔗 <a href='https://www.traveloka.com/id-id/flight/fullsearch?ap=BDJ.PDG&dt=25-10-2026.NA&ps=1.0.0&sc=ECONOMY'>Cek Tiket Terusan di Traveloka</a> | <a href='https://www.tiket.com/pesawat/search?d=BDJ&a=PDG&date=2026-10-25&adult=1&tripType=ONE_WAY&cabinClass=ECONOMY'>Tiket.com</a>\n\n<b>3. 🔀 Connecting via CGK</b>\n   🛫 Leg 1 (BDJ➔CGK): 👑 Batik Air [05:30 ➔ 07:15]\n      👉 <a href='https://www.traveloka.com/id-id/flight/fullsearch?ap=BDJ.CGK&dt=25-10-2026.NA&ps=1.0.0&sc=ECONOMY'>Pesan Leg 1 di Traveloka</a>\n   ⏳ Transit di CGK: 4j 15m (🔵 Waktu Transit Santai (Bisa Istirahat di Bandara))\n   🛫 Leg 2 (CGK➔PDG): 🦅 Garuda Indonesia [11:30 ➔ 13:20]\n      👉 <a href='https://www.traveloka.com/id-id/flight/fullsearch?ap=CGK.PDG&dt=25-10-2026.NA&ps=1.0.0&sc=ECONOMY'>Pesan Leg 2 di Traveloka</a>\n   💰 <b>Total Tarif 2 Tiket: Rp 2.296.000</b> (Durasi: 7j 50m)\n   🔗 <a href='https://www.traveloka.com/id-id/flight/fullsearch?ap=BDJ.PDG&dt=25-10-2026.NA&ps=1.0.0&sc=ECONOMY'>Cek Tiket Terusan di Traveloka</a> | <a href='https://www.tiket.com/pesawat/search?d=BDJ&a=PDG&date=2026-10-25&adult=1&tripType=ONE_WAY&cabinClass=ECONOMY'>Tiket.com</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 09 Sep 2026, 01:03 WIB</i>",
+      "price_idr": 1471000,
+      "sent_at": "2026-09-09T01:03:55.818063",
+      "status": "SUCCESS",
+      "route_label": "Banjarmasin ➔ Padang (Transit CGK)"
+    },
     {
       "id": 784,
       "route_id": 7,
@@ -1849,7 +1858,7 @@
       "price_idr": 1295000,
       "sent_at": "2026-09-08T22:37:07.119947",
       "status": "SUCCESS",
-      "route_label": "Banjarmasin ➔ Padang (Transit CGK)"
+      "route_label": null
     },
     {
       "id": 783,
@@ -2282,67 +2291,49 @@
       "sent_at": "2026-09-08T16:11:55.808044",
       "status": "SUCCESS",
       "route_label": null
-    },
-    {
-      "id": 774,
-      "route_id": 1,
-      "message": "🎉 <b>TIKET MURAH DITEMUKAN!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> Surabaya ➔ Bali (2026-09-14)\n📅 <b>Tanggal:</b> 2026-09-14\n🎯 <b>Target Budget:</b> Rp 650.000\n\n<b>1. 🦁 Lion Air</b> (JT-286)\n   🕒 05:30 ➔ 07:15 (1j 45m)\n   💰 <b>Rp 512.000</b> | 💺 3 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-14/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>2. ✈️ TransNusa</b> (8B-740)\n   🕒 20:10 ➔ 22:00 (1j 50m)\n   💰 <b>Rp 575.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-14/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>3. ⚡ Super Air Jet</b> (IU-229)\n   🕒 15:20 ➔ 17:10 (1j 50m)\n   💰 <b>Rp 591.000</b> | 💺 9 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-14/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>4. 🔵 Pelita Air</b> (IP-708)\n   🕒 07:00 ➔ 08:45 (1j 45m)\n   💰 <b>Rp 599.000</b> | 💺 6 kursi\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-14/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n<b>5. 🔴 AirAsia Indonesia</b> (QZ-956)\n   🕒 20:10 ➔ 22:00 (1j 50m)\n   💰 <b>Rp 609.000</b>\n   🔗 <a href='https://www.traveloka.com/en-id/flight/fullprice/sub-to-dps/2026-09-14/1/0/0/Economy'>Cek & Pesan di Traveloka</a>\n\n━━━━━━━━━━━━━━━━━━━━━━━\n🕒 <i>Waktu Scan: 08 Sep 2026, 16:11 WIB</i>",
-      "price_idr": 512000,
-      "sent_at": "2026-09-08T16:11:55.243416",
-      "status": "SUCCESS",
-      "route_label": null
     }
   ],
   "analytics": {
-    "7": {
+    "8": {
       "dates": [
         "2026-10-25"
       ],
       "min_prices": [
-        1295000
+        1471000
       ],
       "avg_prices": [
-        1344666
+        1983333
       ],
       "airline_breakdown": [
         {
-          "airline": "Lion Air + AirAsia Indonesia",
-          "min_price": 1295000,
+          "airline": "Citilink + Batik Air",
+          "min_price": 1471000,
           "flight_count": 1
         },
         {
-          "airline": "AirAsia Indonesia + TransNusa",
-          "min_price": 1337000,
+          "airline": "Garuda Indonesia + Citilink",
+          "min_price": 2183000,
           "flight_count": 1
         },
         {
-          "airline": "TransNusa + Lion Air",
-          "min_price": 1402000,
+          "airline": "Batik Air + Garuda Indonesia",
+          "min_price": 2296000,
           "flight_count": 1
         }
       ],
       "summary": [
         {
           "flight_date": "2026-10-25",
-          "min_price": 1295000,
-          "avg_price": 1344666.6666666667,
-          "max_price": 1402000,
+          "min_price": 1471000,
+          "avg_price": 1983333.3333333333,
+          "max_price": 2296000,
           "total_flights": 3
         }
       ]
     }
   },
   "calendar": {
-    "7": [
-      {
-        "flight_date": "2026-09-09",
-        "cheapest_price": null,
-        "airline": "-",
-        "flight_number": "-",
-        "departure_time": "-",
-        "duration_minutes": 0,
-        "source": null
-      },
+    "8": [
       {
         "flight_date": "2026-09-10",
         "cheapest_price": null,
@@ -2597,6 +2588,15 @@
       },
       {
         "flight_date": "2026-10-08",
+        "cheapest_price": null,
+        "airline": "-",
+        "flight_number": "-",
+        "departure_time": "-",
+        "duration_minutes": 0,
+        "source": null
+      },
+      {
+        "flight_date": "2026-10-09",
         "cheapest_price": null,
         "airline": "-",
         "flight_number": "-",
