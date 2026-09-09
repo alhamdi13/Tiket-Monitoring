@@ -1,6 +1,6 @@
 """
 notifier.py - Telegram Push Notifier untuk Flight Price Monitor Pro.
-Mengirimkan notifikasi tiket murah dan rute transit multi-leg dengan tautan resmi Traveloka & Tiket.com.
+Mengirimkan notifikasi tiket murah dengan format pesan HTML yang rapi, tombol direct booking, dan logging ke database.
 """
 
 import logging
@@ -112,11 +112,13 @@ class TelegramNotifier:
                 emoji2 = get_airline_emoji(f.leg2_airline)
                 body += (
                     f"\n<b>{i}. 🔀 Connecting via {f.hub}</b>\n"
-                    f"   🛫 Leg 1: {emoji1} {f.leg1_airline} ({f.leg1_flight_number}) [{f.leg1_departure_time} ➔ {f.leg1_arrival_time}]\n"
-                    f"   ⏳ Transit {f.hub}: {f.layover_formatted} ({f.safety_rating})\n"
-                    f"   🛫 Leg 2: {emoji2} {f.leg2_airline} ({f.leg2_flight_number}) [{f.leg2_departure_time} ➔ {f.leg2_arrival_time}]\n"
-                    f"   💰 <b>{f.total_price_formatted}</b> (Total: {f.total_duration_formatted})\n"
-                    f"   🔗 <a href='{f.booking_url}'>Buka di Traveloka</a> | <a href='{f.tiket_url}'>Buka di Tiket.com</a>\n"
+                    f"   🛫 Leg 1 ({f.origin}➔{f.hub}): {emoji1} {f.leg1_airline} [{f.leg1_departure_time} ➔ {f.leg1_arrival_time}]\n"
+                    f"      👉 <a href='{f.leg1_booking_url}'>Pesan Leg 1 di Traveloka</a>\n"
+                    f"   ⏳ Transit di {f.hub}: {f.layover_formatted} ({f.safety_rating})\n"
+                    f"   🛫 Leg 2 ({f.hub}➔{f.destination}): {emoji2} {f.leg2_airline} [{f.leg2_departure_time} ➔ {f.leg2_arrival_time}]\n"
+                    f"      👉 <a href='{f.leg2_booking_url}'>Pesan Leg 2 di Traveloka</a>\n"
+                    f"   💰 <b>Total Tarif 2 Tiket: {f.total_price_formatted}</b> (Durasi: {f.total_duration_formatted})\n"
+                    f"   🔗 <a href='{f.booking_url}'>Cek Tiket Terusan di Traveloka</a> | <a href='{f.tiket_url}'>Tiket.com</a>\n"
                 )
             else:
                 emoji = get_airline_emoji(f.airline)
