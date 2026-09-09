@@ -1,7 +1,6 @@
 """
 telegram_bot.py - Telegram Interactive 2-Way Bot Handler untuk Flight Price Monitor Pro.
-Menerima dan memproses perintah interaktif Telegram (/start, /cek, /tambah, /list, /hapus, /scan, /status)
-melalui background polling thread tanpa memerlukan webhook atau port forwarding publik.
+Mendukung perintah pemantauan tanggal spesifik (/pantau), pencarian on-demand (/cek), dan manajemen rute.
 """
 
 import logging
@@ -13,6 +12,7 @@ import requests
 
 import database
 from config import cfg
+from notifier import get_airline_emoji
 from scraper import FlightScraper
 
 logger = logging.getLogger("telegram_bot")
@@ -59,12 +59,8 @@ class TelegramInteractiveBot:
                             if "message" in update and "text" in update["message"]:
                                 self._handle_message(token, update["message"])
                 elif resp.status_code in (401, 404):
-                    logger.warning("[TelegramBot] Token bot tidak valid, menunggu update...")
                     time.sleep(10)
-            except requests.exceptions.Timeout:
-                pass
             except Exception as e:
-                logger.error(f"[TelegramBot] Polling error: {e}")
                 time.sleep(3)
 
     def _reply(self, token: str, chat_id: int, text: str, parse_mode: str = "HTML"):
@@ -88,17 +84,20 @@ class TelegramInteractiveBot:
             return
 
         parts = text.split()
-        cmd = parts[0].lower().split("@")[0]  # Menghapus tag @bot jika ada
+        cmd = parts[0].lower().split("@")[0]
         args = parts[1:]
 
         logger.info(f"[TelegramBot] Command diterima dari {first_name} ({chat_id}): {text}")
 
-        # Routing Perintah
         if cmd in ("/start", "/help", "/menu"):
             self._cmd_help(token, chat_id, first_name)
+        elif cmd in ("/transit", "/connecting", "/via"):
+            self._cmd_transit(token, chat_id, args)
+        elif cmd in ("/pantau", "/target"):
+            self._cmd_pantau_tanggal(token, chat_id, args)
         elif cmd in ("/cek", "/check", "/cari"):
             self._cmd_cek(token, chat_id, args)
-        elif cmd in ("/tambah", "/add", "/pantau"):
+        elif cmd in ("/tambah", "/add"):
             self._cmd_tambah(token, chat_id, args)
         elif cmd in ("/list", "/daftar", "/rute"):
             self._cmd_list(token, chat_id)
@@ -115,18 +114,161 @@ class TelegramInteractiveBot:
         msg = (
             f"👋 <b>Halo, {name}!</b>\n"
             f"Selamat datang di <b>Flight Price Monitor Pro</b> ✈️\n\n"
-            f"<b>Daftar Perintah:</b>\n"
-            f"• <code>/cek [ASAL] [TUJUAN] [YYYY-MM-DD]</code>\n"
-            f"  <i>Contoh:</i> <code>/cek CGK DPS 2026-10-15</code>\n\n"
-            f"• <code>/tambah [ASAL] [TUJUAN] [MAX_HARGA] [HARI]</code>\n"
-            f"  <i>Contoh:</i> <code>/tambah SUB DPS 600000 14</code>\n\n"
-            f"• <code>/list</code> — Lihat semua rute yang sedang dipantau\n"
-            f"• <code>/hapus [ID]</code> — Hapus rute pantauan (misal: <code>/hapus 2</code>)\n"
-            f"• <code>/scan</code> — Jalankan pemindaian harga sekarang\n"
-            f"• <code>/status</code> — Cek status sistem & database\n\n"
-            f"🌐 Dashboard Web: <code>http://localhost:8000</code>"
+            f"<b>Fitur Cerdas Penerbangan Transit (Connecting):</b>\n"
+            f"• <code>/transit [ASAL] [HUB] [TUJUAN] [YYYY-MM-DD]</code>\n"
+            f"  <i>Contoh:</i> <code>/transit BDJ CGK PDG 2026-10-25</code>\n"
+            f"• <code>/transit [ASAL] [TUJUAN] [YYYY-MM-DD]</code> (Otomatis cari hub terbaik)\n"
+            f"  <i>Contoh:</i> <code>/transit BDJ PDG 2026-10-25</code>\n"
+            f"  <i>(Dilengkapi proteksi waktu transit aman ≥ 75 menit agar tidak salah beli tiket!)</i>\n\n"
+            f"<b>Fitur Pemantauan Tanggal Spesifik:</b>\n"
+            f"• <code>/pantau [ASAL] [TUJUAN] [YYYY-MM-DD] [MAX_HARGA]</code>\n"
+            f"  <i>Contoh:</i> <code>/pantau CGK DPS 2026-10-25 550000</code>\n\n"
+            f"<b>Perintah Lainnya:</b>\n"
+            f"• <code>/cek CGK DPS 2026-10-25</code> — Cek harga langsung satu rute\n"
+            f"• <code>/list</code> — Lihat seluruh rute pantauan\n"
+            f"• <code>/hapus [ID]</code> — Hapus rute\n"
+            f"• <code>/scan</code> — Trigger scan sekarang\n\n"
+            f"🌐 Dashboard Web: <code>https://alhamdi13.github.io/Tiket-Monitoring/</code>"
         )
         self._reply(token, chat_id, msg)
+
+    def _cmd_transit(self, token: str, chat_id: int, args: list):
+        if len(args) < 2:
+            self._reply(token, chat_id, (
+                "⚠️ <b>Format perintah transit:</b>\n"
+                "• <b>Dengan Hub:</b> <code>/transit [ASAL] [HUB] [TUJUAN] [YYYY-MM-DD]</code>\n"
+                "  <i>Contoh:</i> <code>/transit BDJ CGK PDG 2026-10-25</code>\n\n"
+                "• <b>Auto Hub:</b> <code>/transit [ASAL] [TUJUAN] [YYYY-MM-DD]</code>\n"
+                "  <i>Contoh:</i> <code>/transit BDJ PDG 2026-10-25</code>"
+            ))
+            return
+
+        origin = args[0].upper()
+        hub = None
+        destination = None
+        date_str = None
+
+        if len(args) >= 4:
+            hub = args[1].upper()
+            destination = args[2].upper()
+            date_str = args[3]
+        elif len(args) == 3:
+            if "-" in args[2]:
+                destination = args[1].upper()
+                date_str = args[2]
+            else:
+                hub = args[1].upper()
+                destination = args[2].upper()
+                date_str = (datetime.now() + timedelta(days=14)).strftime("%Y-%m-%d")
+        else:
+            destination = args[1].upper()
+            date_str = (datetime.now() + timedelta(days=14)).strftime("%Y-%m-%d")
+
+        try:
+            target_date = datetime.strptime(date_str, "%Y-%m-%d")
+        except ValueError:
+            self._reply(token, chat_id, "⚠️ Format tanggal salah! Gunakan format <code>YYYY-MM-DD</code> (contoh: <code>2026-10-25</code>)")
+            return
+
+        hub_text = f" via <b>{hub}</b>" if hub else " (Pencarian Hub Otomatis)"
+        self._reply(token, chat_id, f"🔍 <i>Menganalisis opsi penerbangan transit aman untuk <b>{origin} ➔ {destination}</b>{hub_text} pada {date_str}...</i>")
+
+        try:
+            connecting_results = self.scraper.search_connecting(origin, destination, target_date, hub=hub)
+        except Exception as e:
+            logger.error(f"Gagal mencari connecting flights: {e}")
+            connecting_results = []
+
+        if not connecting_results:
+            self._reply(token, chat_id, (
+                f"❌ <b>Tidak ditemukan kombinasi penerbangan transit yang aman</b> untuk rute {origin} ➔ {destination} pada {date_str}.\n\n"
+                f"<i>Catatan: Sistem secara otomatis menolak jadwal dengan jeda transit < 75 menit agar tidak berisiko tertinggal pesawat.</i>"
+            ))
+            return
+
+        msg = (
+            f"✈️ <b>HASIL PENERBANGAN TRANSIT / CONNECTING</b>\n"
+            f"━━━━━━━━━━━━━━━━━━━━━━━\n"
+            f"📍 <b>Rute:</b> {origin} ➔ {destination}\n"
+            f"📅 <b>Tanggal:</b> {date_str}\n"
+            f"🛡️ <b>Proteksi Jadwal:</b> Waktu transit diverifikasi aman (≥ 75 menit)\n\n"
+        )
+
+        for i, c in enumerate(connecting_results[:4], 1):
+            e1 = get_airline_emoji(c.leg1_airline)
+            e2 = get_airline_emoji(c.leg2_airline)
+            p1 = f"Rp {c.leg1_price_idr:,.0f}".replace(",", ".")
+            p2 = f"Rp {c.leg2_price_idr:,.0f}".replace(",", ".")
+
+            msg += (
+                f"<b>{i}. {c.safety_rating}</b>\n"
+                f"   💰 <b>Total Tarif: {c.total_price_formatted}</b> | ⏱️ {c.total_duration_formatted}\n"
+                f"   🛫 <b>Leg 1 ({origin} ➔ {c.hub}):</b> {e1} {c.leg1_airline} ({c.leg1_flight_number})\n"
+                f"      🕒 {c.leg1_departure_time} ➔ {c.leg1_arrival_time} | {p1}\n"
+                f"      👉 <a href='{c.leg1_booking_url}'>Pesan Leg 1 di Traveloka</a>\n"
+                f"   ⏳ <b>Transit di {c.hub}:</b> <b>{c.layover_formatted}</b>\n"
+                f"   🛫 <b>Leg 2 ({c.hub} ➔ {destination}):</b> {e2} {c.leg2_airline} ({c.leg2_flight_number})\n"
+                f"      🕒 {c.leg2_departure_time} ➔ {c.leg2_arrival_time} | {p2}\n"
+                f"      👉 <a href='{c.leg2_booking_url}'>Pesan Leg 2 di Traveloka</a>\n"
+                f"   🔗 <a href='{c.booking_url}'>Cek Tiket Terusan Traveloka</a> | <a href='{c.tiket_url}'>Tiket.com</a>\n\n"
+            )
+
+        msg += "━━━━━━━━━━━━━━━━━━━━━━━\n💡 <i>Tips: Waktu transit telah dihitung agar Anda sempat turun, ambil bagasi, & pindah terminal tanpa terburu-buru!</i>"
+        self._reply(token, chat_id, msg)
+
+    def _cmd_pantau_tanggal(self, token: str, chat_id: int, args: list):
+        if len(args) < 4:
+            self._reply(token, chat_id, (
+                "⚠️ <b>Format salah!</b>\n"
+                "Gunakan: <code>/pantau [ASAL] [TUJUAN] [YYYY-MM-DD] [MAX_HARGA]</code>\n\n"
+                "<i>Contoh:</i> <code>/pantau CGK DPS 2026-10-25 550000</code>"
+            ))
+            return
+
+        origin = args[0].upper()
+        destination = args[1].upper()
+        date_str = args[2]
+
+        try:
+            target_date = datetime.strptime(date_str, "%Y-%m-%d")
+        except ValueError:
+            self._reply(token, chat_id, "⚠️ Format tanggal salah! Gunakan format <code>YYYY-MM-DD</code> (contoh: <code>2026-10-25</code>)")
+            return
+
+        try:
+            max_price = int(args[3].replace(".", "").replace(",", "").replace("Rp", "").replace("rp", ""))
+        except ValueError:
+            self._reply(token, chat_id, "⚠️ Harga harus berupa angka nominal Rupiah!")
+            return
+
+        route_label = f"{origin} ➔ {destination} ({date_str})"
+        new_route = database.create_route(
+            origin=origin,
+            destination=destination,
+            max_price_idr=max_price,
+            target_date=date_str,
+            label=route_label
+        )
+
+        formatted_price = f"Rp {max_price:,.0f}".replace(",", ".")
+        self._reply(token, chat_id, f"🔍 <i>Memeriksa harga tiket awal untuk tanggal {date_str}...</i>")
+
+        try:
+            flights = self.scraper.search(origin, destination, target_date)
+            initial_cheapest = flights[0].price_formatted if flights else "-"
+        except Exception:
+            initial_cheapest = "-"
+
+        self._reply(token, chat_id, (
+            f"🎯 <b>Pemantauan Tanggal Spesifik Berhasil Diaktifkan!</b>\n"
+            f"━━━━━━━━━━━━━━━━━━━━━━━\n"
+            f"🆔 <b>ID Pantauan:</b> <code>{new_route['id']}</code>\n"
+            f"📍 <b>Rute:</b> {origin} ➔ {destination}\n"
+            f"📅 <b>Tanggal Target:</b> <b>{date_str}</b>\n"
+            f"🎯 <b>Target Budget:</b> {formatted_price}\n"
+            f"💰 <b>Harga Saat Ini:</b> {initial_cheapest}\n\n"
+            f"🔔 <i>Bot akan otomatis mengirim notifikasi setiap ada tiket turun di bawah budget target!</i>"
+        ))
 
     def _cmd_cek(self, token: str, chat_id: int, args: list):
         if len(args) < 2:
@@ -135,23 +277,22 @@ class TelegramInteractiveBot:
 
         origin = args[0].upper()
         destination = args[1].upper()
-
         if len(args) >= 3:
             try:
                 target_date = datetime.strptime(args[2], "%Y-%m-%d")
             except ValueError:
-                self._reply(token, chat_id, "⚠️ Format tanggal salah! Gunakan format <code>YYYY-MM-DD</code> (contoh: <code>2026-10-20</code>)")
+                self._reply(token, chat_id, "⚠️ Format tanggal salah! Gunakan format <code>YYYY-MM-DD</code>")
                 return
         else:
             target_date = datetime.now() + timedelta(days=7)
 
         date_str = target_date.strftime("%Y-%m-%d")
-        self._reply(token, chat_id, f"🔍 <i>Sedang mencari penerbangan {origin} ➔ {destination} pada {date_str}...</i>")
+        self._reply(token, chat_id, f"🔍 <i>Mencari penerbangan {origin} ➔ {destination} ({date_str})...</i>")
 
         try:
             flights = self.scraper.search(origin, destination, target_date)
             if not flights:
-                self._reply(token, chat_id, f"❌ Tidak ditemukan penerbangan untuk rute <b>{origin} ➔ {destination}</b> pada <b>{date_str}</b>.")
+                self._reply(token, chat_id, f"❌ Tidak ditemukan penerbangan untuk {origin} ➔ {destination} pada {date_str}.")
                 return
 
             msg = (
@@ -164,7 +305,7 @@ class TelegramInteractiveBot:
                     f"<b>{i}. {f.airline}</b> ({f.flight_number})\n"
                     f"   🕒 {f.departure_time} ➔ {f.arrival_time}\n"
                     f"   💰 <b>{f.price_formatted}</b>\n"
-                    f"   🔗 <a href='{f.booking_url}'>Lihat di Traveloka</a>\n\n"
+                    f"   🔗 <a href='{f.booking_url}'>Buka di Traveloka</a> | <a href='{f.tiket_url}'>Buka di Tiket.com</a>\n\n"
                 )
             self._reply(token, chat_id, msg)
         except Exception as e:
@@ -172,7 +313,7 @@ class TelegramInteractiveBot:
 
     def _cmd_tambah(self, token: str, chat_id: int, args: list):
         if len(args) < 3:
-            self._reply(token, chat_id, "⚠️ <b>Format salah!</b>\nGunakan: <code>/tambah [ASAL] [TUJUAN] [MAX_HARGA] [HARI_KE_DEPAN]</code>\nContoh: <code>/tambah SUB DPS 650000 14</code>")
+            self._reply(token, chat_id, "⚠️ <b>Format:</b> <code>/tambah [ASAL] [TUJUAN] [MAX_HARGA] [HARI_KE_DEPAN]</code>\nContoh: <code>/tambah SUB DPS 650000 14</code>")
             return
 
         origin = args[0].upper()
@@ -195,27 +336,26 @@ class TelegramInteractiveBot:
         formatted_price = f"Rp {max_price:,.0f}".replace(",", ".")
         self._reply(token, chat_id, (
             f"✅ <b>Rute Berhasil Ditambahkan!</b>\n"
-            f"━━━━━━━━━━━━━━━━━━━━━━━\n"
             f"🆔 <b>ID Rute:</b> <code>{new_route['id']}</code>\n"
             f"📍 <b>Rute:</b> {new_route['label']}\n"
             f"🎯 <b>Target Maks:</b> {formatted_price}\n"
-            f"📅 <b>Rentang Cek:</b> {days_ahead} hari ke depan\n\n"
-            f"<i>Bot akan otomatis memberi tahu jika ada harga di bawah target!</i>"
+            f"📅 <b>Rentang:</b> {days_ahead} hari ke depan"
         ))
 
     def _cmd_list(self, token: str, chat_id: int):
         routes = database.get_routes()
         if not routes:
-            self._reply(token, chat_id, "📋 Belum ada rute yang dipantau.\nGunakan <code>/tambah [ASAL] [TUJUAN] [HARGA]</code> untuk menambahkan.")
+            self._reply(token, chat_id, "📋 Belum ada rute yang dipantau.\nGunakan <code>/pantau</code> atau <code>/tambah</code> untuk mendaftarkan.")
             return
 
         msg = "📋 <b>Daftar Rute Pantauan:</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n"
         for r in routes:
             status_emoji = "🟢" if r["is_active"] else "⚪"
             p_format = f"Rp {r['max_price_idr']:,.0f}".replace(",", ".")
+            target_info = f"📅 <b>Target: {r['target_date']}</b>" if r.get("target_date") else f"📅 {r['days_ahead']} hari ke depan"
             msg += (
                 f"{status_emoji} <b>[ID {r['id']}] {r['label']}</b>\n"
-                f"   🎯 Max: {p_format} | 📅 {r['days_ahead']} hari\n"
+                f"   🎯 Max: {p_format} | {target_info}\n"
                 f"   ⚙️ Status: {'Aktif' if r['is_active'] else 'Nonaktif'}\n\n"
             )
         msg += "<i>Gunakan /hapus [ID] untuk menghapus rute.</i>"
@@ -229,7 +369,7 @@ class TelegramInteractiveBot:
             route_id = int(args[0])
             route = database.get_route_by_id(route_id)
             if not route:
-                self._reply(token, chat_id, f"❌ Rute dengan ID <b>{route_id}</b> tidak ditemukan.")
+                self._reply(token, chat_id, f"❌ Rute ID <b>{route_id}</b> tidak ditemukan.")
                 return
 
             database.delete_route(route_id)
@@ -238,7 +378,7 @@ class TelegramInteractiveBot:
             self._reply(token, chat_id, "⚠️ ID rute harus berupa angka!")
 
     def _cmd_scan(self, token: str, chat_id: int):
-        self._reply(token, chat_id, "🔄 <b>Memulai pemindaian manual semua rute...</b>\nKamu akan menerima notifikasi jika ditemukan tiket murah.")
+        self._reply(token, chat_id, "🔄 <b>Memulai pemindaian sekarang...</b>\nKamu akan menerima notifikasi jika ditemukan tiket murah.")
         import scheduler
         threading.Thread(target=scheduler.scan_all_routes, daemon=True).start()
 
@@ -252,10 +392,8 @@ class TelegramInteractiveBot:
             f"✈️ Total Tiket Terpantau: <b>{stats['total_tracked_flights']}</b>\n"
             f"💰 Tiket Termurah Tercatat: <b>{cheapest_format}</b>\n"
             f"🔔 Notifikasi Terkirim: <b>{stats['total_notifications']}</b>\n"
-            f"⚙️ Auto-Scan: <b>{'Aktif' if cfg.auto_scan_enabled else 'Nonaktif'}</b>\n"
         )
         self._reply(token, chat_id, msg)
 
 
-# Singleton Interactive Bot
 telegram_bot_service = TelegramInteractiveBot()
