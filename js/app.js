@@ -49,7 +49,7 @@ function getTravelokaSearchUrl(origin, destination, dateStr) {
     const dt = `${parts[2]}-${parts[1]}-${parts[0]}.NA`;
     return `https://www.traveloka.com/id-id/flight/fullsearch?ap=${origin.toUpperCase()}.${destination.toUpperCase()}&dt=${dt}&ps=1.0.0&sc=ECONOMY`;
   }
-  return `https://www.traveloka.com/id-id/flight`;
+  return "https://www.traveloka.com/id-id/flight";
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -337,9 +337,20 @@ async function loadFlights(routeId = null) {
         <td><span class="price-tag">${formatRupiah(f.price_idr)}</span></td>
         <td>${seatsBadge}</td>
         <td>
-          <a href="${travelokaUrl}" target="_blank" class="btn btn-primary btn-sm">
-            ${f.is_connecting ? 'Beli Tiket Transit ➔' : 'Beli Tiket ➔'}
-          </a>
+          ${f.is_connecting ? `
+            <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+              <a href="${getTravelokaSearchUrl(f.origin, f.hub, f.flight_date)}" target="_blank" class="btn btn-secondary btn-sm" style="padding: 0.25rem 0.5rem; font-size: 0.72rem; white-space: nowrap;">
+                1️⃣ Pesan Leg 1 (${f.origin}➔${f.hub})
+              </a>
+              <a href="${getTravelokaSearchUrl(f.hub, f.destination, f.flight_date)}" target="_blank" class="btn btn-secondary btn-sm" style="padding: 0.25rem 0.5rem; font-size: 0.72rem; white-space: nowrap;">
+                2️⃣ Pesan Leg 2 (${f.hub}➔${f.destination})
+              </a>
+            </div>
+          ` : `
+            <a href="${travelokaUrl}" target="_blank" class="btn btn-primary btn-sm">
+              Beli Tiket ➔
+            </a>
+          `}
         </td>
       </tr>
     `;
@@ -357,11 +368,6 @@ function renderRoutesGrid(routes) {
       ? `<span style="color: var(--accent-cyan); font-weight: 700;">📅 Tanggal: ${r.target_date}</span>`
       : `${r.days_ahead || 14} hari ke depan`;
 
-    const isTransit = r.is_transit || r.hub;
-    const hubBadge = isTransit 
-      ? `<span style="font-size: 0.75rem; background: rgba(6, 182, 212, 0.15); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 999px; padding: 0.1rem 0.5rem; margin-left: 0.4rem;">🔄 Transit: ${r.hub && r.hub !== 'AUTO' ? r.hub : 'Hub Aman'}</span>` 
-      : '';
-
     return `
       <div class="route-card ${isInactive ? 'inactive' : ''}" id="routeCard-${r.id}">
         <div class="route-card-top">
@@ -369,9 +375,7 @@ function renderRoutesGrid(routes) {
             <div class="route-flight-badges">
               <span class="iata-code">${r.origin}</span>
               <span class="route-arrow">➔</span>
-              ${isTransit && r.hub && r.hub !== 'AUTO' ? `<span class="iata-code" style="color: var(--accent-cyan);">${r.hub}</span><span class="route-arrow">➔</span>` : ''}
               <span class="iata-code">${r.destination}</span>
-              ${hubBadge}
             </div>
             <div class="route-label-sub">${r.label || `${r.origin} ke ${r.destination}`}</div>
           </div>
@@ -518,6 +522,14 @@ function handleToggleRouteType() {
   }
 }
 
+function handleToggleTransitHub() {
+  const transitSel = document.getElementById("routeTransitSelect");
+  const groupHub = document.getElementById("groupTransitHub");
+  if (transitSel && groupHub) {
+    groupHub.style.display = transitSel.value === "transit" ? "block" : "none";
+  }
+}
+
 function handleSelectRouteAnalytics(routeId) {
   state.selectedRouteId = routeId;
   const select = document.getElementById("analyticsRouteSelect");
@@ -560,14 +572,6 @@ function handleDeleteRoute(routeId) {
     loadFlights(state.selectedRouteId);
   }
   showToast("Rute berhasil dihapus dari dashboard", "success");
-}
-
-function handleToggleTransitHub() {
-  const isTransit = document.getElementById("routeTransitSelect") ? document.getElementById("routeTransitSelect").value === "transit" : false;
-  const groupHub = document.getElementById("groupTransitHub");
-  if (groupHub) {
-    groupHub.style.display = isTransit ? "block" : "none";
-  }
 }
 
 function openAddRouteModal() {
@@ -691,7 +695,6 @@ function handleSaveRouteForm(e) {
   closeModal("routeModal");
   showToast(`✅ Rute ${payload.label} berhasil disimpan!`, "success");
 
-  // Kirim notifikasi instan ke Telegram saat rute dibuat/diedit di Web
   const isTransitMsg = payload.is_transit 
     ? `🎯 <b>RUTE TRANSIT BARU DIPANTAU!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> ${payload.origin} ➔ ${payload.hub || 'Hub'} ➔ ${payload.destination}\n📅 <b>Tanggal:</b> ${payload.target_date || 'Rentang 14 Hari'}\n🎯 <b>Target Budget:</b> ${formatRupiah(payload.max_price_idr)}\n\n🔔 <i>Web Dashboard & Bot aktif memantau rute ini!</i>`
     : `🎯 <b>RUTE BARU DIPANTAU!</b>\n━━━━━━━━━━━━━━━━━━━━━━━\n📍 <b>Rute:</b> ${payload.origin} ➔ ${payload.destination}\n📅 <b>Tanggal:</b> ${payload.target_date || 'Rentang 14 Hari'}\n🎯 <b>Target Budget:</b> ${formatRupiah(payload.max_price_idr)}\n\n🔔 <i>Web Dashboard & Bot aktif memantau rute ini!</i>`;
@@ -708,7 +711,7 @@ async function handleTestTelegram() {
   }
   try {
     const url = `https://api.telegram.org/bot${token}/sendMessage`;
-    fetch(url, {
+    const resp = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -716,10 +719,10 @@ async function handleTestTelegram() {
         text: "✅ <b>Tes Terhubung Berhasil!</b>\nFlight Price Monitor Pro aktif dan terhubung ke Telegram Anda.",
         parse_mode: "HTML"
       })
-    }).then(r => r.json()).then(data => {
-      if (data.ok) showToast("✅ Pesan tes terkirim ke Telegram!", "success");
-      else showToast("❌ Gagal: " + data.description, "error");
     });
+    const data = await resp.json();
+    if (data.ok) showToast("✅ Pesan tes terkirim ke Telegram!", "success");
+    else showToast("❌ Gagal: " + data.description, "error");
   } catch (err) {
     showToast("Error: " + err.message, "error");
   }
@@ -776,10 +779,6 @@ function showToast(message, type = "info") {
   }, 3500);
 }
 
-function formatRupiah(val) {
-  return "Rp " + (val || 0).toLocaleString("id-ID");
-}
-
 function initTheme() {
   const saved = localStorage.getItem("flight_theme") || "dark";
   document.documentElement.setAttribute("data-theme", saved);
@@ -799,13 +798,36 @@ function updateThemeIcon(theme) {
   if (btn) btn.textContent = theme === "light" ? "🌙" : "☀️";
 }
 
-// Close modal when clicking outside on backdrop
 document.addEventListener("click", (e) => {
   if (e.target && e.target.classList && e.target.classList.contains("modal-backdrop")) {
     e.target.classList.remove("open");
     e.target.classList.remove("active");
   }
 });
+
+function exportRoutesToJson() {
+  const routesToExport = state.routes.map(r => ({
+    origin: r.origin,
+    destination: r.destination,
+    label: r.label,
+    max_price_idr: r.max_price_idr,
+    days_ahead: r.days_ahead || 1,
+    target_date: r.target_date || null,
+    is_active: r.is_active ? 1 : 0,
+    check_interval_hours: r.check_interval_hours || 4
+  }));
+
+  const jsonStr = JSON.stringify(routesToExport, null, 2);
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(jsonStr).then(() => {
+      showToast("📋 Konfigurasi data/routes.json disalin! Tempelkan ke GitHub", "success");
+    }).catch(() => {
+      prompt("Salin konfigurasi JSON ini:", jsonStr);
+    });
+  } else {
+    prompt("Salin konfigurasi JSON ini:", jsonStr);
+  }
+}
 
 // Expose all interactive functions to global window scope for inline HTML onclick handlers
 window.openModal = openModal;
@@ -817,5 +839,6 @@ window.handleToggleRoute = handleToggleRoute;
 window.handleToggleRouteType = handleToggleRouteType;
 window.handleToggleTransitHub = handleToggleTransitHub;
 window.openNotificationsModal = openNotificationsModal;
+window.exportRoutesToJson = exportRoutesToJson;
 window.formatRupiah = formatRupiah;
 window.getTravelokaSearchUrl = getTravelokaSearchUrl;
